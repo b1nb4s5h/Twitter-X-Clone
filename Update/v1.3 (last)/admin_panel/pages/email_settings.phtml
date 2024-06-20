@@ -1,11 +1,11 @@
-<?php $settings = vipub_site_settings(); $smtp_settings = vipub_smtp(); ?>
+<?php $settings = xclone_site_settings(); $smtp_settings = xclone_smtp(); ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>Site email settings </h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Email</li>
           <li class="breadcrumb-item active">Site email settings</li>
         </ol>
@@ -42,13 +42,13 @@
                 
                     <div class="row mt-4">
                         <div class="col-sm-15">
-                            <input type="email" class="form-control" name="test_email" placeholder="your-email@vipubsm.com" required>
+                            <input type="email" class="form-control" name="test_email" placeholder="your-email@xclonesm.com" required>
                         </div>
                         <small style="font-size: 12px; position:relative; margin-top: 7px;">Enter the email address to which the test <strong>email will be sent</strong>.</small>
                     </div>
                     <div class="row mt-4">
                         <div class="col-sm-50">
-                        <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                        <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                             <button type="submit" style="width: 100% !important;" class="btn btn-danger" name="testEmail">Send test message</button>
                             <?php else: ?>
                               <button disabled style="width: 100% !important;" class="btn btn-danger">Cannot trade because your account is demo</button>
@@ -103,7 +103,7 @@
 
                             <div class="row mt-2">
                               <div class="col-sm-50">
-                              <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                              <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                                   <button type="submit" style="width: 100% !important;" class="btn btn-success" name="saveEmailSettings">Save settings</button>
                                   <?php else: ?>
                                   <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -123,5 +123,5 @@
       </div>
     </section>
 </main>
-<?php use PHPMailer\PHPMailer\PHPMailer; use PHPMailer\PHPMailer\Exception; if(isset($_POST['testEmail'])) { $test_email = $_POST['test_email']; $mail = new PHPMailer(true); try { $mail->isSMTP(); $mail->Host       = 'smtp.gmail.com'; $mail->SMTPAuth   = true; $mail->Username   = $smtp_settings["smtp_username"]; $mail->Password   = $smtp_settings["smtp_password"]; $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; $mail->Port       = $smtp_settings["smtp_port"]; $mail->setFrom($smtp_settings["smtp_username"], $settings["site_name"]); $mail->addAddress($test_email); $mail->isHTML(true); $mail->CharSet = 'UTF-8'; $mail->Subject = 'It is a test email sent via Vipub'; $mail->Body    = '<p>The sent test e-mail has been sent successfully. SMTP Server settings are successful.</p>'; $mail->send(); ?> <script> new Noty({ type: 'success', text: 'Test email sent successfully', timeout: 1500, progressBar: true, callbacks: { afterClose: function() { window.location.href = "/admin_panel/email_settings"; } } }).show(); </script> <?php } catch (Exception $e) { echo "Email sending error: {$mail->ErrorInfo}"; } } ?>
-<?php if(isset($_POST['saveEmailSettings'])) { $smtp_host = mysqli_real_escape_string($conn, $_POST['smtp_host']); $smtp_username = mysqli_real_escape_string($conn, $_POST['smtp_username']); $smtp_password = mysqli_real_escape_string($conn, $_POST['smtp_password']); $smtp_port = mysqli_real_escape_string($conn, $_POST['smtp_port']); $sql = "UPDATE vipub_smtp SET smtp_host='$smtp_host', smtp_username='$smtp_username', smtp_password='$smtp_password', smtp_port='$smtp_port' WHERE smtp_id=1"; if(mysqli_query($conn, $sql)) { ?> <script> new Noty({ type: 'success', text: 'Your SMTP E-mail settings are saved', timeout: 1500, progressBar: true, callbacks: { afterClose: function() { window.location.href = "/admin_panel/email_settings"; } } }).show(); </script> <?php } else { echo "Error " . mysqli_error($conn); } mysqli_close($conn); } ?>
+<?php use PHPMailer\PHPMailer\PHPMailer; use PHPMailer\PHPMailer\Exception; if(isset($_POST['testEmail'])) { $test_email = $_POST['test_email']; $mail = new PHPMailer(true); try { $mail->isSMTP(); $mail->Host       = 'smtp.gmail.com'; $mail->SMTPAuth   = true; $mail->Username   = $smtp_settings["smtp_username"]; $mail->Password   = $smtp_settings["smtp_password"]; $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; $mail->Port       = $smtp_settings["smtp_port"]; $mail->setFrom($smtp_settings["smtp_username"], $settings["site_name"]); $mail->addAddress($test_email); $mail->isHTML(true); $mail->CharSet = 'UTF-8'; $mail->Subject = 'It is a test email sent via Xclone'; $mail->Body    = '<p>The sent test e-mail has been sent successfully. SMTP Server settings are successful.</p>'; $mail->send(); ?> <script> new Noty({ type: 'success', text: 'Test email sent successfully', timeout: 1500, progressBar: true, callbacks: { afterClose: function() { window.location.href = "/admin_panel/email_settings"; } } }).show(); </script> <?php } catch (Exception $e) { echo "Email sending error: {$mail->ErrorInfo}"; } } ?>
+<?php if(isset($_POST['saveEmailSettings'])) { $smtp_host = mysqli_real_escape_string($conn, $_POST['smtp_host']); $smtp_username = mysqli_real_escape_string($conn, $_POST['smtp_username']); $smtp_password = mysqli_real_escape_string($conn, $_POST['smtp_password']); $smtp_port = mysqli_real_escape_string($conn, $_POST['smtp_port']); $sql = "UPDATE xclone_smtp SET smtp_host='$smtp_host', smtp_username='$smtp_username', smtp_password='$smtp_password', smtp_port='$smtp_port' WHERE smtp_id=1"; if(mysqli_query($conn, $sql)) { ?> <script> new Noty({ type: 'success', text: 'Your SMTP E-mail settings are saved', timeout: 1500, progressBar: true, callbacks: { afterClose: function() { window.location.href = "/admin_panel/email_settings"; } } }).show(); </script> <?php } else { echo "Error " . mysqli_error($conn); } mysqli_close($conn); } ?>

@@ -2,7 +2,7 @@
 if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
     $ids = $_GET["edit"];
 
-    $sql = "SELECT * FROM vipub_premium_package WHERE pack_id ='$ids'";
+    $sql = "SELECT * FROM xclone_premium_package WHERE pack_id ='$ids'";
     $result = $conn->query($sql);
 
 
@@ -15,7 +15,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
       <h1>You are editing your package named <?php echo $row["package_name"]; ?></h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Premium package</li>
           <li class="breadcrumb-item active">Edit package</li>
         </ol>
@@ -28,7 +28,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
 
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-              <h2><?php echo vipub_croptxt($row["package_name"], 0, 30); ?></h2>
+              <h2><?php echo xclone_croptxt($row["package_name"], 0, 30); ?></h2>
               <h3><?php echo $row["package_price"]; ?> $</h3>
             </div>
           </div>
@@ -76,7 +76,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
                     </div>
 
                     <div class="text-center" style="margin-top:10px; position: relative;">
-                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                    <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                       <button type="submit" style="width: 100%;" class="btn btn-success" name="savePackage">Save Changes</button>
                       <?php else: ?>
                             <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -109,7 +109,7 @@ if(isset($_POST["savePackage"])) {
     $package_name = htmlspecialchars($_POST["package_name"]);
     $package_price = htmlspecialchars($_POST["package_price"]);
     
-    $stmt = $conn->prepare("UPDATE vipub_premium_package SET package_name=?, package_price=? WHERE pack_id=?");
+    $stmt = $conn->prepare("UPDATE xclone_premium_package SET package_name=?, package_price=? WHERE pack_id=?");
     $stmt->bind_param("ssi", $package_name, $package_price, $id);
     $stmt->execute();
     

@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if(isset($_SESSION["user_id"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -11,10 +11,10 @@ if(isset($_SESSION["user_id"])) {
         $premium_account = "1";
         $verified_status = "1";
 
-        $sql = "INSERT INTO vipub_premium_active_users (user_id, package_id, end_date) VALUES ('$user_id', '$package_id', '$end_date')";
+        $sql = "INSERT INTO xclone_premium_active_users (user_id, package_id, end_date) VALUES ('$user_id', '$package_id', '$end_date')";
         if ($conn->query($sql) === TRUE) {
-            // vipub_users tablosunu güncelleme
-            $sql_user = "UPDATE vipub_users SET premium_account = '$premium_account', verified = '$verified_status', user_wallet = '$user_wallet' WHERE id = '$user_id'";
+            // xclone_users tablosunu güncelleme
+            $sql_user = "UPDATE xclone_users SET premium_account = '$premium_account', verified = '$verified_status', user_wallet = '$user_wallet' WHERE id = '$user_id'";
             
 
             if ($conn->query($sql_user) === TRUE) {

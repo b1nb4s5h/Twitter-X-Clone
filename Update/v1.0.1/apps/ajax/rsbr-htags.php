@@ -1,6 +1,6 @@
 <?php
-require_once("../../core/vipub_web_core.phtml");
-$settings = vipub_site_settings();
+require_once("../../core/xclone_web_core.phtml");
+$settings = xclone_site_settings();
 
 $q = '';
 if (isset($_GET['q'])) {
@@ -8,27 +8,27 @@ if (isset($_GET['q'])) {
 }
 if($settings["hashtag_display"]=="daily"){
     $sql = "SELECT htag, SUM(total_post) AS total_post
-    FROM vipub_hashtag
+    FROM xclone_hashtag
     WHERE add_date >= NOW() - INTERVAL 24 HOUR
     GROUP BY htag
     ORDER BY total_post DESC
     LIMIT 10;";
 } else if($settings["hashtag_display"]=="weekly"){
     $sql = "SELECT htag, SUM(total_post) AS total_post
-    FROM vipub_hashtag
+    FROM xclone_hashtag
     WHERE add_date >= NOW() - INTERVAL 1 WEEK
     GROUP BY htag
     ORDER BY total_post DESC
     LIMIT 10;";
 } else if($settings["hashtag_display"]=="monthly"){
     $sql = "SELECT htag, SUM(total_post) AS total_post
-    FROM vipub_hashtag
+    FROM xclone_hashtag
     WHERE add_date >= NOW() - INTERVAL 1 MONTH
     GROUP BY htag
     ORDER BY total_post DESC
     LIMIT 10;";
 } else if($settings["hashtag_display"]=="all"){
-    $sql = "SELECT * FROM vipub_hashtag ORDER BY total_post DESC LIMIT 10";
+    $sql = "SELECT * FROM xclone_hashtag ORDER BY total_post DESC LIMIT 10";
 }
 $result = mysqli_query($conn, $sql);
 

@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 header("Access-Control-Allow-Origin: *");
 header('Content-type: application/json');
 
@@ -9,8 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $userId = mysqli_real_escape_string($conn, $_GET['user_id']);
 
     if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $userId) {
-        $sql = "SELECT n.sender_id, n.type, n.post_id, n.post_id, u.verified, u.fullname, u.avatar, u.username FROM vipub_notifs AS n 
-                INNER JOIN vipub_users AS u ON n.sender_id = u.id
+        $sql = "SELECT n.sender_id, n.type, n.post_id, n.post_id, u.verified, u.fullname, u.avatar, u.username FROM xclone_notifs AS n 
+                INNER JOIN xclone_users AS u ON n.sender_id = u.id
                 WHERE n.user_id = '$userId'
                 ORDER BY n.n_id DESC";
         $result = mysqli_query($conn, $sql);
@@ -26,19 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $username = htmlspecialchars($row['username']);
                 $verified = $row['verified'];
 
-                $mySql = "SELECT username FROM vipub_users WHERE id = '$userId'";
+                $mySql = "SELECT username FROM xclone_users WHERE id = '$userId'";
                 $userResult = mysqli_query($conn, $mySql);
 
-                while ($vipub_user = mysqli_fetch_assoc($userResult)) {
+                while ($xclone_user = mysqli_fetch_assoc($userResult)) {
                     $response = array(
                         "sender_id" => $senderId,
                         "post_id" => $post_id,
                         "type" => $type,
                         "screen_name" => $fullname,
                         "username" => $username,
-                        "avatar" => vipub_link($avatar),
+                        "avatar" => xclone_link($avatar),
                         "verified" => $verified,
-                        "my_username" => $vipub_user['username']
+                        "my_username" => $xclone_user['username']
                     );
                 }
                 mysqli_free_result($userResult);

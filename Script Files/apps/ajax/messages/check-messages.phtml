@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"]) || !is_numeric($_SESSION["user_id"])) {
   header("Location: /welcome/login");
@@ -15,13 +15,13 @@ if (!is_numeric($receiver_id) || $receiver_id == $sender_id) {
 }
 
 // Prepared statement kullanarak sorguyu hazırla
-$updateSql = "UPDATE vipub_messages SET notifs_status = 1 WHERE receiver_id = ? AND sender_id = ?";
+$updateSql = "UPDATE xclone_messages SET notifs_status = 1 WHERE receiver_id = ? AND sender_id = ?";
 $stmt = mysqli_prepare($conn, $updateSql);
 mysqli_stmt_bind_param($stmt, "ii", $sender_id, $receiver_id,);
 mysqli_stmt_execute($stmt);
 
 // Verileri alırken prepared statement kullan
-$selectSql = "SELECT vipub_messages.*, vipub_users.* FROM vipub_messages JOIN vipub_users ON vipub_messages.sender_id = vipub_users.id WHERE (vipub_messages.receiver_id IN (?, ?) AND vipub_messages.sender_id IN (?, ?)) ORDER BY vipub_messages.created_at ASC";
+$selectSql = "SELECT xclone_messages.*, xclone_users.* FROM xclone_messages JOIN xclone_users ON xclone_messages.sender_id = xclone_users.id WHERE (xclone_messages.receiver_id IN (?, ?) AND xclone_messages.sender_id IN (?, ?)) ORDER BY xclone_messages.created_at ASC";
 $stmt = mysqli_prepare($conn, $selectSql);
 mysqli_stmt_bind_param($stmt, "iiii", $receiver_id, $sender_id, $receiver_id, $sender_id);
 mysqli_stmt_execute($stmt);

@@ -3,18 +3,18 @@
         <?php
         $total_post = intval($row["total_post"]);
         if ($total_post >= 1000) {
-            $message = vipub_translate("hot_hashtage_1");
+            $message = xclone_translate("hot_hashtage_1");
         }
         else if ($total_post >= 500) {
-            $message = vipub_translate("hot_hashtage_2");
+            $message = xclone_translate("hot_hashtage_2");
         } 
         else if ($total_post >= 300) {
-            $message = vipub_translate("hot_hashtage_3");
+            $message = xclone_translate("hot_hashtage_3");
         }
         else if ($total_post >= 50) {
-            $message = vipub_translate("hot_hashtage_4");
+            $message = xclone_translate("hot_hashtage_4");
         } else if ($total_post >= 10) {
-            $message = vipub_translate("hot_hashtage_5");
+            $message = xclone_translate("hot_hashtage_5");
         } else {
             $message = "";
         }
@@ -25,7 +25,7 @@
                 #<?php echo htmlspecialchars($row["htag"]); ?>
                 <span>
                     <strong><?php echo $total_post; ?></strong> 
-                    <?php echo vipub_translate("post"); ?>
+                    <?php echo xclone_translate("post"); ?>
                 </span>
             </h5>
         </a>

@@ -4,7 +4,7 @@
       <h1>API requests used</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">API functions</li>
           <li class="breadcrumb-item active">API users</li>
         </ol>
@@ -49,7 +49,7 @@
                 <tbody>
                 <?php
 
-                    $sql = "SELECT au_id, api_user_id, api_user_ip, api_usage_type, api_secret_key, api_private_key, api_status FROM vipub_api_users";
+                    $sql = "SELECT au_id, api_user_id, api_user_ip, api_usage_type, api_secret_key, api_private_key, api_status FROM xclone_api_users";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
@@ -57,7 +57,7 @@
 
                     <tr>
                         <td scope="row">
-                            <a href="<?php echo vipub_link("admin_panel/edit_user?edit=".$row["api_user_id"]); ?>">
+                            <a href="<?php echo xclone_link("admin_panel/edit_user?edit=".$row["api_user_id"]); ?>">
                                 <span class="badge bg-dark">
                                     <?php echo $row["api_user_id"]; ?>
                                 </span>

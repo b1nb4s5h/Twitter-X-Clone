@@ -137,7 +137,7 @@ body{
     width: 19px;
     height: 19px;
 }
-.vipubSM_alert{
+.xcloneSM_alert{
     min-width: 150px;
     max-width: 380px;
     background-color: rgba(0, 0, 0, 0.8);
@@ -153,17 +153,17 @@ body{
     border:1px solid #ced4d85c;
     display:none;
 }
-.vipubSM_content{
+.xcloneSM_content{
     display: flex;
     align-items: center;
     justify-items: center;
   }
-  .vipubSM_icon {
+  .xcloneSM_icon {
     display: inline-block;
     margin-right: 20px;
     font-size: 20px;
   }
-  .vipubSM_text {
+  .xcloneSM_text {
     display: inline-block;
   }
 

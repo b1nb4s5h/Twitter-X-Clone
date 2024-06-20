@@ -1,19 +1,19 @@
-<?php $settings = vipub_site_settings(); ?>
-<div class="vipub-content-email">
+<?php $settings = xclone_site_settings(); ?>
+<div class="xclone-content-email">
     <div class="container" style="position: relative; padding: 40px; background: #F5F8FD !important;">
         <div class="email-top-logo">
-            <a style="text-decoration: none !important; position: relative !important; margin-top: -25px !important; font-size: 25px; font-weight: 700; color: #1da1f2;" href="<?php echo vipub_link("welcome/login"); ?>"><?php echo $settings["site_name"]; ?></a>
-            <p style="font-size: 15px;"><?php echo vipub_translate("email_message_notifications_1"); ?>, <strong><?php echo $receiver_user["fullname"]; ?></strong>,</p>
-            <p style="font-size: 15px;"><strong><?php echo $sender_user["fullname"]; ?></strong> <?php echo vipub_translate("email_message_notifications_2"); ?></p>
+            <a style="text-decoration: none !important; position: relative !important; margin-top: -25px !important; font-size: 25px; font-weight: 700; color: #1da1f2;" href="<?php echo xclone_link("welcome/login"); ?>"><?php echo $settings["site_name"]; ?></a>
+            <p style="font-size: 15px;"><?php echo xclone_translate("email_message_notifications_1"); ?>, <strong><?php echo $receiver_user["fullname"]; ?></strong>,</p>
+            <p style="font-size: 15px;"><strong><?php echo $sender_user["fullname"]; ?></strong> <?php echo xclone_translate("email_message_notifications_2"); ?></p>
 
-            <p style="font-size: 15px;"><?php echo vipub_translate("email_message_notifications_3"); ?>
+            <p style="font-size: 15px;"><?php echo xclone_translate("email_message_notifications_3"); ?>
             <br>
-            "<strong style="font-size: 20px; line-height: 24px; color: #0f1419;"><?php echo convertVipubText(vipub_croptxt($message, 0, 100)); ?></strong>"
+            "<strong style="font-size: 20px; line-height: 24px; color: #0f1419;"><?php echo convertxcloneText(xclone_croptxt($message, 0, 100)); ?></strong>"
             </p>
-            <span><?php echo vipub_translate("email_message_notifications_4"); ?></span><br><br>
-            <a class="display-message-link" target="_blank" href="<?php echo vipub_link("messages"); ?>"
+            <span><?php echo xclone_translate("email_message_notifications_4"); ?></span><br><br>
+            <a class="display-message-link" target="_blank" href="<?php echo xclone_link("messages"); ?>"
             style="text-decoration: none !important; padding: 5px 15px; position: relative; font-size: 13px; font-weight: 700; line-height: 15px; color: #fff; background: #1da1f2; border: none; otuline:none; border-radius: 5px;"
-            ><?php echo vipub_translate("email_message_notifications_5"); ?></a>
+            ><?php echo xclone_translate("email_message_notifications_5"); ?></a>
         </div>
     </div>
 </div>

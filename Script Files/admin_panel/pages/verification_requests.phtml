@@ -1,11 +1,11 @@
-<?php $settings = vipub_site_settings(); $smtp_settings = vipub_smtp(); ?>
+<?php $settings = xclone_site_settings(); $smtp_settings = xclone_smtp(); ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>Verification Requests</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Verified</li>
           <li class="breadcrumb-item active">All Verification Requests</li>
         </ol>
@@ -38,8 +38,8 @@
                 <tbody>
                 <?php
                     $sql = "SELECT v.*, u.id, u.fullname, u.username
-                    FROM vipub_verified v 
-                    JOIN vipub_users u ON v.verified_uid = u.id
+                    FROM xclone_verified v 
+                    JOIN xclone_users u ON v.verified_uid = u.id
                     ORDER BY v.verified_date DESC";
                     $result = $conn->query($sql);
                     
@@ -49,11 +49,11 @@
                     <tr>
                         <th scope="row"><?php echo $row["verified_id"]; ?></th>
                         <td>
-                            <?php echo vipub_croptxt($row["fullname"], 0, 13); ?>
+                            <?php echo xclone_croptxt($row["fullname"], 0, 13); ?>
                         </td>
                         <td>
-                            <a href="<?php echo vipub_link("@".$row["username"]); ?>" target="_blank">
-                               @<?php echo vipub_croptxt($row["username"], 0, 15); ?>
+                            <a href="<?php echo xclone_link("@".$row["username"]); ?>" target="_blank">
+                               @<?php echo xclone_croptxt($row["username"], 0, 15); ?>
                             </a>
                         </td>
                         <td>
@@ -63,7 +63,7 @@
                             <?php echo date("d.m.Y", strtotime($row["verified_date"])); ?>
                         </td>
                         <td>
-                            <a href="<?php echo vipub_link("admin_panel/user_verification_requests?edit=".$row["id"]."&category=".$row["verified_category"]); ?>" target="_blank">
+                            <a href="<?php echo xclone_link("admin_panel/user_verification_requests?edit=".$row["id"]."&category=".$row["verified_category"]); ?>" target="_blank">
                                Edit
                             </a>
                         </td>

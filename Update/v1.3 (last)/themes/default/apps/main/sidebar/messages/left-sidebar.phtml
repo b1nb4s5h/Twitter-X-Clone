@@ -1,50 +1,50 @@
-<?php if(isset($_SESSION["user_id"])): $settings = vipub_site_settings(); ?>
+<?php if(isset($_SESSION["user_id"])): $settings = xclone_site_settings(); ?>
 <?php $app = isset($_GET['app']) ? $_GET['app'] : 'home';?>
-<?php $vipub["account"] = vipub_my_user_info(); ?>
+<?php $xclone["account"] = xclone_my_user_info(); ?>
 <div class="col-md-3">
     <div class="main-left-sidebar message-page-left-sidebar">
         <div class="main-site-logo">
-            <a href="<?php echo vipub_link("home"); ?>">
-                <img src="<?php echo vipub_link("themes/default/statics/images/pagelogo.png"); ?>">
+            <a href="<?php echo xclone_link("home"); ?>">
+                <img src="<?php echo xclone_link("themes/default/statics/images/pagelogo.png"); ?>">
             </a>
             </div>
             
             <div class="main-sidebar-menu">
-                <a class="<?php echo ($app == 'home') ? 'page-active' : ''; ?>" href="<?php echo vipub_link("home"); ?>">
+                <a class="<?php echo ($app == 'home') ? 'page-active' : ''; ?>" href="<?php echo xclone_link("home"); ?>">
                     <i class="bi bi-house-door"></i>
                 </a>
 
-                <a class="<?php echo ($app == 'search') ? 'page-active' : ''; ?>" href="<?php echo vipub_link("search"); ?>">
+                <a class="<?php echo ($app == 'search') ? 'page-active' : ''; ?>" href="<?php echo xclone_link("search"); ?>">
                     <i class="bi bi-search"></i>
                 </a>
 
-                <a class="<?php echo ($app == 'notifications') ? 'page-active' : ''; ?>" href="<?php echo vipub_link("notifications"); ?>">
+                <a class="<?php echo ($app == 'notifications') ? 'page-active' : ''; ?>" href="<?php echo xclone_link("notifications"); ?>">
                     <span id="check-notifs"></span>
                     <i class="bi bi-bell"></i>
                 </a>
 
-                <a class="<?php echo ($app == 'messages') ? 'page-active' : ''; ?>" href="<?php echo vipub_link("messages"); ?>">
+                <a class="<?php echo ($app == 'messages') ? 'page-active' : ''; ?>" href="<?php echo xclone_link("messages"); ?>">
                     <span id="check-message"></span>
                     <i class="bi bi-envelope"></i>
                 </a>
 
-                <a class="<?php echo ($app == 'bookmarks') ? 'page-active' : ''; ?>" href="<?php echo vipub_link("bookmarks"); ?>">
+                <a class="<?php echo ($app == 'bookmarks') ? 'page-active' : ''; ?>" href="<?php echo xclone_link("bookmarks"); ?>">
                     <i class="bi bi-bookmark"></i>
                 </a>
 
-                <a  href="<?php echo vipub_link("home"); ?>" id="openedCreatePost">
+                <a  href="<?php echo xclone_link("home"); ?>" id="openedCreatePost">
                     <i class="bi bi-pencil-square"></i>
                 </a>
 
-                <?php if($vipub["account"]["admin_status"]=="1"): ?>
-                <a href="<?php echo vipub_link("admin_panel"); ?>">
+                <?php if($xclone["account"]["admin_status"]=="1"): ?>
+                <a href="<?php echo xclone_link("admin_panel"); ?>">
                     <i class="bi bi-sliders"></i>
                 </a>
                 <?php endif; ?>
             </div>
 
             <div class="main-sidebar-menu-fixed-bottom message-page-sidebarMore-menu">
-                <a href="<?php echo vipub_link("/@".$vipub["account"]["username"]); ?>">
+                <a href="<?php echo xclone_link("/@".$xclone["account"]["username"]); ?>">
                     <i class="bi bi-person"></i>
                 </a>
             </div>
@@ -55,28 +55,28 @@
     <div id="report-a-problem">
         <div class="report-title-and-close">
             <h5>
-                <?php echo vipub_translate("report_a_problem"); ?>
+                <?php echo xclone_translate("report_a_problem"); ?>
                 <i id="close-dropdown" class="bi bi-x-circle-fill"></i>
             </h5>
         </div>
         <form id="reportProblemForm" method="post">
             <div class="report-a-content-form">
-                <textarea name="report_content" id="report_content" placeholder="<?php echo vipub_translate("please_give_as_much_information_as_possible"); ?>"></textarea>
+                <textarea name="report_content" id="report_content" placeholder="<?php echo xclone_translate("please_give_as_much_information_as_possible"); ?>"></textarea>
             </div>
 
             <div class="report-form-buttons">
                 <button type="submit" name="submitProblem">
-                    <?php echo vipub_translate("submit_a_complaint"); ?>
+                    <?php echo xclone_translate("submit_a_complaint"); ?>
                 </button>
 
                 <span id="add_image">
                     <input type="file" name="add_image" id="add_image" style="display:none;">
-                    <?php echo vipub_translate("add_file"); ?>
+                    <?php echo xclone_translate("add_file"); ?>
                 </span>
             </div>
 
             <div class="report-a-reviwed-form-info-text">
-                <span><?php echo vipub_translate("report_a_problem_bottom_info_text"); ?></span>
+                <span><?php echo xclone_translate("report_a_problem_bottom_info_text"); ?></span>
             </div>
         </form>
     </div>
@@ -134,8 +134,8 @@
 </script>
 
 <script>
-    $(document).on('click', '[data-vipub-url]', function() {
-        var url = $(this).data('vipub-url');
+    $(document).on('click', '[data-xclone-url]', function() {
+        var url = $(this).data('xclone-url');
         window.location.href = url;
     });
 </script>

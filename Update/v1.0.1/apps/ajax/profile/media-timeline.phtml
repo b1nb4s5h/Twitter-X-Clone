@@ -1,8 +1,8 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 if (isset($_GET['uname'])) {
     $username = $_GET['uname'];
-    $sql = "SELECT p.*, u.* FROM vipub_posts p LEFT JOIN vipub_users u ON p.user_id = u.id WHERE p.user_id = ? AND post_type = 'post' AND content_image !='NULL' ORDER BY p.post_joined DESC";
+    $sql = "SELECT p.*, u.* FROM xclone_posts p LEFT JOIN xclone_users u ON p.user_id = u.id WHERE p.user_id = ? AND post_type = 'post' AND content_image !='NULL' ORDER BY p.post_joined DESC";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $username);
   
@@ -20,7 +20,7 @@ if (isset($_GET['uname'])) {
           require("../../../themes/default/apps/timeline/content.phtml");
         }
       } else {
-        vipub_template("profile/include/no-post");
+        xclone_template("profile/include/no-post");
       }
     } else {
       die("Hata: " . mysqli_error($conn));

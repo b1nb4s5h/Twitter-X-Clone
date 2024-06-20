@@ -1,6 +1,6 @@
 <?php
-require_once("core/vipub_web_core.phtml");
+require_once("core/xclone_web_core.phtml");
 if(!isset($_SESSION["user_id"])){
-    $redirect = vipub_site_url("welcome/login");
+    $redirect = xclone_site_url("welcome/login");
     header("Location: ". $redirect);
 }

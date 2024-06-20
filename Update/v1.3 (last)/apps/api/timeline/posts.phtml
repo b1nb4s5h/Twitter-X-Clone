@@ -1,14 +1,14 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 header('Content-type: application/json');
 
 $sql = "SELECT p.*, u.* 
-  FROM vipub_posts p 
-  JOIN vipub_users u ON p.user_id = u.id 
+  FROM xclone_posts p 
+  JOIN xclone_users u ON p.user_id = u.id 
   WHERE (p.user_id = ? OR p.user_id IN (
-    SELECT user_id FROM vipub_follow WHERE follower_id = ?
+    SELECT user_id FROM xclone_follow WHERE follower_id = ?
   )) 
   AND p.post_type = 'post' OR p.post_type = 'postAds' OR p.post_type = 'repost'
   ORDER BY p.post_joined DESC";
@@ -43,7 +43,7 @@ if ($result) {
     $json_response = json_encode($response);
     echo $json_response;
   } else {
-    vipub_template("timeline/include/no-post");
+    xclone_template("timeline/include/no-post");
 }
 } else {
 die("Error: " . mysqli_error($conn));

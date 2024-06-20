@@ -1,11 +1,11 @@
-<?php $settings = vipub_site_settings(); $smtp_settings = vipub_smtp(); ?>
+<?php $settings = xclone_site_settings(); $smtp_settings = xclone_smtp(); ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>Subscribed users ✍️</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Premium</li>
           <li class="breadcrumb-item active">Users with an active subscription</li>
         </ol>
@@ -41,9 +41,9 @@
                 </thead>
                 <tbody>
                 <?php
-                    $sql = "SELECT vipub_users.*, vipub_premium_package.*, vipub_premium_active_users.* FROM vipub_premium_active_users
-                    JOIN vipub_users ON vipub_premium_active_users.user_id = vipub_users.id
-                    JOIN vipub_premium_package ON vipub_premium_active_users.package_id = vipub_premium_package.pack_id";
+                    $sql = "SELECT xclone_users.*, xclone_premium_package.*, xclone_premium_active_users.* FROM xclone_premium_active_users
+                    JOIN xclone_users ON xclone_premium_active_users.user_id = xclone_users.id
+                    JOIN xclone_premium_package ON xclone_premium_active_users.package_id = xclone_premium_package.pack_id";
                     $result = $conn->query($sql);
                     
                     if ($result->num_rows > 0) {
@@ -52,15 +52,15 @@
                     <tr>
                         <th scope="row"><?php echo $row["au_id"]; ?></th>
                         <td>
-                            <?php echo vipub_croptxt($row["fullname"], 0, 10); ?>
+                            <?php echo xclone_croptxt($row["fullname"], 0, 10); ?>
                         </td>
                         <td>
-                            <a href="<?php echo vipub_link("@".$row["username"]); ?>" target="_blank">
-                               @<?php echo vipub_croptxt($row["username"], 0, 10); ?>
+                            <a href="<?php echo xclone_link("@".$row["username"]); ?>" target="_blank">
+                               @<?php echo xclone_croptxt($row["username"], 0, 10); ?>
                             </a>
                         </td>
                         <td>
-                            <?php echo vipub_croptxt($row["package_name"], 0, 15); ?>
+                            <?php echo xclone_croptxt($row["package_name"], 0, 15); ?>
                         </td>
                         <td>
                             <strong><?php echo $row["package_price"]; ?> <?php echo $settings["site_currency"]; ?></strong> /<small>month</small>
@@ -82,7 +82,7 @@
                             
                             if ($remaining_days <= 0) {
                                 $user_id = $row['user_id'];
-                                $update_query = "UPDATE vipub_premium_active_users SET subs_status = 2 WHERE user_id = $user_id";
+                                $update_query = "UPDATE xclone_premium_active_users SET subs_status = 2 WHERE user_id = $user_id";
                                 $conn->query($update_query);
                             } else {
                                 $remaining_days++; // Eğer geçerli tarih henüz bitiş tarihine ulaşmadıysa, 1 gün ekleyerek hesapla

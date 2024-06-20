@@ -1,11 +1,11 @@
-<?php $settings = vipub_site_settings(); $smtp_settings = vipub_smtp(); ?>
+<?php $settings = xclone_site_settings(); $smtp_settings = xclone_smtp(); ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>Packages and prices🫰</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Premium</li>
           <li class="breadcrumb-item active">Packages and prices</li>
         </ol>
@@ -18,7 +18,7 @@
             <div class="card" style="margin-right: 10px;">
                 <div class="card-body" style="color: #535353; font-size: 14px">
                 <h5 class="card-title" style="color:#0f1419; font-size: 15px;">What does <strong>it do?</strong></h5>
-                The "<strong>Vipub Blue</strong>" feature offers an exclusive premium upgrade for your users. This upgrade offers some miscellaneous features such as accounts having a <strong>blue checkmark</strong>.
+                The "<strong>Xclone Blue</strong>" feature offers an exclusive premium upgrade for your users. This upgrade offers some miscellaneous features such as accounts having a <strong>blue checkmark</strong>.
                 <br>
                 <h5 class="card-title" style="color:#0f1419; font-size: 15px;">What does this feature <strong>currently include?</strong></h5>
                 <strong>-</strong> Possibility to edit your post (<strong style="color:#1da1f1">one time per post</strong>)<br>
@@ -31,9 +31,9 @@
                     
                         <h5 class="card-title" style="color:#0f1419; font-size: 15px;">Paid subscription <strong>system</strong></h5>
                         <?php if($settings["premium_verified"]=="1"): ?>
-                        The paid subscription system is currently active. "<a href="<?php echo vipub_link("admin_panel/general_settings"); ?>">Click</a>" to change this status.
+                        The paid subscription system is currently active. "<a href="<?php echo xclone_link("admin_panel/general_settings"); ?>">Click</a>" to change this status.
                         <?php else: ?>
-                            The paid subscription system is currently disabled. "<a href="<?php echo vipub_link("admin_panel/general_settings"); ?>">Click</a>" to change this status.
+                            The paid subscription system is currently disabled. "<a href="<?php echo xclone_link("admin_panel/general_settings"); ?>">Click</a>" to change this status.
                         <?php endif; ?>
                     </div>
                 
@@ -80,17 +80,17 @@
                 </thead>
                 <tbody>
                 <?php
-                    $sql = "SELECT pack_id, package_name, package_price FROM  vipub_premium_package";
+                    $sql = "SELECT pack_id, package_name, package_price FROM  xclone_premium_package";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) { ?>
 
                     <tr>
-                        <th scope="row"><a href="<?php echo vipub_link("admin_panel/premium_package_edit?edit=".$row["pack_id"]); ?>"><?php echo $row["pack_id"]; ?></a></th>
-                        <td><?php echo vipub_croptxt($row["package_name"], 0, 15); ?></td>
+                        <th scope="row"><a href="<?php echo xclone_link("admin_panel/premium_package_edit?edit=".$row["pack_id"]); ?>"><?php echo $row["pack_id"]; ?></a></th>
+                        <td><?php echo xclone_croptxt($row["package_name"], 0, 15); ?></td>
                         <td><?php echo $row["package_price"]; ?> <?php echo $settings["site_currency"]; ?></td>
-                        <td><a href="<?php echo vipub_link("admin_panel/premium_package_edit?edit=".$row["pack_id"]); ?>">
+                        <td><a href="<?php echo xclone_link("admin_panel/premium_package_edit?edit=".$row["pack_id"]); ?>">
                         Edit the package</a></td>
                     </tr>
                     

@@ -1,9 +1,9 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (isset($_POST['post_id'])) {
     $post_id = mysqli_real_escape_string($conn, $_POST['post_id']);
-    $sql = "SELECT COUNT(*) as reply FROM vipub_posts WHERE reply_post_id = ?";
+    $sql = "SELECT COUNT(*) as reply FROM xclone_posts WHERE reply_post_id = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $post_id);
     

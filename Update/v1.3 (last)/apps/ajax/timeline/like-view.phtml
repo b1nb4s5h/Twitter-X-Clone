@@ -1,12 +1,12 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 $tweet_id = $_GET["tweet_id"];
 
 $sql = "SELECT p.*, u.*, l.*
-        FROM vipub_likes l
-        JOIN vipub_users u ON l.user_id = u.id
-        JOIN vipub_posts p ON l.post_id = p.p_id
+        FROM xclone_likes l
+        JOIN xclone_users u ON l.user_id = u.id
+        JOIN xclone_posts p ON l.post_id = p.p_id
         WHERE l.post_id = ? AND p.p_id = ?
         ORDER BY p.post_joined DESC";
 $stmt = mysqli_prepare($conn, $sql);
@@ -19,7 +19,7 @@ if ($result) {
       require("../../../themes/default/apps/timeline/include/page/likes.phtml");
     }
   } else {
-    vipub_template("timeline/include/page/not-likes");
+    xclone_template("timeline/include/page/not-likes");
   }
 } else {
   die("Hata: " . mysqli_error($conn));

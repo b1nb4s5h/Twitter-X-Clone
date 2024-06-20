@@ -1,11 +1,11 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         
         <div class="site-header-box">
             <h5>
             <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-            <?php echo vipub_translate("post_status_page_title"); ?></h5>
+            <?php echo xclone_translate("post_status_page_title"); ?></h5>
         </div>
 
         <div class="status-page-post-container">
@@ -15,9 +15,9 @@
                 exit();
             }
             
-            $conn = vipubConnectDatabase();
+            $conn = xcloneConnectDatabase();
             $username = htmlspecialchars($_GET["uname"], ENT_QUOTES, 'UTF-8');
-            $stmt = $conn->prepare("SELECT * FROM vipub_users WHERE username = ?");
+            $stmt = $conn->prepare("SELECT * FROM xclone_users WHERE username = ?");
             $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -28,7 +28,7 @@
             $row = $result->fetch_assoc();
             $user_id = $row["id"];
             $status_id = intval($_GET["status_id"]);
-            $stmt = $conn->prepare("SELECT * FROM vipub_posts WHERE p_id = ?");
+            $stmt = $conn->prepare("SELECT * FROM xclone_posts WHERE p_id = ?");
             $stmt->bind_param("i", $status_id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -38,7 +38,7 @@
             }
             $row = $result->fetch_assoc();
             $post_id = $row["p_id"];
-            $stmt = $conn->prepare("SELECT * FROM vipub_users INNER JOIN vipub_posts ON vipub_users.id = vipub_posts.user_id WHERE vipub_users.id = ? AND vipub_posts.p_id = ?");
+            $stmt = $conn->prepare("SELECT * FROM xclone_users INNER JOIN xclone_posts ON xclone_users.id = xclone_posts.user_id WHERE xclone_users.id = ? AND xclone_posts.p_id = ?");
             $stmt->bind_param("ii", $user_id, $post_id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -55,4 +55,4 @@
     </div>
     <div class="mobile-responsive-margin-bottom-design"></div>
 </div>
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>

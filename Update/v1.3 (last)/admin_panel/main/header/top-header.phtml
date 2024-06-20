@@ -1,16 +1,16 @@
-<?php $account = vipub_my_user_info(); ?>
-<?php $settings = vipub_site_settings(); ?>
+<?php $account = xclone_my_user_info(); ?>
+<?php $settings = xclone_site_settings(); ?>
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="<?php echo vipub_link("admin_panel/"); ?>" class="logo d-flex align-items-center">
-        <img src="<?php echo vipub_template_master("images/logo.png"); ?>">
+      <a href="<?php echo xclone_link("admin_panel/"); ?>" class="logo d-flex align-items-center">
+        <img src="<?php echo xclone_template_master("images/logo.png"); ?>">
         <span class="d-none d-lg-block" style="font-weight:800; color: #1da1f2;"><?php echo $settings["site_name"]; ?></span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
 
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="GET" action="<?php echo vipub_link("explore"); ?>" target="_blank">
+      <form class="search-form d-flex align-items-center" method="GET" action="<?php echo xclone_link("explore"); ?>" target="_blank">
         <input type="text" name="q" placeholder="Search on <?php echo $settings["site_name"]; ?>" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
@@ -25,13 +25,13 @@
         </li>
         <li class="nav-item dropdown">
 
-          <a class="nav-link nav-icon" target="_blank" href="<?php echo vipub_link("notifications"); ?>">
+          <a class="nav-link nav-icon" target="_blank" href="<?php echo xclone_link("notifications"); ?>">
             <i class="bi bi-bell"></i>
           </a>
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link nav-icon" target="_blank" href="<?php echo vipub_link("messages"); ?>">
+          <a class="nav-link nav-icon" target="_blank" href="<?php echo xclone_link("messages"); ?>">
             <i class="bi bi-chat-left-text"></i>
           </a>
         </li>
@@ -39,7 +39,7 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" target="_blank" href="#" data-bs-toggle="dropdown">
-            <img style="width: 36px; height: 36px;" src="<?php echo vipub_link($account["avatar"]); ?>" alt="Profile" class="rounded-circle">
+            <img style="width: 36px; height: 36px;" src="<?php echo xclone_link($account["avatar"]); ?>" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $account["fullname"]; ?></span>
           </a>
 
@@ -53,7 +53,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" target="_blank" href="<?php echo vipub_link("@".$account["username"]); ?>">
+              <a class="dropdown-item d-flex align-items-center" target="_blank" href="<?php echo xclone_link("@".$account["username"]); ?>">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
               </a>
@@ -63,7 +63,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" target="_blank" href="<?php echo vipub_link("settings"); ?>">
+              <a class="dropdown-item d-flex align-items-center" target="_blank" href="<?php echo xclone_link("settings"); ?>">
                 <i class="bi bi-gear"></i>
                 <span>Account settings</span>
               </a>
@@ -76,7 +76,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="<?php echo vipub_link("logout"); ?>">
+              <a class="dropdown-item d-flex align-items-center" href="<?php echo xclone_link("logout"); ?>">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Logout</span>
               </a>

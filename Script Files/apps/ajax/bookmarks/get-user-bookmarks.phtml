@@ -1,12 +1,12 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
-$settings = vipub_site_settings();
-$user_language = vipub_user_acceptLanguage();
+require_once("../../../core/xclone_web_core.phtml");
+$settings = xclone_site_settings();
+$user_language = xclone_user_acceptLanguage();
 
 $sql = "SELECT p.*, u.*, bo.*
-  FROM vipub_posts p 
-  JOIN vipub_users u ON p.user_id = u.id 
-  JOIN vipub_bookmarks bo ON p.p_id = bo.post_id
+  FROM xclone_posts p 
+  JOIN xclone_users u ON p.user_id = u.id 
+  JOIN xclone_bookmarks bo ON p.p_id = bo.post_id
   WHERE bo.user_id = ?
   AND (p.post_type = 'post' OR p.post_type = 'post_image' OR p.post_type = 'post_video' OR p.post_type = 'postAds' OR p.post_type = 'reply')
   ORDER BY bo.post_bookmarks DESC";

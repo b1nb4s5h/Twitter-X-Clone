@@ -4,10 +4,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Gerekli dosyaların dahil edilmesi
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 // İstek yönlendirme ve çıkış durumu
-if (vipub_userLogin()) {
+if (xclone_userLogin()) {
     header("Location: /home");
     exit;
 }
@@ -23,7 +23,7 @@ if ($username && $password) {
     $password_hashed = sha1(mysqli_real_escape_string($conn, $password));
 
     // Kullanıcı bilgilerinin veritabanında kontrol edilmesi
-    $sql = "SELECT * FROM vipub_users WHERE (username='$username' OR email='$username') AND password='$password_hashed'";
+    $sql = "SELECT * FROM xclone_users WHERE (username='$username' OR email='$username') AND password='$password_hashed'";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
@@ -43,7 +43,7 @@ if ($username && $password) {
             $response = array("status" => "success", "message" => "Giriş başarılı.", "data" => $_SESSION);
         }
     } else {
-        $sql = "SELECT * FROM vipub_users WHERE (username='$username' OR email='$username')";
+        $sql = "SELECT * FROM xclone_users WHERE (username='$username' OR email='$username')";
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) > 0) {

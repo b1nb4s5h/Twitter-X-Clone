@@ -1,5 +1,5 @@
 <div class="next-bottom-message-container">
-    <h5><?php echo vipub_translate("messages"); ?></h5>
+    <h5><?php echo xclone_translate("messages"); ?></h5>
 </div>
 <?php foreach ($chats as $chat) : ?>
 <div class="getmessage-user-list">
@@ -10,11 +10,11 @@
             </span>
         <?php endif; ?>
     <?php endif; ?>
-    <a href="<?php echo vipub_link("/messages/".$chat["id"]); ?>">
-        <img src="<?php echo vipub_link($chat["avatar"]); ?>">
-        <h5><?php echo vipub_croptxt($chat["fullname"], 0, 25); ?>
+    <a href="<?php echo xclone_link("/messages/".$chat["id"]); ?>">
+        <img src="<?php echo xclone_link($chat["avatar"]); ?>">
+        <h5><?php echo xclone_croptxt($chat["fullname"], 0, 25); ?>
             <?php if($chat["verified"]=="1"): ?>
-                <?php echo vipub_userBlue(); ?>
+                <?php echo xclone_userBlue(); ?>
             <?php endif; ?>
         </h5>
         <p>
@@ -22,12 +22,12 @@
             <?php if($chat["content_image"]!==NULL): ?>
                 Bir dosya eki gönderdin.
             <?php else: ?>
-                You: <?php echo vipub_croptxt($chat["message"], 0, 38); ?>
+                You: <?php echo xclone_croptxt($chat["message"], 0, 38); ?>
             <?php endif; ?>
 
             <small style="font-weight: 400">
                 •
-                <?php echo vipub_post_new_date($chat["created_at"]); ?>
+                <?php echo xclone_post_new_date($chat["created_at"]); ?>
             </small>
         <?php else: ?>
             <?php if($chat["notifs_status"]=="0"): ?>
@@ -35,22 +35,22 @@
                     <?php if($chat["content_image"]!==NULL): ?>
                         Bir dosya eki gönderdi.
                     <?php else: ?>
-                        <?php echo vipub_croptxt($chat["message"], 0, 38); ?>
+                        <?php echo xclone_croptxt($chat["message"], 0, 38); ?>
                     <?php endif; ?>
                 </strong>
                 •
                 <small style="font-weight: 400">
-                <?php echo vipub_post_new_date($chat["created_at"]); ?>
+                <?php echo xclone_post_new_date($chat["created_at"]); ?>
                 </small>
             <?php else: ?>
                 <?php if($chat["content_image"]!==NULL): ?>
                     Bir dosya eki gönderdi.
                 <?php else: ?>
-                    <?php echo vipub_croptxt($chat["message"], 0, 38); ?>
+                    <?php echo xclone_croptxt($chat["message"], 0, 38); ?>
                 <?php endif; ?>
                 <small style="font-weight: 400">
                     •
-                    <?php echo vipub_post_new_date($chat["created_at"]); ?>
+                    <?php echo xclone_post_new_date($chat["created_at"]); ?>
                 </small>
             <?php endif; ?>
         <?php endif; ?>

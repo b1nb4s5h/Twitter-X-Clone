@@ -1,15 +1,15 @@
 <div class="htag-list-look">
     <div class="htag-list-target">
         <a href="/@<?php echo $row["username"]; ?>">
-            <img src="<?php echo vipub_link($row["avatar"]); ?>">
+            <img src="<?php echo xclone_link($row["avatar"]); ?>">
         </a>
         <a href="/@<?php echo $row["username"]; ?>">
-            <h6><?php echo vipub_croptxt($row["fullname"], 0, 15); ?>
+            <h6><?php echo xclone_croptxt($row["fullname"], 0, 15); ?>
                 <?php if($row["verified"]=="1"): ?>
-                    <?php echo vipub_userBlue(); ?>
+                    <?php echo xclone_userBlue(); ?>
                 <?php endif; ?>
             </h6>
-            <vipub>@<?php echo vipub_croptxt($row["username"], 0, 15); ?></vipub>
+            <xclone>@<?php echo xclone_croptxt($row["username"], 0, 15); ?></xclone>
         </a>
     </div>
 </div>

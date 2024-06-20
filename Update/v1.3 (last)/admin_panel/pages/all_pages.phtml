@@ -4,7 +4,7 @@
       <h1>List of pages</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Page</li>
           <li class="breadcrumb-item active">List of pages</li>
         </ol>
@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                 <?php
-                    $sql = "SELECT * FROM vipub_pages ORDER BY page_date DESC";
+                    $sql = "SELECT * FROM xclone_pages ORDER BY page_date DESC";
         
                     $stmt = mysqli_prepare($conn, $sql);
                     mysqli_stmt_execute($stmt);
@@ -48,14 +48,14 @@
                         while ($row = mysqli_fetch_assoc($result)) { 
                 ?>
                     <tr>
-                        <th scope="row"><a style="color:#0f1419 !important; font-weight: 700;" href="<?php echo vipub_link("admin_panel/edit_page?edit=".$row["page_id"]); ?>"><?php echo $row["page_id"]; ?></a></th>
-                        <td><?php echo vipub_croptxt($row["page_title"], 0, 15); ?></td>
-                        <td><a  style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo vipub_link("pages/".$row["page_title_seo"]); ?>"><?php echo vipub_croptxt($row["page_title_seo"], 0, 25); ?></a></td>
-                        <td><a><?php echo vipub_croptxt($row["page_name"], 0, 25); ?></a></td>
-                        <td><?php echo vipub_croptxt($row["page_content"], 0, 30); ?></td>
+                        <th scope="row"><a style="color:#0f1419 !important; font-weight: 700;" href="<?php echo xclone_link("admin_panel/edit_page?edit=".$row["page_id"]); ?>"><?php echo $row["page_id"]; ?></a></th>
+                        <td><?php echo xclone_croptxt($row["page_title"], 0, 15); ?></td>
+                        <td><a  style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo xclone_link("pages/".$row["page_title_seo"]); ?>"><?php echo xclone_croptxt($row["page_title_seo"], 0, 25); ?></a></td>
+                        <td><a><?php echo xclone_croptxt($row["page_name"], 0, 25); ?></a></td>
+                        <td><?php echo xclone_croptxt($row["page_content"], 0, 30); ?></td>
                         <td><?php echo date("d.m.Y - h:i:s", strtotime($row["page_date"])); ?></td>
-                        <td><a style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo vipub_link("pages/".$row["page_title_seo"]); ?>" class="text-primary">Open</a></td>
-                        <td><a style="font-weight: 800; color: red !important;" href="<?php echo vipub_link("admin_panel/edit_page?edit=".$row["page_id"]); ?>" class="text-primary">Edit</a></td>
+                        <td><a style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo xclone_link("pages/".$row["page_title_seo"]); ?>" class="text-primary">Open</a></td>
+                        <td><a style="font-weight: 800; color: red !important;" href="<?php echo xclone_link("admin_panel/edit_page?edit=".$row["page_id"]); ?>" class="text-primary">Edit</a></td>
                     </tr>
                     
                     <?php } } } ?>

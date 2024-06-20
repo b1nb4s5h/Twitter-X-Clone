@@ -1,11 +1,11 @@
-<?php $settings = vipub_site_settings(); 
+<?php $settings = xclone_site_settings(); 
 error_reporting(E_ALL); ?>
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>Website Information</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Settings</li>
           <li class="breadcrumb-item active">Website Information</li>
         </ol>
@@ -59,7 +59,7 @@ error_reporting(E_ALL); ?>
                         <label for="inputText" for="inputText" style="font-size: 14px; font-weight: 700; line-height: 21px; color: #000;">
                         Website <strong>Logo & Favicon</strong></label>
                         <small style="font-size: 12px;">
-                        You can easily change your site's Logo and Favicon from this area. <a style="text-decoration:underline;" href="<?php echo vipub_link("admin_panel/logo_and_favicon_settings"); ?>">Edit now</a>
+                        You can easily change your site's Logo and Favicon from this area. <a style="text-decoration:underline;" href="<?php echo xclone_link("admin_panel/logo_and_favicon_settings"); ?>">Edit now</a>
                     </small>
                     </div>
 
@@ -112,7 +112,7 @@ error_reporting(E_ALL); ?>
                         </div>
                         <small style="font-size: 12px;">
                         Set whether users can apply for a new verified profile icon 
-                        (<?php echo vipub_adminUserVerifiedBlueIcon(); ?>) from their account settings page.
+                        (<?php echo xclone_adminUserVerifiedBlueIcon(); ?>) from their account settings page.
                         </small>
                     </div>
                     <hr style="background: #555555; color: #555555; margin-bottom: -0px;" />
@@ -234,7 +234,7 @@ error_reporting(E_ALL); ?>
                             <?php if($settings["translate_tweet"]=="Active"): ?>
                             <div class="alert alert-success" style="font-size:13px; position:relative; margin-top: 10px; margin-bottom: 5px;">
                                 The ability to translate tweets by the <strong>user is active</strong>.<br><br>
-                                Vipub uses Google's free Translate API and has a daily limit of 5000 words. The plan should be updated for more translation limits.
+                                Xclone uses Google's free Translate API and has a daily limit of 5000 words. The plan should be updated for more translation limits.
                             </div>
                             <?php elseif($settings["translate_tweet"]=="No"): ?>
                                 <div class="alert alert-danger" style="font-size:13px; position:relative; margin-top: 10px; margin-bottom: -0px;">
@@ -337,7 +337,7 @@ error_reporting(E_ALL); ?>
 
                     <div class="row mt-4">
                         <div class="col-sm-50">
-                        <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                        <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                             <button type="submit" class="btn btn-success" name="saveSettings2">Save</button>
                         <?php else: ?>
                             <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -376,7 +376,7 @@ if(isset($_POST['saveSettings'])) {
     $user_sent_verified = mysqli_real_escape_string($conn, $_POST['user_sent_verified']);
     $site_register_status = mysqli_real_escape_string($conn, $_POST['site_register_status']);
 
-    $sql = "UPDATE vipub_settings SET site_name='$site_name', site_title='$site_title', site_description='$site_description', site_keywords='$site_keywords', site_register_status='$site_register_status', user_sent_verified='$user_sent_verified', default_theme='$default_theme' WHERE id=1";
+    $sql = "UPDATE xclone_settings SET site_name='$site_name', site_title='$site_title', site_description='$site_description', site_keywords='$site_keywords', site_register_status='$site_register_status', user_sent_verified='$user_sent_verified', default_theme='$default_theme' WHERE id=1";
 
     if(mysqli_query($conn, $sql)) {
         ?>
@@ -411,7 +411,7 @@ if(isset($_POST['saveSettings2'])) {
     $timeline_time_interval = mysqli_real_escape_string($conn, $_POST['timeline_time_interval']);
     $email_notifications = mysqli_real_escape_string($conn, $_POST['email_notifications']);
 
-    $sql = "UPDATE vipub_settings SET post_maxlength='$post_maxlength', message_maxlength='$message_maxlength', upload_image='$upload_image', upload_video='$upload_video', translate_tweet='$translate_tweet', chat_time_interval='$chat_time_interval', email_notifications='$email_notifications', timeline_time_interval='$timeline_time_interval' WHERE id=1";
+    $sql = "UPDATE xclone_settings SET post_maxlength='$post_maxlength', message_maxlength='$message_maxlength', upload_image='$upload_image', upload_video='$upload_video', translate_tweet='$translate_tweet', chat_time_interval='$chat_time_interval', email_notifications='$email_notifications', timeline_time_interval='$timeline_time_interval' WHERE id=1";
 
     if(mysqli_query($conn, $sql)) {
         ?>

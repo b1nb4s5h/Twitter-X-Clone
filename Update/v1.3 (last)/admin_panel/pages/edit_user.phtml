@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
     $user_id = $_GET["edit"];
-    $sql = "SELECT * FROM vipub_users WHERE id=$user_id";
+    $sql = "SELECT * FROM xclone_users WHERE id=$user_id";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -13,7 +13,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
       <h1>User account</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Users</li>
           <li class="breadcrumb-item active">Edit user</li>
         </ol>
@@ -27,8 +27,8 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="<?php echo vipub_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
-              <h2><?php echo vipub_croptxt($row["fullname"], 0, 30); ?></h2>
+              <img src="<?php echo xclone_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
+              <h2><?php echo xclone_croptxt($row["fullname"], 0, 30); ?></h2>
               <h3>@<?php echo $row["username"]; ?></h3>
             </div>
           </div>
@@ -36,8 +36,8 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
               <p>Send a customized private email to this user.</p>
-              <?php if($vipub["admin"]["admin_status"]=="1"): ?>
-              <a href="<?php echo vipub_link("admin_panel/send_email?email=".$row["id"]); ?>">
+              <?php if($xclone["admin"]["admin_status"]=="1"): ?>
+              <a href="<?php echo xclone_link("admin_panel/send_email?email=".$row["id"]); ?>">
               <button class="btn btn-danger">Send e-mail</button>
               <?php else: ?>
                     <button disabled style="width: 100% !important;" class="btn btn-danger">Cannot trade because your account is demo</button>
@@ -114,8 +114,8 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Joined</div>
                     <div class="col-lg-9 col-md-8">
-                        <?php echo vipub_translate('month_'.strtolower(date('M', strtotime($row["joined"])))) . " " . date("Y", strtotime($row["joined"])); ?>
-                    <?php echo vipub_translate("user_joined_date"); ?>
+                        <?php echo xclone_translate('month_'.strtolower(date('M', strtotime($row["joined"])))) . " " . date("Y", strtotime($row["joined"])); ?>
+                    <?php echo xclone_translate("user_joined_date"); ?>
                     </div>
                   </div>
 
@@ -251,7 +251,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
                     </div>
 
                     <div class="text-center" style="margin-top:40px; position: relative;">
-                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                    <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                       <button type="submit" style="width: 100%;" class="btn btn-primary" name="saveProfile">Save Changes</button>
                       <?php else: ?>
                             <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -272,7 +272,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
                     </div>
 
                     <div class="text-center">
-                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                    <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                       <button type="submit" class="btn btn-primary" name="savePassword">Change Password</button>
                       <?php else: ?>
                             <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -316,25 +316,25 @@ if(isset($_POST["saveProfile"])) {
     $account_status = $_POST["account_status"];
     $verified = $_POST["verified"];
     
-    $stmt = $conn->prepare("UPDATE vipub_users SET fullname=?, username=?, email=?, user_bio=?, user_location=?, user_website=?, user_wallet=?, admin_status=?, account_status=?, verified=? WHERE id=?");
+    $stmt = $conn->prepare("UPDATE xclone_users SET fullname=?, username=?, email=?, user_bio=?, user_location=?, user_website=?, user_wallet=?, admin_status=?, account_status=?, verified=? WHERE id=?");
     $stmt->bind_param("sssssssssii", $fullname, $username, $email, $user_bio, $user_location, $user_website, $user_wallet, $admin_status, $account_status, $verified, $id);
     $stmt->execute();
     
     if ($stmt->affected_rows > 0) {
 
       $uname = $id;
-      $row = vipub_get_my_profile($conn, $uname);
+      $row = xclone_get_my_profile($conn, $uname);
 
         if($verified==1){
             $sender_id = $_SESSION["user_id"];
             $type = "verified";
             $date_update = date("Y-m-d H:i:s");
 
-            $checkQuery = "SELECT * FROM vipub_notifs WHERE user_id = '$id' AND type = '$type'";
+            $checkQuery = "SELECT * FROM xclone_notifs WHERE user_id = '$id' AND type = '$type'";
             $checkResult = mysqli_query($conn, $checkQuery);
 
             if (mysqli_num_rows($checkResult) > 0) {
-              $updateQuery = "UPDATE vipub_notifs SET notifs_date = '$date_update' WHERE user_id = '$id' AND type = '$type'";
+              $updateQuery = "UPDATE xclone_notifs SET notifs_date = '$date_update' WHERE user_id = '$id' AND type = '$type'";
               $updateResult = mysqli_query($conn, $updateQuery);
               
               if ($updateResult) {
@@ -343,7 +343,7 @@ if(isset($_POST["saveProfile"])) {
                   echo "Güncelleme hatası: " . mysqli_error($conn);
               }
           } else {
-              $insertQuery = "INSERT INTO vipub_notifs (user_id, sender_id, type) VALUES ('$id', '$sender_id', '$type')";
+              $insertQuery = "INSERT INTO xclone_notifs (user_id, sender_id, type) VALUES ('$id', '$sender_id', '$type')";
               $insertResult = mysqli_query($conn, $insertQuery);
               
               if ($insertResult) {
@@ -381,7 +381,7 @@ if(isset($_POST["savePassword"])) {
     $id = $_GET["edit"];
     $password = mysqli_real_escape_string($conn, sha1($_POST["password"]));
 
-  $sql = "UPDATE vipub_users SET password='$password' WHERE id=$id";
+  $sql = "UPDATE xclone_users SET password='$password' WHERE id=$id";
 
   if ($conn->query($sql) === TRUE) { ?>
         <script>

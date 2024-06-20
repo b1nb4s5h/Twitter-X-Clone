@@ -1,13 +1,13 @@
 <?php if(isset($_SESSION["user_id"])): ?>
-<?php $vipub["account"] = vipub_my_user_info(); $settings = vipub_site_settings(); ?>
+<?php $xclone["account"] = xclone_my_user_info(); $settings = xclone_site_settings(); ?>
 <div id="createFormContainer">
-  <form id="vipub-new-post" enctype="multipart/form-data">
+  <form id="xclone-new-post" enctype="multipart/form-data">
       <div class="homepage-new-post">
-          <a href="<?php echo vipub_link("@".$vipub["account"]["username"]); ?>">
-              <img src="<?php echo vipub_link($vipub["account"]["avatar"]); ?>">
+          <a href="<?php echo xclone_link("@".$xclone["account"]["username"]); ?>">
+              <img src="<?php echo xclone_link($xclone["account"]["avatar"]); ?>">
           </a>
-          <textarea name="content_post" id="content_post" placeholder="<?php echo vipub_translate("whats_going_on"); ?>" class="vipubEmojiContent"></textarea>
-          <span id="vipub-counter"></span>
+          <textarea name="content_post" id="content_post" placeholder="<?php echo xclone_translate("whats_going_on"); ?>" class="xcloneEmojiContent"></textarea>
+          <span id="xclone-counter"></span>
       </div>
 
       <?php if($settings["upload_image"]=="Active"): ?>
@@ -38,11 +38,11 @@
           <i class="bi bi-globe-americas"></i>
             <select name="post_globale_check" class="form-select" id="post_globale_check">
               <option value="1">
-                <?php echo vipub_translate("set_new_post_privacy_1"); ?>
+                <?php echo xclone_translate("set_new_post_privacy_1"); ?>
               </option>
 
               <option value="2">
-                <?php echo vipub_translate("set_new_post_privacy_2"); ?>
+                <?php echo xclone_translate("set_new_post_privacy_2"); ?>
               </option>
             </select>
         </span>
@@ -68,14 +68,14 @@
               </label>
           <?php endif; ?>
 
-          <label for="vipubSelect-emoji">
-            <span class="vipubSelect-emoji" id="vipubSelect-emoji">
-                <i class="bi bi-emoji-sunglasses vipubSelect-emoji" id="vipubSelect-emoji"></i>
+          <label for="xcloneSelect-emoji">
+            <span class="xcloneSelect-emoji" id="xcloneSelect-emoji">
+                <i class="bi bi-emoji-sunglasses xcloneSelect-emoji" id="xcloneSelect-emoji"></i>
             </span>
           </label>
 
-          <label for="vipubGetGif">
-            <span id="vipubGetGif">
+          <label for="xcloneGetGif">
+            <span id="xcloneGetGif">
                 <i class="bi bi-filetype-gif"></i>
             </span>
           </label>
@@ -83,13 +83,13 @@
             <div id="gifDropdown" style="display: none;">
               <div class="gifTitleDrop">
                   <h5> 
-                  <img src="<?php echo vipub_link($settings["site_white_logo"]); ?>">
+                  <img src="<?php echo xclone_link($settings["site_white_logo"]); ?>">
                   <small>/trending</small> <strong>GIFs</strong></h5>
               </div>
               <input type="text" name="gif_image" id="gif_image" style="display: none;">
             </div>
 
-          <button type="submit" class="share-ew-post" id="share-ew-post"><?php echo vipub_translate("post_share"); ?></button>
+          <button type="submit" class="share-ew-post" id="share-ew-post"><?php echo xclone_translate("post_share"); ?></button>
       </div>
   </form>
 </div>
@@ -167,7 +167,7 @@
       }
     }
 
-    $("#vipubGetGif").click(function(e) {
+    $("#xcloneGetGif").click(function(e) {
       e.stopPropagation();
       $("#gifDropdown").toggle();
     });
@@ -194,7 +194,7 @@
       inputElement.click();
     });
 
-    const form = document.querySelector('#vipub-new-post');
+    const form = document.querySelector('#xclone-new-post');
     const input = document.querySelector('#media');
 
     input.addEventListener('change', () => {
@@ -305,7 +305,7 @@
 </script>
 
 <style> #loading-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 9999; } #loading-bar { background-color: red; height: 20px; font-size: 25px; font-weight: 700; position: relative; } #loading-percent { position: absolute; top: 0; left: 50%; transform: translateX(-50%); line-height: 20px; color: white; } </style>
-<script src="<?php echo vipub_link("themes/default/apps/timeline/script/vipubEmojies.js"); ?>"></script>
-<?php vipub_template("timeline/script/vipub.master.script"); ?>
+<script src="<?php echo xclone_link("themes/default/apps/timeline/script/xcloneEmojies.js"); ?>"></script>
+<?php xclone_template("timeline/script/xclone.master.script"); ?>
 <?php endif; ?>
 

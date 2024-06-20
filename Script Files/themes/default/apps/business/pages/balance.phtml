@@ -1,14 +1,14 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
-<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); $settings = vipub_site_settings();?>
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = xcloneConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = xclone_get_my_profile($conn, $uname); $settings = xclone_site_settings();?>
 
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
     
         <div class="account-settings-page-for-users-page">
             <div class="settings-page-top-title">
                 <h5>
                     <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-                    <?php echo vipub_translate("left_sidebar_business_page_wallet"); ?>
+                    <?php echo xclone_translate("left_sidebar_business_page_wallet"); ?>
                 </h5>
             </div>
 
@@ -16,43 +16,43 @@
                 <div class="settings-edit-profile-right-zone next-settings-page-container">
                 <?php if (isset($_GET["transfer"]) && $_GET["transfer"] == "banktransfer"): ?>
                     <div class="user-balance-current">
-                        <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_12"); ?></h5>
-                        <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_13"); ?></span>
+                        <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_12"); ?></h5>
+                        <span><?php echo xclone_translate("xclone_user_balance_extra_money_info_13"); ?></span>
                     </div>
 
                     <div class="its-website-bank-transfer-for-bank-info">
                         <div class="balance-bank-transfer-user-info">
                             <span>
-                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_14"); ?></h5>
-                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_15"); ?></span>
+                                <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_14"); ?></h5>
+                                <span><?php echo xclone_translate("xclone_user_balance_extra_money_info_15"); ?></span>
                             </span>
                         </div>
                         
                         <div class="balance-bank-transfer-user-info">
                             <span>
-                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_16"); ?></h5>
-                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_17"); ?></span>
+                                <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_16"); ?></h5>
+                                <span><?php echo xclone_translate("xclone_user_balance_extra_money_info_17"); ?></span>
                             </span>
                         </div>
 
                         <div class="balance-bank-transfer-user-info">
                             <span>
-                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_18"); ?></h5>
-                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_19"); ?></span>
+                                <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_18"); ?></h5>
+                                <span><?php echo xclone_translate("xclone_user_balance_extra_money_info_19"); ?></span>
                             </span>
                         </div>
 
                         <div class="balance-bank-transfer-user-info">
                             <span>
-                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_20"); ?></h5>
-                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_21"); ?></span>
+                                <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_20"); ?></h5>
+                                <span><?php echo xclone_translate("xclone_user_balance_extra_money_info_21"); ?></span>
                             </span>
                         </div>
 
                         <div class="balance-bank-transfer-user-info">
                             <span>
-                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_22"); ?></h5>
-                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_23"); ?></span>
+                                <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_22"); ?></h5>
+                                <span><?php echo xclone_translate("xclone_user_balance_extra_money_info_23"); ?></span>
                             </span>
                         </div>
                     </div>
@@ -60,12 +60,12 @@
 
                     <div class="next-extra-user-account-balance-start">
                         <div class="wallet-next-balance-money">
-                            <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_24"); ?></h5>
+                            <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_24"); ?></h5>
                         </div>
                         
                         <div class="wallet-balance-money-value">
                             <span>
-                                <?php echo vipub_translate("vipub_user_balance_extra_money_info_25"); ?>
+                                <?php echo xclone_translate("xclone_user_balance_extra_money_info_25"); ?>
                             </span>
                         </div>
 
@@ -74,7 +74,7 @@
                                 <form id="updateBalanceBank" enctype="multipart/form-data">
 
                                     <select type="number" name="user_wallet" id="user_wallet" required>
-                                        <option disabled selected value=""><?php echo vipub_translate("vipub_user_balance_extra_money_info_26"); ?></option>
+                                        <option disabled selected value=""><?php echo xclone_translate("xclone_user_balance_extra_money_info_26"); ?></option>
                                         <option value="25">25 $</option>
                                         <option value="50">50 $</option>
                                         <option value="100">100 $</option>
@@ -108,7 +108,7 @@
 
 
                                     <div class="update-transfer-selection">
-                                        <button type="submit" class="updateBalanceBank"><?php echo vipub_translate("vipub_user_balance_extra_money_info_11"); ?></button>
+                                        <button type="submit" class="updateBalanceBank"><?php echo xclone_translate("xclone_user_balance_extra_money_info_11"); ?></button>
                                     </div>
                                 </form>
                             </div>
@@ -116,14 +116,14 @@
                     </div>
                 <?php else: ?>
                     <div class="user-balance-current">
-                        <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_8"); ?></h5>
+                        <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_8"); ?></h5>
                         <h4><?php echo number_format($row["user_wallet"], 2) ?> $</h4>
-                        <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_9"); ?></span>
+                        <span><?php echo xclone_translate("xclone_user_balance_extra_money_info_9"); ?></span>
                     </div>
                     <div class="preimum-account-selection-info">
-                        <h5 style="text-align: center;"><?php echo vipub_translate("vipub_user_balance_extra_money_info_10"); ?></h5>
+                        <h5 style="text-align: center;"><?php echo xclone_translate("xclone_user_balance_extra_money_info_10"); ?></h5>
                         <hr />
-                        <?php vipub_transferHistory_balance($row["id"]); ?>
+                        <?php xclone_transferHistory_balance($row["id"]); ?>
                     </div>
                     <?php endif; ?>
                 </div>
@@ -145,7 +145,7 @@
             if (currentTime - lastSubmissionTime < minTimeBetweenSubmissions) {
                 new Noty({
                     type: "error",
-                    text: "<?php echo vipub_translate("vipub_user_balance_extra_money_info_28"); ?>",
+                    text: "<?php echo xclone_translate("xclone_user_balance_extra_money_info_28"); ?>",
                     timeout: 2000
                 }).show();
                 return;
@@ -177,7 +177,7 @@
                 success: function(response) {
                     new Noty({
                         type: "success",
-                        text: "<?php echo vipub_translate("vipub_user_balance_extra_money_info_27"); ?>",
+                        text: "<?php echo xclone_translate("xclone_user_balance_extra_money_info_27"); ?>",
                         timeout: 2000
                     }).show();
 
@@ -187,7 +187,7 @@
                 error: function(xhr, status, error) {
                     new Noty({
                         type: "error",
-                        text: "<?php echo vipub_translate("vipub_user_balance_extra_money_info_28"); ?>",
+                        text: "<?php echo xclone_translate("xclone_user_balance_extra_money_info_28"); ?>",
                         timeout: 2000
                     }).show();
                 }

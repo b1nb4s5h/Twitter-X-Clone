@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"])) {
   echo "Oturum açmamış kullanıcı!";
@@ -8,7 +8,7 @@ if (!isset($_SESSION["user_id"])) {
 
 $following = mysqli_real_escape_string($conn, $_POST['following']);
 
-$sql = "SELECT following FROM vipub_users WHERE account_status = 0 AND id = '$following'";
+$sql = "SELECT following FROM xclone_users WHERE account_status = 0 AND id = '$following'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

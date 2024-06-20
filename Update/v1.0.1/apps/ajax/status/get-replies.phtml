@@ -1,8 +1,8 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 if (isset($_POST['post_id'])) {
     $post_id = $_POST['post_id'];
-    $sql = "SELECT r.*, u.* FROM vipub_posts r JOIN vipub_users u ON r.user_id = u.id WHERE r.reply_post_id = ? ORDER BY r.post_joined DESC";
+    $sql = "SELECT r.*, u.* FROM xclone_posts r JOIN xclone_users u ON r.user_id = u.id WHERE r.reply_post_id = ? ORDER BY r.post_joined DESC";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $post_id); // 'i' int türü için kullanılır
   
@@ -20,7 +20,7 @@ if (isset($_POST['post_id'])) {
           require("../../../themes/default/apps/timeline/content.phtml");
         }
       } else {
-        vipub_template("status/include/no-reply");
+        xclone_template("status/include/no-reply");
       }
     } else {
       die("Hata: " . mysqli_error($conn));

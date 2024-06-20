@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Diğer POST verilerini alın
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Veritabanı ekleme işlemi
-    $sql = "INSERT INTO vipub_add_balance (user_id, added_balance, type, status, receipt_image) VALUES ('$user_id', '$added_balance', '$type', '$status', '$media_path')";
+    $sql = "INSERT INTO xclone_add_balance (user_id, added_balance, type, status, receipt_image) VALUES ('$user_id', '$added_balance', '$type', '$status', '$media_path')";
     if ($conn->query($sql) === TRUE) {
         echo "success";
     } else {

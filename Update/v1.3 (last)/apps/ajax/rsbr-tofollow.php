@@ -1,17 +1,17 @@
 <?php
-require_once("../../core/vipub_web_core.phtml");
+require_once("../../core/xclone_web_core.phtml");
 
 if (isset($_SESSION["user_id"])) {
     $sql = "SELECT *
-        FROM vipub_users 
-        WHERE id NOT IN (SELECT user_id FROM vipub_follow WHERE follower_id = ?)
+        FROM xclone_users 
+        WHERE id NOT IN (SELECT user_id FROM xclone_follow WHERE follower_id = ?)
         AND id != ?
         AND account_status = 0 
         ORDER BY RAND() DESC LIMIT 15";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "ii", $_SESSION["user_id"], $_SESSION["user_id"]);
 } else {
-    $sql = "SELECT * FROM vipub_users 
+    $sql = "SELECT * FROM xclone_users 
         WHERE account_status = 0 
         ORDER BY RAND() 
         LIMIT 15";

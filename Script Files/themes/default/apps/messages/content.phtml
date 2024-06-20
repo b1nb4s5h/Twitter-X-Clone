@@ -1,14 +1,14 @@
 <?php 
-$row["account"] = vipub_my_user_info();
-vipub_template("main/sidebar/messages/left-sidebar");?>
+$row["account"] = xclone_my_user_info();
+xclone_template("main/sidebar/messages/left-sidebar");?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         <div class="site-header-box first-message-title">
             <h5>
               <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
               <?php echo $row["account"]["username"]; ?>
                 <?php if($row["account"]["verified"]=="1"): ?>
-                    <small><?php echo vipub_userBlue(); ?></small>
+                    <small><?php echo xclone_userBlue(); ?></small>
                 <?php endif; ?>
               <span><i class="bi bi-pencil-square"></i></span>
             </h5>
@@ -24,8 +24,8 @@ vipub_template("main/sidebar/messages/left-sidebar");?>
       <small>
         <i class="bi bi-messenger"></i>
       </small>
-      <h5><?php echo vipub_translate("messages"); ?><br>
-      <span><?php echo vipub_translate("message_page_3"); ?></span>
+      <h5><?php echo xclone_translate("messages"); ?><br>
+      <span><?php echo xclone_translate("message_page_3"); ?></span>
   </div>
 </div>
 

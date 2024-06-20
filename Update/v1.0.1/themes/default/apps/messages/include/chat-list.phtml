@@ -6,16 +6,16 @@
     <span id="new-message">New message</span>
         <?php endif; ?>
     <?php endif; ?>
-    <a href="<?php echo vipub_link("/messages/".$chat["id"]); ?>">
-        <img src="<?php echo vipub_link($chat["avatar"]); ?>">
-        <h5><?php echo vipub_croptxt($chat["fullname"], 0, 25); ?>
+    <a href="<?php echo xclone_link("/messages/".$chat["id"]); ?>">
+        <img src="<?php echo xclone_link($chat["avatar"]); ?>">
+        <h5><?php echo xclone_croptxt($chat["fullname"], 0, 25); ?>
         · 
             <small style="font-weight: 400">
             <?php echo date("d", strtotime($chat["created_at"])); ?>
-            <?php echo vipub_translate('month_'.strtolower(date('M', strtotime($chat["created_at"])))) . " " . date("Y h:i", strtotime($chat["created_at"])); ?>
+            <?php echo xclone_translate('month_'.strtolower(date('M', strtotime($chat["created_at"])))) . " " . date("Y h:i", strtotime($chat["created_at"])); ?>
             </small>
         </h5>
-        <p><?php echo vipub_croptxt($chat["message"], 0, 180); ?></p>
+        <p><?php echo xclone_croptxt($chat["message"], 0, 180); ?></p>
     </a>
 </div>
 <?php endforeach; ?>

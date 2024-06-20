@@ -1,38 +1,38 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
 
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         
         <div class="site-header-box">
             <h5>
             <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-            <?php echo vipub_translate("profile"); ?>
+            <?php echo xclone_translate("profile"); ?>
             </h5>
         </div>
         
         <div class="user-profile-page">
             <div class="user-cover">
                 <a>
-                    <img src="<?php echo vipub_link("upload/default/cover.png"); ?>">
+                    <img src="<?php echo xclone_link("upload/default/cover.png"); ?>">
                 </a>
             </div>
             <div class="user-avatar">
                 <a>
-                    <img src="<?php echo vipub_link("upload/default/avatar.png"); ?>">
+                    <img src="<?php echo xclone_link("upload/default/avatar.png"); ?>">
                 </a>
             </div>
             
             <div class="user-information">
-                <h5>@<?php echo vipub_croptxt(vipub_dont_profile_name(), 0, 40); ?></h5>
+                <h5>@<?php echo xclone_croptxt(xclone_dont_profile_name(), 0, 40); ?></h5>
             </div>
 
             <div class="no-post-yet-timeline">
                 <div class="no-post-yet">
-                    <h5><?php echo vipub_translate("user_profile_dont_empty_1"); ?></h5>
-                    <span><?php echo vipub_translate("user_profile_dont_empty_2"); ?></span>
+                    <h5><?php echo xclone_translate("user_profile_dont_empty_1"); ?></h5>
+                    <span><?php echo xclone_translate("user_profile_dont_empty_2"); ?></span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>

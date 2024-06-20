@@ -1,77 +1,77 @@
-<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
-<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); $settings = xclone_site_settings(); ?>
+<?php $conn = xcloneConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = xclone_get_my_profile($conn, $uname); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
     
         <div class="account-settings-page-for-users-page">
             <div class="settings-page-top-title">
-                <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg><?php echo vipub_translate("account_settings"); ?></h5>
+                <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg><?php echo xclone_translate("account_settings"); ?></h5>
             </div>
 
             <div class="settings-page-content-full next-settings-page-container-none-border">
 
                 <div class="settings-edit-profile-right-zone next-settings-page-container">
                     <div class="edit-profile-right-zone-title">
-                        <h5><?php echo vipub_translate("settings_page_email_notifs_2"); ?></h5>
+                        <h5><?php echo xclone_translate("settings_page_email_notifs_2"); ?></h5>
                     </div>
 
                     <div class="user-profile-edit-form-content-full">
                         
                         <form id="change-email-notifications">
                             <div class="edit-input-profile">
-                                <label id="settings-label-title" for="dm_notification"><?php echo vipub_translate("settings_page_email_notifs_5"); ?></label>
+                                <label id="settings-label-title" for="dm_notification"><?php echo xclone_translate("settings_page_email_notifs_5"); ?></label>
                                 <select id="dm_notification" name="dm_notification">
                                     <option value="Active" <?php if($row["dm_notification"]=="Active"): ?>selected<?php endif; ?>>
-                                        <?php echo vipub_translate("open_btn_text"); ?>
+                                        <?php echo xclone_translate("open_btn_text"); ?>
                                     </option>
                                     <option value="Disabled" <?php if($row["dm_notification"]=="Disabled"): ?>selected<?php endif; ?>>
-                                           <?php echo vipub_translate("close_btn_text"); ?>
+                                           <?php echo xclone_translate("close_btn_text"); ?>
                                     </option>
                                 </select>
-                                <span id="email-notifications-info-text-small"><?php echo vipub_translate("user_email_notifs_span_info_4"); ?></span>
+                                <span id="email-notifications-info-text-small"><?php echo xclone_translate("user_email_notifs_span_info_4"); ?></span>
                             </div>
 
                             <div class="edit-input-profile">
-                                <label id="settings-label-title" for="follow_notification"><?php echo vipub_translate("user_email_notifs_title_1"); ?></label>
+                                <label id="settings-label-title" for="follow_notification"><?php echo xclone_translate("user_email_notifs_title_1"); ?></label>
                                 <select id="follow_notification" name="follow_notification">
                                     <option value="Active" <?php if($row["follow_notification"]=="Active"): ?>selected<?php endif; ?>>
-                                        <?php echo vipub_translate("open_btn_text"); ?>
+                                        <?php echo xclone_translate("open_btn_text"); ?>
                                     </option>
                                     <option value="Disabled" <?php if($row["follow_notification"]=="Disabled"): ?>selected<?php endif; ?>>
-                                        <?php echo vipub_translate("close_btn_text"); ?>
+                                        <?php echo xclone_translate("close_btn_text"); ?>
                                     </option>
                                 </select>
-                                <span id="email-notifications-info-text-small"><?php echo vipub_translate("user_email_notifs_span_info_3"); ?></span>
+                                <span id="email-notifications-info-text-small"><?php echo xclone_translate("user_email_notifs_span_info_3"); ?></span>
                             </div>
 
                             <div class="edit-input-profile">
-                                <label id="settings-label-title" for="like_notification"><?php echo vipub_translate("user_email_notifs_title_2"); ?></label>
+                                <label id="settings-label-title" for="like_notification"><?php echo xclone_translate("user_email_notifs_title_2"); ?></label>
                                 <select id="like_notification" name="like_notification">
                                     <option value="Active" <?php if($row["like_notification"]=="Active"): ?>selected<?php endif; ?>>
-                                        <?php echo vipub_translate("open_btn_text"); ?>
+                                        <?php echo xclone_translate("open_btn_text"); ?>
                                     </option>
                                     <option value="Disabled" <?php if($row["like_notification"]=="Disabled"): ?>selected<?php endif; ?>>
-                                        <?php echo vipub_translate("close_btn_text"); ?>
+                                        <?php echo xclone_translate("close_btn_text"); ?>
                                     </option>
                                 </select>
-                                <span id="email-notifications-info-text-small"><?php echo vipub_translate("user_email_notifs_span_info_2"); ?></span>
+                                <span id="email-notifications-info-text-small"><?php echo xclone_translate("user_email_notifs_span_info_2"); ?></span>
                             </div>
 
                             <div class="edit-input-profile">
-                                <label id="settings-label-title" for="reply_notification"><?php echo vipub_translate("user_email_notifs_title_3"); ?></label>
+                                <label id="settings-label-title" for="reply_notification"><?php echo xclone_translate("user_email_notifs_title_3"); ?></label>
                                 <select id="reply_notification" name="reply_notification">
                                     <option value="Active" <?php if($row["reply_notification"]=="Active"): ?>selected<?php endif; ?>>
-                                        <?php echo vipub_translate("open_btn_text"); ?>
+                                        <?php echo xclone_translate("open_btn_text"); ?>
                                     </option>
                                     <option value="Disabled" <?php if($row["reply_notification"]=="Disabled"): ?>selected<?php endif; ?>>
-                                        <?php echo vipub_translate("close_btn_text"); ?>
+                                        <?php echo xclone_translate("close_btn_text"); ?>
                                     </option>
                                 </select>
-                                <span id="email-notifications-info-text-small"><?php echo vipub_translate("user_email_notifs_span_info"); ?></span>
+                                <span id="email-notifications-info-text-small"><?php echo xclone_translate("user_email_notifs_span_info"); ?></span>
                             </div>
 
                             <div class="edit-input-profile">
-                                <button type="submit" class="user_emailNotifications"><?php echo vipub_translate("account_settings_menu_27"); ?></button>
+                                <button type="submit" class="user_emailNotifications"><?php echo xclone_translate("account_settings_menu_27"); ?></button>
                             </div>
                         </form>
                     </div>
@@ -101,7 +101,7 @@
                 success: function(response) {
                     new Noty({
                         type: 'success',
-                        text: '<?php echo vipub_translate("settings_page_email_notifs_25"); ?>',
+                        text: '<?php echo xclone_translate("settings_page_email_notifs_25"); ?>',
                         timeout: 1500
                     }).show();
                 },

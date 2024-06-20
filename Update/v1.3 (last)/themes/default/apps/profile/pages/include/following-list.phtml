@@ -1,24 +1,24 @@
 <div class="connection-random-users">
-   <a href="<?php echo vipub_link("@".$following["username"]); ?>">
-        <img src="<?php echo vipub_link($following["avatar"]); ?>">
+   <a href="<?php echo xclone_link("@".$following["username"]); ?>">
+        <img src="<?php echo xclone_link($following["avatar"]); ?>">
         <span>
             <?php echo $following["username"]; ?>
             <?php if($following["verified"]=="1"): ?>
-                <?php echo vipub_userBlue(); ?>
+                <?php echo xclone_userBlue(); ?>
             <?php endif; ?>
             <h5>
                 <?php echo $following["fullname"]; ?>
                 <small>
                     <?php if($following["user_bio"]==NULL): ?>
                         <?php echo $following["followers"]; ?> 
-                        <?php echo vipub_translate("connect_people_for_following_info_small"); ?>
+                        <?php echo xclone_translate("connect_people_for_following_info_small"); ?>
                     <?php else: ?>
-                        <?php echo vipub_croptxt($following["user_bio"], 0, 47); ?>  · 
-                        <?php echo $following["followers"]; ?> <?php echo vipub_translate("connect_people_for_following_info_small"); ?>
+                        <?php echo xclone_croptxt($following["user_bio"], 0, 47); ?>  · 
+                        <?php echo $following["followers"]; ?> <?php echo xclone_translate("connect_people_for_following_info_small"); ?>
                     <?php endif; ?>
                 </small>
             </h5> 
         </span>
     </a>
-    <button data-vipub-url="<?php echo vipub_link("@".$following["username"]); ?>"><?php echo vipub_translate("profile"); ?></button>
+    <button data-xclone-url="<?php echo xclone_link("@".$following["username"]); ?>"><?php echo xclone_translate("profile"); ?></button>
 </div>

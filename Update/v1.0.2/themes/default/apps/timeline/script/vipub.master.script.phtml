@@ -1,16 +1,16 @@
-<?php $settings = vipub_site_settings(); ?>
+<?php $settings = xclone_site_settings(); ?>
 <script>
     $(document).ready(function() {
         var maxLength = <?php echo $settings["post_maxlength"]; ?>;
         var color = "#1C9BEF";
-        $('#vipub-counter').text(maxLength + ' <?php echo vipub_translate("textarea_charracter_count"); ?>').css('color', color).hide();
+        $('#xclone-counter').text(maxLength + ' <?php echo xclone_translate("textarea_charracter_count"); ?>').css('color', color).hide();
 
         $('#content_post').on('input', function() {
             var length = $(this).val().length;
             var remaining = maxLength - length;
-            $('#vipub-counter').text(remaining + ' <?php echo vipub_translate("textarea_charracter_count"); ?>');
+            $('#xclone-counter').text(remaining + ' <?php echo xclone_translate("textarea_charracter_count"); ?>');
             if (length > 0) {
-                $('#vipub-counter').show();
+                $('#xclone-counter').show();
                 if (remaining < maxLength * 0.075) {
                     color = "#F4212D";
                 } else if (remaining < maxLength * 0.355) {
@@ -18,7 +18,7 @@
                 } else {
                     color = "#1C9BEF";
                 }
-                $('#vipub-counter').css('color', color);
+                $('#xclone-counter').css('color', color);
                 
                 if (remaining <= 0) {
                     $('#share-ew-post').attr('disabled', true);
@@ -26,7 +26,7 @@
                     $('#share-ew-post').removeAttr('disabled');
                 }
             } else {
-                $('#vipub-counter').hide();
+                $('#xclone-counter').hide();
                 $('#share-ew-post').attr('disabled', true);
             }
         });
@@ -37,7 +37,7 @@
     });
 
 
-    $('#vipub-new-post').on('submit', function(e) {
+    $('#xclone-new-post').on('submit', function(e) {
         e.preventDefault();
         var content_post = $('#content_post').val();
         var has_media = false;
@@ -58,7 +58,7 @@
         if (!has_media && content_post.trim() == '') {
             new Noty({
                 type: 'error',
-                text: '<?php echo vipub_translate("sucess_post_share_2"); ?>',
+                text: '<?php echo xclone_translate("sucess_post_share_2"); ?>',
                 timeout: 1500,
                 progressBar: true
             }).show();
@@ -67,7 +67,7 @@
         else if (!has_video && content_post.trim() == '') {
             new Noty({
                 type: 'error',
-                text: '<?php echo vipub_translate("sucess_post_share_2"); ?>',
+                text: '<?php echo xclone_translate("sucess_post_share_2"); ?>',
                 timeout: 1500,
                 progressBar: true
             }).show();
@@ -78,13 +78,13 @@
 
         new Noty({
             type: 'success',
-            text: '<?php echo vipub_translate("sucess_post_share"); ?>',
+            text: '<?php echo xclone_translate("sucess_post_share"); ?>',
             timeout: 1500,
             progressBar: true
         }).show();
         
         setTimeout(function() {
-            var formData = new FormData($('#vipub-new-post')[0]);
+            var formData = new FormData($('#xclone-new-post')[0]);
             formData.append('add_image', $('#media')[0].files[0]);
             formData.append('add_video', $('#add_video_input')[0].files[0]);
             $.ajax({
@@ -95,9 +95,9 @@
                 contentType: false,
                 success: function(data) {
                     fetchPosts();
-                    $('#vipub-new-post')[0].reset();
+                    $('#xclone-new-post')[0].reset();
                     $('#content_post').css('height', 'auto');
-                    $('#vipub-counter').text(maxLength + ' karakter');
+                    $('#xclone-counter').text(maxLength + ' karakter');
                     $('#share-ew-post').removeAttr('disabled');
                 }
             });
@@ -121,11 +121,11 @@
 </script>
 
 <script>
-    new VipubEmojiSelect({
+    new xcloneEmojiSelect({
         trigger: [
             {
-                selector: '.vipubSelect-emoji',
-                insertInto: '.vipubEmojiContent'
+                selector: '.xcloneSelect-emoji',
+                insertInto: '.xcloneEmojiContent'
             }
         ],
         closeButton: true,

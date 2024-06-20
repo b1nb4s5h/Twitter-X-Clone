@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: /welcome");
@@ -11,7 +11,7 @@ $count = 0;
 if(isset($_SESSION["user_id"])) {
   $user_id = $_SESSION["user_id"];
 
-  $query = "SELECT COUNT(*) as count FROM vipub_notifs WHERE user_id = ? AND is_read = ?";
+  $query = "SELECT COUNT(*) as count FROM xclone_notifs WHERE user_id = ? AND is_read = ?";
   $stmt = mysqli_prepare($conn, $query);
 
   $is_read = 0;

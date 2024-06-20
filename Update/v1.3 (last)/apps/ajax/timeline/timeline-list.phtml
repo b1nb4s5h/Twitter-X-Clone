@@ -1,15 +1,15 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
-$settings = vipub_site_settings();
-$user_language = vipub_user_acceptLanguage();
-$vipub["account"] = vipub_my_user_info();
+require_once("../../../core/xclone_web_core.phtml");
+$settings = xclone_site_settings();
+$user_language = xclone_user_acceptLanguage();
+$xclone["account"] = xclone_my_user_info();
 
 
 $sql = "SELECT p.*, u.* 
-  FROM vipub_posts p 
-  JOIN vipub_users u ON p.user_id = u.id
+  FROM xclone_posts p 
+  JOIN xclone_users u ON p.user_id = u.id
   WHERE (p.user_id = ? OR p.user_id IN (
-    SELECT user_id FROM vipub_follow WHERE follower_id = ?
+    SELECT user_id FROM xclone_follow WHERE follower_id = ?
   )) 
   AND (p.post_type = 'post' OR p.post_type = 'post_video' OR p.post_type = 'postAds')
   ORDER BY p.post_joined DESC";
@@ -30,7 +30,7 @@ if ($result) {
       require("../../../themes/default/apps/timeline/content.phtml");
     }
   } else {
-    vipub_template("timeline/include/no-post");
+    xclone_template("timeline/include/no-post");
   }
 } else {
   die("Hata: " . mysqli_error($conn));

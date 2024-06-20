@@ -1,11 +1,11 @@
-@font-face { font-family: vipubFont; src: url('https://abs.twimg.com/fonts/chirp-regular-web.woff2') format('woff2'); font-weight: 400; font-style: 'normal'; font-display: 'swap' } 
-@font-face { font-family: vipubFont; src: url('https://abs.twimg.com/fonts/chirp-heavy-web.woff2') format('woff2'); font-weight: 800; font-style: 'normal'; font-display: 'swap' }
+@font-face { font-family: xcloneFont; src: url('https://abs.twimg.com/fonts/chirp-regular-web.woff2') format('woff2'); font-weight: 400; font-style: 'normal'; font-display: 'swap' } 
+@font-face { font-family: xcloneFont; src: url('https://abs.twimg.com/fonts/chirp-heavy-web.woff2') format('woff2'); font-weight: 800; font-style: 'normal'; font-display: 'swap' }
 :root {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+  font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
   background: #f6f9ff;
   color: #444444;
 }
@@ -26,7 +26,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+  font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
 }
 
 /*--------------------------------------------------------------
@@ -228,7 +228,7 @@ h6 {
   font-size: 18px;
   font-weight: 500;
   color: #0f1419;
-  font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+  font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
 }
 
 .card-title span {
@@ -248,7 +248,7 @@ h6 {
 /* Alerts */
 .alert-heading {
   font-weight: 500;
-  font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+  font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
   font-size: 20px;
 }
 
@@ -297,7 +297,7 @@ h6 {
 /* Breadcrumbs */
 .breadcrumb {
   font-size: 14px;
-  font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+  font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
   color: #899bbd;
   font-weight: 600;
 }
@@ -364,7 +364,7 @@ h6 {
   font-size: 26px;
   font-weight: 700;
   color: #0f1419;
-  font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+  font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
 }
 
 .header {
@@ -975,7 +975,7 @@ h6 {
 }
 
 .iconslist .label {
-  font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+  font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
   display: inline-block;
   width: 100%;
   overflow: hidden;
@@ -1259,6 +1259,6 @@ h6 {
 .form-select:focus{
   border:1px solid #555555;
 }
-.vipub-new-update{
+.xclone-new-update{
   border: 2px solid #1da1f2;
 }

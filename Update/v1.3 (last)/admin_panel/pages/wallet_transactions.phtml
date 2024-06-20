@@ -4,7 +4,7 @@
       <h1>Wallet transactions list</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">User wallet</li>
           <li class="breadcrumb-item active">Active and pending wallet transactions</li>
         </ol>
@@ -38,8 +38,8 @@
                 <tbody>
                 <?php
                     $sql = "SELECT p.*, u.* 
-                    FROM vipub_add_balance p 
-                    JOIN vipub_users u ON p.user_id = u.id
+                    FROM xclone_add_balance p 
+                    JOIN xclone_users u ON p.user_id = u.id
                     ORDER BY p.added_date DESC";
         
                     $stmt = mysqli_prepare($conn, $sql);
@@ -54,8 +54,8 @@
                     <tr>
                         <th scope="row"><?php echo $row["b_id"]; ?></th>
                         <td style="align-items: center; justify-items: center; display:flex;">
-                            <img src="<?php echo vipub_link($row["avatar"]); ?>" style="width: 25px; height: 25px; border-radius: 50%; margin-right: 10px;">
-                            <?php echo vipub_croptxt($row["fullname"], 0, 13); ?></td>
+                            <img src="<?php echo xclone_link($row["avatar"]); ?>" style="width: 25px; height: 25px; border-radius: 50%; margin-right: 10px;">
+                            <?php echo xclone_croptxt($row["fullname"], 0, 13); ?></td>
                         <td>
                             <span class="badge bg-success" style="user-select:none;"><?php echo number_format($row["user_wallet"], 2) ?> $</span>
                         <td style="font-weight: 800; color: green;">
@@ -72,7 +72,7 @@
                         </td>
 
                         <td>
-                           <a href="<?php echo vipub_link($row["receipt_image"]); ?>" data-lightbox="receipt<?php echo $row["b_id"]; ?>">
+                           <a href="<?php echo xclone_link($row["receipt_image"]); ?>" data-lightbox="receipt<?php echo $row["b_id"]; ?>">
                             <span>View Receipt</span>
                            </a>
                         </td>
@@ -87,7 +87,7 @@
 
                         <td>
                           <?php if($row["status"]=="2"): ?>
-                           <a href="<?php echo vipub_link("admin_panel/wallet_transactions_edit?edit=".$row["b_id"]); ?>">
+                           <a href="<?php echo xclone_link("admin_panel/wallet_transactions_edit?edit=".$row["b_id"]); ?>">
                             <span class="badge bg-danger">Edit status</span>
                            </a>
                            <?php elseif($row["status"]=="1"): ?>

@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Kullanıcı adının benzersiz olmasını kontrol et
-  $check_query = "SELECT * FROM vipub_users WHERE username='$username'";
+  $check_query = "SELECT * FROM xclone_users WHERE username='$username'";
   $result = mysqli_query($conn, $check_query);
   if (mysqli_num_rows($result) > 0) {
     http_response_code(400);
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // E-postanın benzersiz olmasını kontrol et
-  $check_email_query = "SELECT * FROM vipub_users WHERE email='$email'";
+  $check_email_query = "SELECT * FROM xclone_users WHERE email='$email'";
   $result = mysqli_query($conn, $check_email_query);
   if (mysqli_num_rows($result) > 0) {
     http_response_code(400);
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Kullanıcıyı veritabanına kaydet
-  $insert_query = "INSERT INTO vipub_users (fullname, username, email, password) VALUES ('$fullname', '$username', '$email', '$password_hash')";
+  $insert_query = "INSERT INTO xclone_users (fullname, username, email, password) VALUES ('$fullname', '$username', '$email', '$password_hash')";
   if (mysqli_query($conn, $insert_query)) {
     $user_id = mysqli_insert_id($conn);
 

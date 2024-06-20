@@ -1,70 +1,70 @@
-<?php if(isset($_SESSION["user_id"])): $settings = vipub_site_settings(); ?>
+<?php if(isset($_SESSION["user_id"])): $settings = xclone_site_settings(); ?>
     <?php $app = isset($_GET['app']) ? $_GET['app'] : 'home';?>
-    <?php $vipub["account"] = vipub_my_user_info(); ?>
+    <?php $xclone["account"] = xclone_my_user_info(); ?>
     <div class="col-md-3">
         <div class="left-sidebar">
             <div class="site-logo">
-                <a href="<?php echo vipub_site_url("home"); ?>">
-                <?php if($vipub["account"]["theme_color"]=="master.white.theme"): ?>
-                    <img src="<?php echo vipub_link($settings["site_white_logo"]); ?>">
-                <?php elseif($vipub["account"]["theme_color"]=="master.dark.theme"): ?>
-                    <img src="<?php echo vipub_link($settings["site_dark_logo"]); ?>">
+                <a href="<?php echo xclone_site_url("home"); ?>">
+                <?php if($xclone["account"]["theme_color"]=="master.white.theme"): ?>
+                    <img src="<?php echo xclone_link($settings["site_white_logo"]); ?>">
+                <?php elseif($xclone["account"]["theme_color"]=="master.dark.theme"): ?>
+                    <img src="<?php echo xclone_link($settings["site_dark_logo"]); ?>">
                 <?php endif; ?>
                 </a>
             </div>
             
             <div class="sidebar-menu">
-                <span class="<?php echo ($app == 'home') ? 'page-active' : ''; ?>" data-vipub-url="<?php echo vipub_site_url("home"); ?>">
+                <span class="<?php echo ($app == 'home') ? 'page-active' : ''; ?>" data-xclone-url="<?php echo xclone_site_url("home"); ?>">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M12 9c-2.209 0-4 1.791-4 4s1.791 4 4 4 4-1.791 4-4-1.791-4-4-4zm0 6c-1.105 0-2-.895-2-2s.895-2 2-2 2 .895 2 2-.895 2-2 2zm0-13.304L.622 8.807l1.06 1.696L3 9.679V19.5C3 20.881 4.119 22 5.5 22h13c1.381 0 2.5-1.119 2.5-2.5V9.679l1.318.824 1.06-1.696L12 1.696zM19 19.5c0 .276-.224.5-.5.5h-13c-.276 0-.5-.224-.5-.5V8.429l7-4.375 7 4.375V19.5z"></path></g></svg>
-                    <?php echo vipub_translate("homepage"); ?>
+                    <?php echo xclone_translate("homepage"); ?>
                 </span>
     
-                <span class="<?php echo ($app == 'search') ? 'page-active' : ''; ?>" data-vipub-url="<?php echo vipub_site_url("search"); ?>">
+                <span class="<?php echo ($app == 'search') ? 'page-active' : ''; ?>" data-xclone-url="<?php echo xclone_site_url("search"); ?>">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.09 3.098L9.72 7h5.99l.39-4.089 1.99.187L17.72 7h3.78v2h-3.97l-.56 6h3.53v2h-3.72l-.38 4.089-1.99-.187.36-3.902H8.78l-.38 4.089-1.99-.187L6.77 17H2.5v-2h4.46l.56-6H3.5V7h4.21l.39-4.089 1.99.187zM14.96 15l.56-6H9.53l-.56 6h5.99z"></path></g></svg>
-                    <?php echo vipub_translate("search"); ?>
+                    <?php echo xclone_translate("search"); ?>
                 </span>
     
-                <span class="<?php echo ($app == 'notifications') ? 'page-active' : ''; ?>" data-vipub-url="<?php echo vipub_site_url("notifications"); ?>">
+                <span class="<?php echo ($app == 'notifications') ? 'page-active' : ''; ?>" data-xclone-url="<?php echo xclone_site_url("notifications"); ?>">
                     <span id="check-notifs"></span>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.864 16H5.134z"></path></g></svg>
-                    <?php echo vipub_translate("notifications"); ?>
+                    <?php echo xclone_translate("notifications"); ?>
                 </span>
     
-                <span class="<?php echo ($app == 'messages') ? 'page-active' : ''; ?>" data-vipub-url="<?php echo vipub_site_url("messages"); ?>">
+                <span class="<?php echo ($app == 'messages') ? 'page-active' : ''; ?>" data-xclone-url="<?php echo xclone_site_url("messages"); ?>">
                     <span id="check-message"></span>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"></path></g></svg>
-                    <?php echo vipub_translate("messages"); ?>
+                    <?php echo xclone_translate("messages"); ?>
                 </span>
     
-                <span class="<?php echo ($app == 'profile') ? 'page-active' : ''; ?>" data-vipub-url="<?php echo vipub_site_url("/@".$vipub["account"]["username"]); ?>">
+                <span class="<?php echo ($app == 'profile') ? 'page-active' : ''; ?>" data-xclone-url="<?php echo xclone_site_url("/@".$xclone["account"]["username"]); ?>">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M5.651 19h12.698c-.337-1.8-1.023-3.21-1.945-4.19C15.318 13.65 13.838 13 12 13s-3.317.65-4.404 1.81c-.922.98-1.608 2.39-1.945 4.19zm.486-5.56C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46zM12 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM8 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4z"></path></g></svg>
-                    <?php echo vipub_translate("profile"); ?>
+                    <?php echo xclone_translate("profile"); ?>
                 </span>
     
-                <?php if($vipub["account"]["admin_status"]==1): ?>
-                <span data-vipub-url="<?php echo vipub_site_url("admin_panel/"); ?>">
+                <?php if($xclone["account"]["admin_status"]==1): ?>
+                <span data-xclone-url="<?php echo xclone_site_url("admin_panel/"); ?>">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M12 22.25c-4.99 0-9.18-3.393-10.39-7.994l1.93-.512c.99 3.746 4.4 6.506 8.46 6.506s7.47-2.76 8.46-6.506l1.93.512c-1.21 4.601-5.4 7.994-10.39 7.994zM5 11.5c0 3.866 3.13 7 7 7s7-3.134 7-7V8.75c0-3.866-3.13-7-7-7s-7 3.134-7 7v2.75zm12-2.75v2.75c0 2.761-2.24 5-5 5s-5-2.239-5-5V8.75c0-2.761 2.24-5 5-5s5 2.239 5 5zM11.25 8v4.25c0 .414.34.75.75.75s.75-.336.75-.75V8c0-.414-.34-.75-.75-.75s-.75.336-.75.75zm-3 1v2.25c0 .414.34.75.75.75s.75-.336.75-.75V9c0-.414-.34-.75-.75-.75s-.75.336-.75.75zm7.5 0c0-.414-.34-.75-.75-.75s-.75.336-.75.75v2.25c0 .414.34.75.75.75s.75-.336.75-.75V9z"></path></g></svg>
                     Admin panel
                 </span>
                 <?php endif; ?>
     
-                <span class="VPSM-social" data-vipub-url="<?php echo vipub_site_url("settings"); ?>">
+                <span class="VPSM-social" data-xclone-url="<?php echo xclone_site_url("settings"); ?>">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M3.75 12c0-4.56 3.69-8.25 8.25-8.25s8.25 3.69 8.25 8.25-3.69 8.25-8.25 8.25S3.75 16.56 3.75 12zM12 1.75C6.34 1.75 1.75 6.34 1.75 12S6.34 22.25 12 22.25 22.25 17.66 22.25 12 17.66 1.75 12 1.75zm-4.75 11.5c.69 0 1.25-.56 1.25-1.25s-.56-1.25-1.25-1.25S6 11.31 6 12s.56 1.25 1.25 1.25zm9.5 0c.69 0 1.25-.56 1.25-1.25s-.56-1.25-1.25-1.25-1.25.56-1.25 1.25.56 1.25 1.25 1.25zM13.25 12c0 .69-.56 1.25-1.25 1.25s-1.25-.56-1.25-1.25.56-1.25 1.25-1.25 1.25.56 1.25 1.25z"></path></g></svg>
-                    <?php echo vipub_translate("more"); ?>
+                    <?php echo xclone_translate("more"); ?>
                 </span>
     
                 <div class="new-share-post-modal" style="display:none;">
                     <button type="button" class="new-share-post-modal">
-                        <?php echo vipub_translate("new_post_share"); ?>
+                        <?php echo xclone_translate("new_post_share"); ?>
                     </button>
                 </div>
             </div>
     
             <div class="sidebar-user-profile-card">
-                <a href="<?php echo vipub_site_url("@".$vipub["account"]["username"]); ?>">
-                    <img src="<?php echo vipub_site_url($vipub["account"]["avatar"]); ?>">
-                    <h5><?php echo vipub_croptxt($vipub["account"]["fullname"], 0, 15); ?></h5>
-                    <span>@<?php echo $vipub["account"]["username"]; ?></span>
+                <a href="<?php echo xclone_site_url("@".$xclone["account"]["username"]); ?>">
+                    <img src="<?php echo xclone_site_url($xclone["account"]["avatar"]); ?>">
+                    <h5><?php echo xclone_croptxt($xclone["account"]["fullname"], 0, 15); ?></h5>
+                    <span>@<?php echo $xclone["account"]["username"]; ?></span>
                 </a>
             </div>
         </div>
@@ -72,8 +72,8 @@
 
     
     <script>
-        $(document).on('click', '[data-vipub-url]', function() {
-            var url = $(this).data('vipub-url');
+        $(document).on('click', '[data-xclone-url]', function() {
+            var url = $(this).data('xclone-url');
             window.location.href = url;
         });
     </script>
@@ -131,5 +131,5 @@
     </script>
     
     <?php else: ?>
-        <?php vipub_template("main/sidebar/left-guest"); ?>
+        <?php xclone_template("main/sidebar/left-guest"); ?>
 <?php endif; ?>

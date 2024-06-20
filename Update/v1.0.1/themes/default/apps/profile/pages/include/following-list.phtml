@@ -4,9 +4,9 @@
         <img src="/<?php echo $following["avatar"]; ?>">
         </a>
         <a href="/@<?php echo $following["username"]; ?>">
-        <h5><?php echo vipub_croptxt($following["fullname"], 0, 25); ?>
+        <h5><?php echo xclone_croptxt($following["fullname"], 0, 25); ?>
         <?php if($following["verified"]=="1"): ?>
-            <?php echo vipub_userBlue(); ?>
+            <?php echo xclone_userBlue(); ?>
         <?php endif; ?>
         </h5>
         </a>
@@ -15,7 +15,7 @@
         </a>
     </div>
     <?php if(isset($following["user_bio"])): ?>
-    <div class="post-content-line"><?php echo convertVipubText($following["user_bio"]); ?></div>
+    <div class="post-content-line"><?php echo convertxcloneText($following["user_bio"]); ?></div>
     <?php else: ?>
     <div class="post-content-line">Bu kullanı henüz biyografi eklememiş.</div>
     <?php endif; ?>

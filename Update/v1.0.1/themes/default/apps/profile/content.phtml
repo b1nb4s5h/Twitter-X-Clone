@@ -1,34 +1,34 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
 <?php 
-$conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_GET["uname"])); 
-$row = vipub_get_profile($conn, $uname); ?>
+$conn = xcloneConnectDatabase(); $uname = htmlspecialchars(trim($_GET["uname"])); 
+$row = xclone_get_profile($conn, $uname); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         <div class="site-header-box">
             <h5>
             <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-            <?php echo vipub_croptxt($row["fullname"], 0, 40); ?>
+            <?php echo xclone_croptxt($row["fullname"], 0, 40); ?>
             <?php if($row["verified"]=="1"): ?>
-                    <?php echo vipub_userBlue(); ?>
+                    <?php echo xclone_userBlue(); ?>
                 <?php endif; ?>
             </h5>
         </div>
         <div class="user-profile-page">
             <div class="user-cover">
-                <a href="<?php echo vipub_link($row["cover"]); ?>" data-lightbox="cover">
-                    <img src="<?php echo vipub_link($row["cover"]); ?>">
+                <a href="<?php echo xclone_link($row["cover"]); ?>" data-lightbox="cover">
+                    <img src="<?php echo xclone_link($row["cover"]); ?>">
                 </a>
             </div>
             <div class="user-avatar">
-                <a href="<?php echo vipub_link($row["avatar"]); ?>" data-lightbox="avatar">
-                    <img src="<?php echo vipub_link($row["avatar"]); ?>">
+                <a href="<?php echo xclone_link($row["avatar"]); ?>" data-lightbox="avatar">
+                    <img src="<?php echo xclone_link($row["avatar"]); ?>">
                 </a>
             </div>
             
             <div class="user-information">
-                <h5><?php echo vipub_croptxt($row["fullname"], 0, 40); ?>
+                <h5><?php echo xclone_croptxt($row["fullname"], 0, 40); ?>
                 <?php if($row["verified"]=="1"): ?>
-                    <?php echo vipub_userBlue(); ?>
+                    <?php echo xclone_userBlue(); ?>
                 <?php endif; ?>
                 </h5>
                 <span>@<?php echo $row["username"]; ?> 
@@ -40,26 +40,26 @@ $row = vipub_get_profile($conn, $uname); ?>
             <div class="user-profile-selection">
                 <?php if(isset($_SESSION["user_id"])): ?>
                     <?php if($row["id"]==$_SESSION["user_id"]): ?>
-                        <button class="modal-settings-btn"><?php echo vipub_translate("settings_my_profile"); ?></button>
+                        <button class="modal-settings-btn"><?php echo xclone_translate("settings_my_profile"); ?></button>
                     <?php else: ?>
 
-                        <a href="<?php echo vipub_link("messages/".$row["id"]); ?>" title="Message">
+                        <a href="<?php echo xclone_link("messages/".$row["id"]); ?>" title="Message">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"></path></g></svg>
                         </a>
 
-                        <form id="vipubUser-follow">
+                        <form id="xcloneUser-follow">
                             <input type="hidden" name="user_id" value="<?php echo $row["id"]; ?>">
-                            <button class="follow-value"><?php echo vipub_translate("follow"); ?></button>
+                            <button class="follow-value"><?php echo xclone_translate("follow"); ?></button>
                         </form>
                     <?php endif; ?>
                 <?php else: ?>
-                    <button><?php echo vipub_translate("follow"); ?></button>
+                    <button><?php echo xclone_translate("follow"); ?></button>
                 <?php endif; ?>
             </div>
             
             <?php if($row["user_bio"]): ?>
             <div class="user-profile-general-bio">
-                <span><?php echo convertVipubText($row["user_bio"]); ?></span>
+                <span><?php echo convertxcloneText($row["user_bio"]); ?></span>
             </div>
             <?php endif; ?>
 
@@ -82,42 +82,42 @@ $row = vipub_get_profile($conn, $uname); ?>
 
                 <span>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path></g></svg>
-                    <?php echo vipub_translate('month_'.strtolower(date('M', strtotime($row["joined"])))) . " " . date("Y", strtotime($row["joined"])); ?>
-                    <?php echo vipub_translate("user_joined_date"); ?>
+                    <?php echo xclone_translate('month_'.strtolower(date('M', strtotime($row["joined"])))) . " " . date("Y", strtotime($row["joined"])); ?>
+                    <?php echo xclone_translate("user_joined_date"); ?>
                 </span>
             </div>
 
             <div class="user-profile-following-info">
-                <a href="<?php echo vipub_link($row["username"]."/following/".$row["id"]); ?>">
+                <a href="<?php echo xclone_link($row["username"]."/following/".$row["id"]); ?>">
                 <form id="following-counter">
                     <input type="hidden" name="following" id="following" value="<?php echo $row["id"]; ?>">
                     <span class="following-user">
-                        <strong id="following-count"><?php echo $row["following"]; ?></strong> <?php echo vipub_translate("my_following"); ?>
+                        <strong id="following-count"><?php echo $row["following"]; ?></strong> <?php echo xclone_translate("my_following"); ?>
                     </span>
                 </form>
                 </a>
                 
-                <a href="<?php echo vipub_link($row["username"]."/followers/".$row["id"]); ?>">
+                <a href="<?php echo xclone_link($row["username"]."/followers/".$row["id"]); ?>">
                     <form id="followers-counter">
                         <input type="hidden" name="followers" id="followers" value="<?php echo $row["id"]; ?>">
                         <span>
-                            <strong id="followers-count"><?php echo $row["followers"]; ?></strong> <?php echo vipub_translate("my_followers"); ?>
+                            <strong id="followers-count"><?php echo $row["followers"]; ?></strong> <?php echo xclone_translate("my_followers"); ?>
                         </span>
                     </form>
                 </a>
             </div>
 
             <div class="user-profile-bot-menu">
-                <a href="<?php echo vipub_link("@".$row["username"]); ?>" class="active">
-                    <?php echo vipub_translate("profile_menu_1"); ?>
+                <a href="<?php echo xclone_link("@".$row["username"]); ?>" class="active">
+                    <?php echo xclone_translate("profile_menu_1"); ?>
                 </a>
 
-                <a href="<?php echo vipub_link("@".$row["username"]."/media"); ?>">
-                   <?php echo vipub_translate("profile_menu_3"); ?>
+                <a href="<?php echo xclone_link("@".$row["username"]."/media"); ?>">
+                   <?php echo xclone_translate("profile_menu_3"); ?>
                 </a>
 
                 <a href="#">
-                    <?php echo vipub_translate("profile_menu_4"); ?>
+                    <?php echo xclone_translate("profile_menu_4"); ?>
                 </a>
             </div>
 
@@ -182,7 +182,7 @@ $row = vipub_get_profile($conn, $uname); ?>
     $(document).ready(function() {
     checkFollowStatus();
 
-    $('#vipubUser-follow').on('click', '.follow-value', function(e) {
+    $('#xcloneUser-follow').on('click', '.follow-value', function(e) {
         e.preventDefault();
         
         var button = $(this);
@@ -199,13 +199,13 @@ $row = vipub_get_profile($conn, $uname); ?>
                 follow_status: follow_status
             },
             success: function(data) {
-                if (follow_status == '<?php echo vipub_translate("follow"); ?>') {
-                    button.text('<?php echo vipub_translate("unfollow"); ?>');
+                if (follow_status == '<?php echo xclone_translate("follow"); ?>') {
+                    button.text('<?php echo xclone_translate("unfollow"); ?>');
                 } else {
-                    button.text('<?php echo vipub_translate("follow"); ?>');
+                    button.text('<?php echo xclone_translate("follow"); ?>');
                     new Noty({
                         type: 'error',
-                        text: "<?php echo $row["fullname"]; ?> <?php echo vipub_translate("unfollow_user"); ?>",
+                        text: "<?php echo $row["fullname"]; ?> <?php echo xclone_translate("unfollow_user"); ?>",
                         timeout: 2000
                     }).show();
                 }
@@ -231,7 +231,7 @@ $row = vipub_get_profile($conn, $uname); ?>
             },
             success: function(data) {
                 if (data == 'true') {
-                    $('.follow-value').text('<?php echo vipub_translate("unfollow"); ?>');
+                    $('.follow-value').text('<?php echo xclone_translate("unfollow"); ?>');
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -243,7 +243,7 @@ $row = vipub_get_profile($conn, $uname); ?>
 
 const button = document.querySelector('.modal-settings-btn');
 button.addEventListener('click', () => {
-  window.location.href = '<?php echo vipub_link("/settings"); ?>';
+  window.location.href = '<?php echo xclone_link("/settings"); ?>';
 });
 </script>
 
@@ -269,4 +269,4 @@ button.addEventListener('click', () => {
     });
 </script>
 <?php endif; ?>
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>

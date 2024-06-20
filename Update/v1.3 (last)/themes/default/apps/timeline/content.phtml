@@ -1,26 +1,26 @@
-<?php $post_id = $row["p_id"]; $link = vipub_link($row["username"]."/status/".$post_id); ?>
-<?php $vipub["admin"] = vipub_my_user_info(); ?>
+<?php $post_id = $row["p_id"]; $link = xclone_link($row["username"]."/status/".$post_id); ?>
+<?php $xclone["admin"] = xclone_my_user_info(); ?>
     <div class="post vipup-post-publication" id="post-<?php echo $postId; ?>" data-post-id="<?php echo $postId; ?>">
-        <?php if($vipub["repost_fullname"] = isset($row["repost_user_fullname"]) ? htmlspecialchars($row["repost_user_fullname"], ENT_QUOTES, "UTF-8") : ''): ?>
+        <?php if($xclone["repost_fullname"] = isset($row["repost_user_fullname"]) ? htmlspecialchars($row["repost_user_fullname"], ENT_QUOTES, "UTF-8") : ''): ?>
             <div class="this-post-user-retweeted" >
-                <span data-vipub-url="<?php echo vipub_link("@".$vipub["repost_username"]); ?>">
+                <span data-xclone-url="<?php echo xclone_link("@".$xclone["repost_username"]); ?>">
                     <i class="bi bi-repeat-1"></i>
-                    <?php echo vipub_croptxt($vipub["repost_fullname"], 0, 25); ?>
+                    <?php echo xclone_croptxt($xclone["repost_fullname"], 0, 25); ?>
                     <?php if(isset($row["reply_post_id"])): ?>
-                        <?php echo vipub_translate("retweeted_the_comment_user"); ?>
+                        <?php echo xclone_translate("retweeted_the_comment_user"); ?>
                     <?php else: ?>
-                        <?php echo vipub_translate("this_is_a_post_retweet_1"); ?>
+                        <?php echo xclone_translate("this_is_a_post_retweet_1"); ?>
                     <?php endif; ?>
                 </span>
             </div>
         <?php endif; ?>
         <div class="post-original-user-title-info">
-            <a href="<?php echo vipub_link("@".$username); ?>" class="post-user-avatar">
-                <img src="<?php echo vipub_link($avatar); ?>">
+            <a href="<?php echo xclone_link("@".$username); ?>" class="post-user-avatar">
+                <img src="<?php echo xclone_link($avatar); ?>">
                 <h5>
-                <?php echo vipub_croptxt($username, 0, 15); ?>
+                <?php echo xclone_croptxt($username, 0, 15); ?>
                     <?php if($row["verified"]=="1"): ?>
-                        <?php echo vipub_userBlue(); ?>
+                        <?php echo xclone_userBlue(); ?>
                     <?php endif; ?>
                 </h5>
             </a>
@@ -30,13 +30,13 @@
                     </span>
             <?php else: ?>
                 <span>
-                    <?php echo vipub_post_new_date($row["post_joined"]); ?>
+                    <?php echo xclone_post_new_date($row["post_joined"]); ?>
                 </span>
             <?php endif; ?>
 
             <?php if(isset($_SESSION["user_id"])): ?>
             <strong type="button" type="button" class="bookmarks-btn<?php echo $row["p_id"]; ?>" data-post-id="<?php echo $row["p_id"]; ?>">
-                <?php $bookmarksStatus = vipub_check_bookmarks($_SESSION["user_id"], $postId); if ($bookmarksStatus) { ?>
+                <?php $bookmarksStatus = xclone_check_bookmarks($_SESSION["user_id"], $postId); if ($bookmarksStatus) { ?>
                         <i class="bi bi-bookmark-fill post-unbookmarks"></i>
                     <?php } else { ?>
                         <i class="bi bi-bookmark"></i>
@@ -51,9 +51,9 @@
 
         <?php if($row["content_image"] != NULL): ?>
             <div class="post-paragraphe-image">
-                <img src="<?php echo vipub_link($row["content_image"]); ?>" 
-                    data-vipubimage="<?php echo vipub_link($row["content_image"]); ?>" 
-                    class="vipubbox-img<?php echo $row["p_id"]; ?>" 
+                <img src="<?php echo xclone_link($row["content_image"]); ?>" 
+                    data-xcloneimage="<?php echo xclone_link($row["content_image"]); ?>" 
+                    class="xclonebox-img<?php echo $row["p_id"]; ?>" 
                     data-pid="<?php echo $row["p_id"]; ?>" 
                     loading="lazy"
                 />
@@ -68,8 +68,8 @@
 
         <?php if ($row["content_video"] != NULL): ?>
             <div class="post-paragraphe-video">
-                <video id="custom-video<?php echo $row["p_id"]; ?>" playsinline muted poster="<?php echo vipub_template_master("images/video-thumbnail.png"); ?>">
-                    <source src="<?php echo vipub_link($row["content_video"]); ?>">
+                <video id="custom-video<?php echo $row["p_id"]; ?>" playsinline muted poster="<?php echo xclone_template_master("images/video-thumbnail.png"); ?>">
+                    <source src="<?php echo xclone_link($row["content_video"]); ?>">
                     Your browser does not support the video tag.
                 </video>
 
@@ -88,7 +88,7 @@
         <div class="original-post-details">
             <?php if($row["content_post"]!=NULL): ?>
                 <div class="post-paragraphe">
-                    <p><strong style="cursor:pointer;" data-vipub-url="<?php echo vipub_link("@".$row["username"]); ?>"><?php echo vipub_croptxt($username, 0, 15); ?></strong> <?php echo convertVipubText($row["content_post"]); ?></p>
+                    <p><strong style="cursor:pointer;" data-xclone-url="<?php echo xclone_link("@".$row["username"]); ?>"><?php echo xclone_croptxt($username, 0, 15); ?></strong> <?php echo convertxcloneText($row["content_post"]); ?></p>
                 </div>
             <?php endif; ?>
 
@@ -97,7 +97,7 @@
                 <?php if(isset($_SESSION["user_id"])): ?>
                     <span type="button" class="like-btn<?php echo $row["p_id"]; ?>" data-post-id="<?php echo $row["p_id"]; ?>">
                         <?php 
-                        $likeStatus = vipub_check_like($_SESSION["user_id"], $postId); 
+                        $likeStatus = xclone_check_like($_SESSION["user_id"], $postId); 
                         if ($likeStatus) { ?>
                             <i class="bi bi-heart-fill post-unlike-icon"></i>
                         <?php } else { ?>
@@ -112,7 +112,7 @@
                 <!--Retweet / Unretweet-->
                 <?php if(isset($_SESSION["user_id"])): ?>
                     <span type="button" class="retweet-btn<?php echo $row["p_id"]; ?>" data-post-id="<?php echo $row["p_id"]; ?>">
-                        <?php $repostStatus = vipub_check_repost($_SESSION["user_id"], $postId); ?>
+                        <?php $repostStatus = xclone_check_repost($_SESSION["user_id"], $postId); ?>
                         <i class="bi bi-arrow-left-right<?php if ($repostStatus) { echo ' unretweet-class'; } ?>"></i>
                     </span>
                 <?php else: ?>
@@ -123,7 +123,7 @@
 
                 
                 <!--Reply-->
-                <span class="reply-count-hover" data-vipub-url="<?php echo vipub_link($row["username"]."/status/".$row["p_id"]); ?>">
+                <span class="reply-count-hover" data-xclone-url="<?php echo xclone_link($row["username"]."/status/".$row["p_id"]); ?>">
                     <i class="bi bi-chat-quote"></i>
                 </span>
 
@@ -138,37 +138,37 @@
                             <?php if($row["user_id"]==$_SESSION["user_id"]): ?>
                             <button type="button" class="delete-post" data-post-id="<?php echo $row["p_id"]; ?>">
                             <i class="bi bi-trash-fill"></i>
-                            <?php echo vipub_translate("post_select_dropdown_1"); ?></button>
+                            <?php echo xclone_translate("post_select_dropdown_1"); ?></button>
                             
-                            <?php elseif($vipub["admin"]["admin_status"]=="1"): ?>
+                            <?php elseif($xclone["admin"]["admin_status"]=="1"): ?>
                             <button type="button" class="delete-post" data-post-id="<?php echo $row["p_id"]; ?>">
                             <i class="bi bi-trash-fill"></i>
-                            <?php echo vipub_translate("post_select_dropdown_1"); ?></button>
+                            <?php echo xclone_translate("post_select_dropdown_1"); ?></button>
                             <?php endif; ?>
                         <?php endif; ?>
 
                         <li>
                             <a href="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>">
                             <i class="bi bi-send"></i>
-                            <?php echo vipub_translate("post_select_dropdown_2"); ?></a>
+                            <?php echo xclone_translate("post_select_dropdown_2"); ?></a>
                         </li>
 
                         <li>
                             <a href="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>/likes">
                             <i class="bi bi-heart"></i>
-                            <?php echo vipub_translate("post_in_view_like_page"); ?></a>
+                            <?php echo xclone_translate("post_in_view_like_page"); ?></a>
                         </li>
 
                         <li>
                             <a href="#">
                             <i class="bi bi-code-slash"></i>
-                            <?php echo vipub_translate("post_select_dropdown_3"); ?></a>
+                            <?php echo xclone_translate("post_select_dropdown_3"); ?></a>
                         </li>
 
                         <li>
                             <a class="copy_post" href="#" data-post-id="<?php echo $post_id; ?>">                   
                             <i class="bi bi-link-45deg"></i>
-                            <?php echo vipub_translate("post_select_dropdown_4"); ?>
+                            <?php echo xclone_translate("post_select_dropdown_4"); ?>
                             </a>
                         </li>
                     </ul>
@@ -179,7 +179,7 @@
                 <?php if($row["likes"] != "0"): ?>
                     <span class="this-post-liked-count">
                         <?php echo $row["likes"]; ?> 
-                        <?php echo vipub_translate("post_details_bottom_timeline_1"); ?>
+                        <?php echo xclone_translate("post_details_bottom_timeline_1"); ?>
                     </span>
                 <?php endif; ?>
 
@@ -189,7 +189,7 @@
 
                 <?php if($row["repost"] != "0"): ?>
                     <span class="this-post-repost-count"><?php echo $row["repost"]; ?> 
-                    <?php echo vipub_translate("post_details_bottom_timeline_2"); ?>
+                    <?php echo xclone_translate("post_details_bottom_timeline_2"); ?>
                 </span>
                 <?php endif; ?>
 
@@ -199,29 +199,29 @@
 
                 <?php if($row["bookmarks"] != "0"): ?>
                     <span class="this-post-repost-count"><?php echo $row["bookmarks"]; ?> 
-                    <?php echo vipub_translate("post_details_bottom_timeline_3"); ?>
+                    <?php echo xclone_translate("post_details_bottom_timeline_3"); ?>
                 </span>
                 <?php endif; ?>
             </div>
 
             <?php if($row["reply"] != "0"): ?>
                 <div class="post-action-reply-details-info">
-                    <span class="this-post-reply-count" data-vipub-url="<?php echo vipub_link($row["username"]."/status/".$row["p_id"]); ?>">
+                    <span class="this-post-reply-count" data-xclone-url="<?php echo xclone_link($row["username"]."/status/".$row["p_id"]); ?>">
                         <?php echo $row["reply"]; ?> 
-                        <?php echo vipub_translate("post_details_bottom_timeline_4"); ?>
+                        <?php echo xclone_translate("post_details_bottom_timeline_4"); ?>
                     </span>
                 </div>
             <?php endif; ?>
 
             
-                <div class="in-posting-for-me-reply vipubbox-reply<?php echo $row["p_id"]; ?>" data-pid="<?php echo $row["p_id"]; ?>">
+                <div class="in-posting-for-me-reply xclonebox-reply<?php echo $row["p_id"]; ?>" data-pid="<?php echo $row["p_id"]; ?>">
                     <?php if($row["reply_status"]=="1"): ?>     
                     <span>
                         <i class="bi bi-emoji-smile"></i>
                     </span>
-                    <textarea placeholder="<?php echo vipub_translate("timeline_new_reply_popup_3"); ?>"></textarea>
+                    <textarea placeholder="<?php echo xclone_translate("timeline_new_reply_popup_3"); ?>"></textarea>
                     <?php else: ?>
-                        <textarea style="font-size: 14px; text-align:center;" disabled placeholder="<?php echo vipub_translate("set_new_post_privacy_3"); ?>"></textarea>
+                        <textarea style="font-size: 14px; text-align:center;" disabled placeholder="<?php echo xclone_translate("set_new_post_privacy_3"); ?>"></textarea>
                     <?php endif; ?>
                 </div>
             
@@ -240,10 +240,10 @@ $(document).ready(function() {
     document.execCommand("copy");
     document.body.removeChild(textarea);
 
-    var vipubSM_msgIcon = '<i class="bi bi-clipboard2-check-fill"></i>';
-    var vipubSM_msgText = "<?php echo vipub_translate("post_select_dropdown_5"); ?>";
-    var vipubSM_alertTimeout = 3000;
-    vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+    var xcloneSM_msgIcon = '<i class="bi bi-clipboard2-check-fill"></i>';
+    var xcloneSM_msgText = "<?php echo xclone_translate("post_select_dropdown_5"); ?>";
+    var xcloneSM_alertTimeout = 3000;
+    xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
   });
 });
 </script>
@@ -275,14 +275,14 @@ $(document).ready(function() {
     var postId = $(this).data("post-id");
 
     Swal.fire({
-        title: '<?php echo vipub_translate("delete_your_post"); ?>',
-        text: "<?php echo vipub_translate("delete_your_post_2"); ?>",
+        title: '<?php echo xclone_translate("delete_your_post"); ?>',
+        text: "<?php echo xclone_translate("delete_your_post_2"); ?>",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#F4212D',
         cancelButtonColor: '#0f1419',
-        confirmButtonText: '<?php echo vipub_translate("delete"); ?>',
-        cancelButtonText: '<?php echo vipub_translate("cancel"); ?>'
+        confirmButtonText: '<?php echo xclone_translate("delete"); ?>',
+        cancelButtonText: '<?php echo xclone_translate("cancel"); ?>'
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -296,10 +296,10 @@ $(document).ready(function() {
                                 $(this).remove();
                             });
                         }, 2000);
-                        var vipubSM_msgIcon = '<i class="bi bi-check-circle-fill"></i>';
-                        var vipubSM_msgText = '<?php echo vipub_translate("post_success_delete"); ?>';
-                        var vipubSM_alertTimeout = 5000;
-                        vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                        var xcloneSM_msgIcon = '<i class="bi bi-check-circle-fill"></i>';
+                        var xcloneSM_msgText = '<?php echo xclone_translate("post_success_delete"); ?>';
+                        var xcloneSM_alertTimeout = 5000;
+                        xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
                     }
                 },
                 error: function() {
@@ -471,33 +471,33 @@ $(document).ready(function() {
 
 <script>
     $(document).ready(function() {
-        $(".vipubbox-img<?php echo $row["p_id"]; ?>").click(function(e) {
+        $(".xclonebox-img<?php echo $row["p_id"]; ?>").click(function(e) {
             e.stopPropagation();
-            $(".vipubbox-overlay").remove();
+            $(".xclonebox-overlay").remove();
 
-            var largeImageSrc = $(this).data("vipubimage");
+            var largeImageSrc = $(this).data("xcloneimage");
 
-            var vipublightboxHTML = '<div class="vipubbox-overlay">';
-            vipublightboxHTML += ' <span class="close-vipublight-box"><i class="bi bi-x-lg"></i></span>';
+            var xclonelightboxHTML = '<div class="xclonebox-overlay">';
+            xclonelightboxHTML += ' <span class="close-xclonelight-box"><i class="bi bi-x-lg"></i></span>';
 
-            vipublightboxHTML += '<div class="vipubbox-content">';
-            vipublightboxHTML += '<img src="' + largeImageSrc + '">';
-            vipublightboxHTML += '<div class="vipubbox-image-content-post-info-buttons">';
-            vipublightboxHTML += '</div>'; // .vipubbox-image-content-post-info-buttons
-            vipublightboxHTML += '</div>'; // .vipubbox-content
-            vipublightboxHTML += '</div>'; // .vipubbox-overlay
+            xclonelightboxHTML += '<div class="xclonebox-content">';
+            xclonelightboxHTML += '<img src="' + largeImageSrc + '">';
+            xclonelightboxHTML += '<div class="xclonebox-image-content-post-info-buttons">';
+            xclonelightboxHTML += '</div>'; // .xclonebox-image-content-post-info-buttons
+            xclonelightboxHTML += '</div>'; // .xclonebox-content
+            xclonelightboxHTML += '</div>'; // .xclonebox-overlay
 
-            $("body").append(vipublightboxHTML);
+            $("body").append(xclonelightboxHTML);
 
-        $(".close-vipublight-box").click(function(e) {
+        $(".close-xclonelight-box").click(function(e) {
             e.stopPropagation();
-            $(this).closest(".vipubbox-overlay").remove();
+            $(this).closest(".xclonebox-overlay").remove();
         });
     });
     $(document).click(function(e) {
-        var vipubbox = $(".vipubbox-overlay");
-        if (!vipubbox.is(e.target) && vipubbox.has(e.target).length === 0) {
-            vipubbox.remove();
+        var xclonebox = $(".xclonebox-overlay");
+        if (!xclonebox.is(e.target) && xclonebox.has(e.target).length === 0) {
+            xclonebox.remove();
         }
     });
 });
@@ -505,25 +505,25 @@ $(document).ready(function() {
 
 <?php if(!isset($_SESSION["user_id"])): ?>
     <script>
-            $('.vipubbox-reply<?php echo $row["p_id"]; ?>').on('click', function(event) {
+            $('.xclonebox-reply<?php echo $row["p_id"]; ?>').on('click', function(event) {
             event.preventDefault();
-            var vipubSM_msgIcon = '<i class="bi bi-exclamation-triangle"></i>';
-            var vipubSM_msgText = '<?php echo vipub_translate("timeline_new_reply_popup_no_user_session"); ?>';
-            var vipubSM_alertTimeout = 3000;
-            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            var xcloneSM_msgIcon = '<i class="bi bi-exclamation-triangle"></i>';
+            var xcloneSM_msgText = '<?php echo xclone_translate("timeline_new_reply_popup_no_user_session"); ?>';
+            var xcloneSM_alertTimeout = 3000;
+            xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
         });
     </script>
 <?php endif; ?>
 
 <script>
-    const lazyImages = document.querySelectorAll('.vipubbox-img');
+    const lazyImages = document.querySelectorAll('.xclonebox-img');
 
     const lazyLoad = target => {
         const io = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    const src = img.getAttribute('data-vipubimage');
+                    const src = img.getAttribute('data-xcloneimage');
 
                     if (!img.src) {
                         img.setAttribute('src', src);
@@ -550,10 +550,10 @@ $(document).ready(function() {
                 icon.removeClass("unretweet-class");
                 icon.removeClass("bi-arrow-left-right");
                 icon.addClass("bi bi-arrow-left-right");
-                var vipubSM_msgIcon = '<i class="bi bi-arrow-left-right"></i>';
-                var vipubSM_msgText = "The retweet has been withdrawn.";
-                var vipubSM_alertTimeout = 700;
-                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                var xcloneSM_msgIcon = '<i class="bi bi-arrow-left-right"></i>';
+                var xcloneSM_msgText = "The retweet has been withdrawn.";
+                var xcloneSM_alertTimeout = 700;
+                xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
             } else {
                 icon.addClass("unretweet-class");
                 icon.removeClass("bi-arrow-left-right");

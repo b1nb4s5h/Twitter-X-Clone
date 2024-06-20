@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"])) {
   header("Location: /welcome");
@@ -7,7 +7,7 @@ if (!isset($_SESSION["user_id"])) {
 }
 
 $post_id = mysqli_real_escape_string($conn, $_POST['post_id']);
-$post_type_query = "SELECT post_type, reply_post_id, content_post FROM vipub_posts WHERE p_id = '$post_id'"; // content_post sütunu da sorguda
+$post_type_query = "SELECT post_type, reply_post_id, content_post FROM xclone_posts WHERE p_id = '$post_id'"; // content_post sütunu da sorguda
 $post_type_result = mysqli_query($conn, $post_type_query);
 $post_type_row = mysqli_fetch_assoc($post_type_result);
 $post_type = $post_type_row['post_type'];
@@ -15,7 +15,7 @@ $reply_post_id = $post_type_row['reply_post_id'];
 $content_post = $post_type_row['content_post']; // content_post değeri değişkene atanıyor
 
 // Silme işlemi
-$sql = "DELETE FROM vipub_posts WHERE p_id = ?";
+$sql = "DELETE FROM xclone_posts WHERE p_id = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "i", $post_id);
 
@@ -33,7 +33,7 @@ if (mysqli_stmt_execute($stmt)) {
                 $hashtag_name = substr($hashtag, 1); // "#" sembolü çıkartılıyor
             }
 
-            $query = "SELECT * FROM vipub_hashtag WHERE htag = ?";
+            $query = "SELECT * FROM xclone_hashtag WHERE htag = ?";
             $stmt = mysqli_prepare($conn, $query);
             mysqli_stmt_bind_param($stmt, "s", $hashtag_name);
             mysqli_stmt_execute($stmt);
@@ -41,13 +41,13 @@ if (mysqli_stmt_execute($stmt)) {
             $result = mysqli_stmt_get_result($stmt);
             if (mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
-                $update_query = "UPDATE vipub_hashtag SET total_post = total_post - 1 WHERE htag = '$hashtag_name'";
+                $update_query = "UPDATE xclone_hashtag SET total_post = total_post - 1 WHERE htag = '$hashtag_name'";
                 if (!mysqli_query($conn, $update_query)) {
                     echo "Error updating total_post count: " . mysqli_error($conn);
                 }
                 $total_post = $row['total_post'] - 1;
                 if ($total_post == 0) { // Kullanım sayısı sıfır ise etiket tamamen siliniyor
-                    $delete_query = "DELETE FROM vipub_hashtag WHERE htag = '$hashtag_name'";
+                    $delete_query = "DELETE FROM xclone_hashtag WHERE htag = '$hashtag_name'";
                     if (!mysqli_query($conn, $delete_query)) {
                         echo "Error deleting hashtag: " . mysqli_error($conn);
                     }
@@ -58,7 +58,7 @@ if (mysqli_stmt_execute($stmt)) {
 
     // Yanıt sayısı güncellemesi
     if ($post_type == 'reply' && !empty($reply_post_id)) {
-        $update_query = "UPDATE vipub_posts SET reply = reply - 1 WHERE p_id = '$reply_post_id'";
+        $update_query = "UPDATE xclone_posts SET reply = reply - 1 WHERE p_id = '$reply_post_id'";
         if (!mysqli_query($conn, $update_query)) {
             echo "Error updating reply count: " . mysqli_error($conn);
         }

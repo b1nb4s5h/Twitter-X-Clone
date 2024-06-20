@@ -1,7 +1,7 @@
 <script>
     $('.VPSM-social').click(function() {
-        var vipubUrl = $(this).data('vipub-url');
-        window.location.href = vipubUrl;
+        var xcloneUrl = $(this).data('xclone-url');
+        window.location.href = xcloneUrl;
     });
 
     <?php if(isset($_SESSION["user_id"])): ?>
@@ -13,14 +13,14 @@
                 if (event.keyCode === 13) {
                 var searchValue = searchInput.val();
                 if (searchValue.length >= 2) {
-                    window.location.href = "<?php echo vipub_link("explore?q="); ?>" + searchValue;
+                    window.location.href = "<?php echo xclone_link("explore?q="); ?>" + searchValue;
                 }
                 } else {
                 var searchValue = $(this).val();
                 if (searchValue.length >= 2) {
                     $.ajax({
                     type: "POST",
-                    url: "<?php echo vipub_ajax_query('vipub/native_api/rsbr-search'); ?>",
+                    url: "<?php echo xclone_ajax_query('xclone/native_api/rsbr-search'); ?>",
                     data: { search: searchValue },
                     success: function(response) {
                         searchResults.html(response);
@@ -57,7 +57,7 @@
 
     function fetchPosts() {
         $.ajax({
-            url: '<?php echo vipub_ajax_query("/apps/ajax/rsbr-tofollow.php"); ?>',
+            url: '<?php echo xclone_ajax_query("/apps/ajax/rsbr-tofollow.php"); ?>',
             success: function(response) {
                 $('#rsbr-tofollow-algoritmic').html(response);
             }

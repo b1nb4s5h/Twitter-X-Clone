@@ -1,10 +1,10 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 if (isset($_GET['uname'])) {
     $username = $_GET['uname'];
-    $sql = "SELECT p.*, u.* FROM vipub_repost r
-            LEFT JOIN vipub_posts p ON r.repost_post_id = p.p_id
-            LEFT JOIN vipub_users u ON p.user_id = u.id
+    $sql = "SELECT p.*, u.* FROM xclone_repost r
+            LEFT JOIN xclone_posts p ON r.repost_post_id = p.p_id
+            LEFT JOIN xclone_users u ON p.user_id = u.id
             WHERE r.repost_user_id = ? 
             AND (p.post_type = 'post' OR p.post_type = 'post_image' OR p.post_type = 'post_video' OR content_gif IS NOT NULL) 
             ORDER BY r.reposted_at DESC";
@@ -27,14 +27,14 @@ if (isset($_GET['uname'])) {
               <div class="this-post-user-retweeted user-profile-quote-title">
                 <span>
                     <i class="bi bi-repeat-1"></i>
-                    '.vipub_translate("this_is_a_post_retweet_1").'
+                    '.xclone_translate("this_is_a_post_retweet_1").'
                 </span>
               </div>
             ';
           require("../../../themes/default/apps/timeline/content.phtml");
         }
       } else {
-        vipub_template("profile/include/no-post");
+        xclone_template("profile/include/no-post");
       }
     } else {
       die("Hata: " . mysqli_error($conn));

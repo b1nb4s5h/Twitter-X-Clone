@@ -1,11 +1,11 @@
-<?php $settings = vipub_site_settings(); 
+<?php $settings = xclone_site_settings(); 
 error_reporting(E_ALL); ?>
 <main id="main" class="main">
     <div class="pagetitle mb-4 mt-2">
       <h1>Change Logos and Favicon</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Settings</li>
           <li class="breadcrumb-item active">Logos and Favicon</li>
         </ol>
@@ -22,7 +22,7 @@ error_reporting(E_ALL); ?>
                     <div class="row mb-3" style="padding: 15px; background: #F5F8FD; border-radius: 7px;">
                         <div class="col-4 text-center">
                             <div>
-                                <img style="width: 80px; height: 80px;" src="<?php echo vipub_link($settings["site_white_logo"]); ?>">
+                                <img style="width: 80px; height: 80px;" src="<?php echo xclone_link($settings["site_white_logo"]); ?>">
                             </div>
                         </div>
 
@@ -50,7 +50,7 @@ error_reporting(E_ALL); ?>
                         <div class="row mb-3" style="padding: 15px; background: #F5F8FD; border-radius: 7px;">
                             <div class="col-4 text-center">
                                 <div>
-                                    <img style="width: 80px; height: 80px;" src="<?php echo vipub_link($settings["site_favicon"]); ?>">
+                                    <img style="width: 80px; height: 80px;" src="<?php echo xclone_link($settings["site_favicon"]); ?>">
                                 </div>
                             </div>
 
@@ -83,7 +83,7 @@ error_reporting(E_ALL); ?>
                 <div class="row mb-3" style="padding: 15px; background: #0f1419; border-radius: 7px; color: #fff;">
                     <div class="col-4 text-center">
                         <div>
-                            <img style="width: 80px; height: 80px;" src="<?php echo vipub_link($settings["site_dark_logo"]); ?>">
+                            <img style="width: 80px; height: 80px;" src="<?php echo xclone_link($settings["site_dark_logo"]); ?>">
                         </div>
                     </div>
 
@@ -112,7 +112,7 @@ error_reporting(E_ALL); ?>
                     You can change the logos and favicon of your site, which you will show to your users by default (White) and dark themes, via this area.
                     <br><br>
                     <small style="padding: 0; margin:0px;"><strong>Remember</strong> that your new logo and favicon items that you will choose and upload will be viewable by all users after clicking the button.</small>
-                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                    <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                         <button type="submit" style="position: relative; top: 15px; width: 100% !important; border-radius: 50px; font-weight: 700 !important; font-size:14px;" class="btn btn-success" 
                         name="saveLogoFavicon">
                         Save Logo & Favicon
@@ -170,7 +170,7 @@ if(isset($_POST['saveLogoFavicon'])) {
                 $site_white_logo = $upload_dir . $new_file_name;
 
                 // Site ayarları güncelleme
-                $sql = "UPDATE vipub_settings SET site_white_logo = '$site_white_logo' WHERE id = 1";
+                $sql = "UPDATE xclone_settings SET site_white_logo = '$site_white_logo' WHERE id = 1";
                 if(mysqli_query($conn, $sql)) {
                     ?>
                     <script>
@@ -223,7 +223,7 @@ if(isset($_POST['saveLogoFavicon'])) {
                 $site_dark_logo = $upload_dir . $new_file_name;
 
                 // Site ayarları güncelleme
-                $sql = "UPDATE vipub_settings SET site_dark_logo = '$site_dark_logo' WHERE id = 1";
+                $sql = "UPDATE xclone_settings SET site_dark_logo = '$site_dark_logo' WHERE id = 1";
                 if(mysqli_query($conn, $sql)) {
                     ?>
                     <script>
@@ -275,7 +275,7 @@ if(isset($_POST['saveLogoFavicon'])) {
                 $site_favicon = $upload_dir . $new_file_name;
 
                 // Site ayarları güncelleme
-                $sql = "UPDATE vipub_settings SET site_favicon = '$site_favicon' WHERE id = 1";
+                $sql = "UPDATE xclone_settings SET site_favicon = '$site_favicon' WHERE id = 1";
                 if(mysqli_query($conn, $sql)) {
                     ?>
                     <script>

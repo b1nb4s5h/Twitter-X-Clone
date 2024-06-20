@@ -1,16 +1,16 @@
-<div class="right-sidebar-live-search-container" data-vipub-url="<?php echo vipub_link("@".$row["username"]); ?>">
+<div class="right-sidebar-live-search-container" data-xclone-url="<?php echo xclone_link("@".$row["username"]); ?>">
     <div class="livesearch-user-info">
-        <a href="<?php echo vipub_link("@".$row["username"]); ?>">
-            <img src="<?php echo vipub_link($row["avatar"]); ?>">
+        <a href="<?php echo xclone_link("@".$row["username"]); ?>">
+            <img src="<?php echo xclone_link($row["avatar"]); ?>">
         </a>
         <h5><?php echo $row["username"]; ?>
             <?php if($row["verified"]=="1"): ?>
-                <?php echo vipub_userBlue(); ?>
+                <?php echo xclone_userBlue(); ?>
             <?php endif; ?>
         </h5>
         <p>
             <span><?php echo $row["fullname"]; ?> • </span>
-            <small><?php echo $row["followers"]; ?> <?php echo vipub_translate("my_followers"); ?></small>
+            <small><?php echo $row["followers"]; ?> <?php echo xclone_translate("my_followers"); ?></small>
         </p>
     </div>
 </div>

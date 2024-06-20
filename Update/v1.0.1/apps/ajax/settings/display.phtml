@@ -1,14 +1,14 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"])) {
-  vipub_redirect("/welcome/login");
+  xclone_redirect("/welcome/login");
   exit;
 }
 
 // Kaydedilmiş tema ayarını yükle
 $user_id = $_SESSION["user_id"];
-$sql = "SELECT theme_color FROM vipub_users WHERE id = ?";
+$sql = "SELECT theme_color FROM xclone_users WHERE id = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "i", $user_id);
 mysqli_stmt_execute($stmt);

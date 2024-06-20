@@ -4,7 +4,7 @@
       <h1>List of tweets</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Tweet</li>
           <li class="breadcrumb-item active">List of tweets</li>
         </ol>
@@ -37,8 +37,8 @@
                 <tbody>
                 <?php
                     $sql = "SELECT p.*, u.* 
-                    FROM vipub_posts p 
-                    JOIN vipub_users u ON p.user_id = u.id 
+                    FROM xclone_posts p 
+                    JOIN xclone_users u ON p.user_id = u.id 
                     WHERE u.account_status = '0'
                     ORDER BY p.post_joined DESC";
         
@@ -52,10 +52,10 @@
                         while ($row = mysqli_fetch_assoc($result)) { 
                 ?>
                     <tr>
-                        <th scope="row"><a style="color:#0f1419 !important; font-weight: 700;" href="<?php echo vipub_link("admin_panel/edit_tweet?edit=".$row["p_id"]); ?>"><?php echo $row["p_id"]; ?></a></th>
-                        <td><?php echo vipub_croptxt($row["fullname"], 0, 15); ?></td>
-                        <td><a target="_blank" href="<?php echo vipub_link("@".$row["username"]); ?>" class="text-primary">@<?php echo $row["username"]; ?></a></td>
-                        <td><?php echo vipub_croptxt($row["content_post"], 0, 30); ?></td>
+                        <th scope="row"><a style="color:#0f1419 !important; font-weight: 700;" href="<?php echo xclone_link("admin_panel/edit_tweet?edit=".$row["p_id"]); ?>"><?php echo $row["p_id"]; ?></a></th>
+                        <td><?php echo xclone_croptxt($row["fullname"], 0, 15); ?></td>
+                        <td><a target="_blank" href="<?php echo xclone_link("@".$row["username"]); ?>" class="text-primary">@<?php echo $row["username"]; ?></a></td>
+                        <td><?php echo xclone_croptxt($row["content_post"], 0, 30); ?></td>
                         <td>
                             <?php if($row["post_type"]=="post"): ?>
                             <span class="badge bg-success">Tweet</span>
@@ -66,8 +66,8 @@
                             <?php endif; ?>
                         </td>
                         <td><?php echo date("d.m.Y - h:i:s", strtotime($row["post_joined"])); ?></td>
-                        <td><a style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo vipub_link($row["username"]."/status/".$row["p_id"]); ?>" class="text-primary">Open</a></td>
-                        <td><a style="font-weight: 800; color: red !important;" href="<?php echo vipub_link("admin_panel/edit_tweet?edit=".$row["p_id"]); ?>" class="text-primary">Edit</a></td>
+                        <td><a style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo xclone_link($row["username"]."/status/".$row["p_id"]); ?>" class="text-primary">Open</a></td>
+                        <td><a style="font-weight: 800; color: red !important;" href="<?php echo xclone_link("admin_panel/edit_tweet?edit=".$row["p_id"]); ?>" class="text-primary">Edit</a></td>
                     </tr>
                     
                     <?php } } } ?>

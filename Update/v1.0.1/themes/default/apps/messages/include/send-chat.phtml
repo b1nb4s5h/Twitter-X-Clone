@@ -1,14 +1,14 @@
-<?php $settings = vipub_site_settings(); vipub_template("main/sidebar/left-sidebar"); ?>
+<?php $settings = xclone_site_settings(); xclone_template("main/sidebar/left-sidebar"); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         
         <div class="site-header-box">
-            <h5 data-vipub-url="<?php echo vipub_link("messages"); ?>">
+            <h5 data-xclone-url="<?php echo xclone_link("messages"); ?>">
             <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-            <?php echo vipub_translate("messages"); ?></h5>
+            <?php echo xclone_translate("messages"); ?></h5>
         </div>
         
-        <div class="vipub-user-message-container">
+        <div class="xclone-user-message-container">
             <div id="chat-container">
                 <div id="message-container"></div>
             </div>
@@ -16,7 +16,7 @@
 
         <div class="chat-container-new-message">
             <form id="message-form">
-                <textarea id="message-input" placeholder="<?php echo vipub_translate("text_your_message"); ?>"></textarea>
+                <textarea id="message-input" placeholder="<?php echo xclone_translate("text_your_message"); ?>"></textarea>
                 <button type="submit">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M2.504 21.866l.526-2.108C3.04 19.719 4 15.823 4 12s-.96-7.719-.97-7.757l-.527-2.109L22.236 12 2.504 21.866zM5.981 13c-.072 1.962-.34 3.833-.583 5.183L17.764 12 5.398 5.818c.242 1.349.51 3.221.583 5.183H10v2H5.981z"></path></g></svg>
                 </button>
@@ -38,7 +38,7 @@ function sendMessage(message, receiver_id) {
   if (!message.trim()) {
     new Noty({
       type: 'error',
-      text: '<?php echo vipub_translate("trim_no_message_1"); ?>',
+      text: '<?php echo xclone_translate("trim_no_message_1"); ?>',
       timeout: 1500
     }).show();
     submitBtn.prop('disabled', false);
@@ -66,11 +66,11 @@ function sendMessage(message, receiver_id) {
     success: function(response) {
       $('#message-input').val('');
 
-      toastr.success("<?php echo vipub_translate('trim_no_message_2'); ?>", "", { timeOut: 1000 });
+      toastr.success("<?php echo xclone_translate('trim_no_message_2'); ?>", "", { timeOut: 1000 });
       submitBtn.prop('disabled', false);
     },
     error: function() {
-      alert('<?php echo vipub_translate("trim_no_message_3"); ?>');
+      alert('<?php echo xclone_translate("trim_no_message_3"); ?>');
       submitBtn.prop('disabled', false);
     }
   });
@@ -83,7 +83,7 @@ function sendMessage(message, receiver_id) {
     data: { receiver_id: receiver_id },
     dataType: 'html',
     success: function(response) {
-      var container = $('.vipub-user-message-container');
+      var container = $('.xclone-user-message-container');
       var scrollHeightBefore = container.prop('scrollHeight');
       container.html(response);
 
@@ -118,10 +118,10 @@ function sendMessage(message, receiver_id) {
     var message = $('#message-input').val();
     var receiver_id = <?php echo $_GET['row']; ?>;
     if (receiver_id == <?php echo $_SESSION['user_id']; ?>) {
-      window.location.href = '<?php echo vipub_link("messages"); ?>';
+      window.location.href = '<?php echo xclone_link("messages"); ?>';
     } else {
       sendMessage(message, receiver_id);
     }
   });
 </script>
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>

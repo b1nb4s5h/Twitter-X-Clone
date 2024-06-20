@@ -1,15 +1,15 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"])) {
-  vipub_redirect("/welcome/login");
+  xclone_redirect("/welcome/login");
   exit;
 }
 // Seçilen tema ayarını kaydet
 if (isset($_POST["theme"])) {
     $theme = $_POST["theme"];
     $user_id = $_SESSION["user_id"];
-    $sql = "UPDATE vipub_users SET theme_color = ? WHERE id = ?";
+    $sql = "UPDATE xclone_users SET theme_color = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "si", $theme, $user_id);
     mysqli_stmt_execute($stmt);

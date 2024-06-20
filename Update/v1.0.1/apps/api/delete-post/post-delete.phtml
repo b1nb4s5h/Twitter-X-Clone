@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['user_id'])) {
@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
         $response = array(
             'error_code' => 401,
-            'error_data' => 'vipub_user_id_is_missing',
+            'error_data' => 'xclone_user_id_is_missing',
             'error_message' => 'User authentication failed!'
         );
         echo json_encode($response);
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post_id = mysqli_real_escape_string($conn, $_POST['post_id']);
 
     // Gönderi türünü ve diğer verileri alın
-    $post_type_query = "SELECT post_type, reply_post_id, content_post FROM vipub_posts WHERE p_id = '$post_id'";
+    $post_type_query = "SELECT post_type, reply_post_id, content_post FROM xclone_posts WHERE p_id = '$post_id'";
     $post_type_result = mysqli_query($conn, $post_type_query);
     $post_type_row = mysqli_fetch_assoc($post_type_result);
     $post_type = $post_type_row['post_type'];
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content_post = $post_type_row['content_post'];
 
     // Gönderiyi silme işlemini gerçekleştirin
-    $sql = "DELETE FROM vipub_posts WHERE p_id = ?";
+    $sql = "DELETE FROM xclone_posts WHERE p_id = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $post_id);
 
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $hashtag_name = substr($hashtag, 1);
                 }
 
-                $query = "SELECT * FROM vipub_hashtag WHERE htag = ?";
+                $query = "SELECT * FROM xclone_hashtag WHERE htag = ?";
                 $stmt = mysqli_prepare($conn, $query);
                 mysqli_stmt_bind_param($stmt, "s", $hashtag_name);
                 mysqli_stmt_execute($stmt);
@@ -54,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result = mysqli_stmt_get_result($stmt);
                 if (mysqli_num_rows($result) > 0) {
                     $row = mysqli_fetch_assoc($result);
-                    $update_query = "UPDATE vipub_hashtag SET total_post = total_post - 1 WHERE htag = '$hashtag_name'";
+                    $update_query = "UPDATE xclone_hashtag SET total_post = total_post - 1 WHERE htag = '$hashtag_name'";
                     if (!mysqli_query($conn, $update_query)) {
                         echo "total_post sayısı güncellenirken hata oluştu: " . mysqli_error($conn);
                     }
                     $total_post = $row['total_post'] - 1;
                     if ($total_post == 0) {
-                    $delete_query = "DELETE FROM vipub_hashtag WHERE htag = '$hashtag_name'";
+                    $delete_query = "DELETE FROM xclone_hashtag WHERE htag = '$hashtag_name'";
                     if (!mysqli_query($conn, $delete_query)) {
                     echo "Hashtag silinirken hata oluştu: " . mysqli_error($conn);
                     }
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
         // Yanıt gönderi ise ve yanıtlanan gönderi kimliği mevcutsa yanıt sayısını güncelleyin
         if ($post_type == 'reply' && !empty($reply_post_id)) {
-            $update_query = "UPDATE vipub_posts SET reply = reply - 1 WHERE p_id = '$reply_post_id'";
+            $update_query = "UPDATE xclone_posts SET reply = reply - 1 WHERE p_id = '$reply_post_id'";
             if (!mysqli_query($conn, $update_query)) {
                 echo "Yanıt sayısı güncellenirken hata oluştu: " . mysqli_error($conn);
             }
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $response = array(
         'error_code' => 405,
-        'error_data' => 'vipub_invalid_post_deletion',
+        'error_data' => 'xclone_invalid_post_deletion',
         'error_message' => 'You have requested an invalid post deletion!'
     );
 

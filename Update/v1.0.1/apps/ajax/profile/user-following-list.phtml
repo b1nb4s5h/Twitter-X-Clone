@@ -1,14 +1,14 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if(!isset($_SESSION["user_id"])){
     header("Location: /welcome/login");
 }
 
 $uname = htmlspecialchars(trim($_GET["username"]));
-$sql = "SELECT u.fullname, u.username, u.avatar, u.user_bio, u.verified, f.user_id FROM vipub_users u JOIN vipub_follow f ON u.id = f.user_id WHERE f.follower_id = '$uname'";
+$sql = "SELECT u.fullname, u.username, u.avatar, u.user_bio, u.verified, f.user_id FROM xclone_users u JOIN xclone_follow f ON u.id = f.user_id WHERE f.follower_id = '$uname'";
 
 
 $result = mysqli_query($conn, $sql);

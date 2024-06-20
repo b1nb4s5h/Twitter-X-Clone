@@ -1,9 +1,9 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 $user_id_post = mysqli_real_escape_string($conn, $_POST['user_id']);
 
-$sql = "SELECT COUNT(*) as total_post_count FROM vipub_posts WHERE user_id = '$user_id_post' AND (post_type = 'post' OR post_type = 'post_video') ";
+$sql = "SELECT COUNT(*) as total_post_count FROM xclone_posts WHERE user_id = '$user_id_post' AND (post_type = 'post' OR post_type = 'post_video') ";
 $result = $conn->query($sql);
 
 $response = array();

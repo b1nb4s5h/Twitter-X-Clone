@@ -1,12 +1,12 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 $tweet_id = $_GET["tweet_id"];
 
 $sql = "SELECT p.*, u.*, rep.*
-        FROM vipub_repost rep
-        JOIN vipub_users u ON rep.repost_user_id = u.id
-        JOIN vipub_posts p ON rep.repost_post_id = p.p_id
+        FROM xclone_repost rep
+        JOIN xclone_users u ON rep.repost_user_id = u.id
+        JOIN xclone_posts p ON rep.repost_post_id = p.p_id
         WHERE rep.repost_post_id = ? AND p.p_id = ?
         ORDER BY rep.reposted_at DESC";
         $stmt = mysqli_prepare($conn, $sql);
@@ -20,7 +20,7 @@ $sql = "SELECT p.*, u.*, rep.*
             }
         } 
         else {
-            vipub_template("timeline/include/page/not-repost");
+            xclone_template("timeline/include/page/not-repost");
         }
     } else {
     die("Error: " . mysqli_error($conn));

@@ -1,87 +1,87 @@
 <?php if(isset($_SESSION["user_id"])): ?>
 <?php $app = isset($_GET['app']) ? $_GET['app'] : 'home';?>
-<?php $mobile = vipub_my_user_info(); ?>
+<?php $mobile = xclone_my_user_info(); ?>
 <div class="mobile-top-menu">
     <a id="mobile-left-sidebar">
-        <img src="<?php echo vipub_link($mobile["avatar"]); ?>">
+        <img src="<?php echo xclone_link($mobile["avatar"]); ?>">
     </a>
-    <a href="<?php echo vipub_site_url("home"); ?>">
+    <a href="<?php echo xclone_site_url("home"); ?>">
         <i class="bi bi-house-door <?php echo ($app == 'home') ? 'menu-active' : ''; ?>"></i>
     </a>
-    <a href="<?php echo vipub_site_url("search"); ?>">
+    <a href="<?php echo xclone_site_url("search"); ?>">
         <i class="bi bi-search <?php echo ($app == 'search') ? 'menu-active' : ''; ?>"></i>
     </a>
-    <a href="<?php echo vipub_site_url("notifications"); ?>" class="<?php echo ($app == 'notifications') ? 'menu-active' : ''; ?>">
+    <a href="<?php echo xclone_site_url("notifications"); ?>" class="<?php echo ($app == 'notifications') ? 'menu-active' : ''; ?>">
         <span id="user-notifications"></span>
         <i class="bi bi-bell <?php echo ($app == 'notifications') ? 'menu-active' : ''; ?>"></i>
     </a>
-    <a href="<?php echo vipub_site_url("messages"); ?>">
+    <a href="<?php echo xclone_site_url("messages"); ?>">
         <span id="user-messages"></span>
         <i class="bi bi-envelope <?php echo ($app == 'messages') ? 'menu-active' : ''; ?>"></i>
     </a>
 </div>
 <div id="display-mobile-left-sidebar">
     <div class="mobile-menu-title">
-        <h5><?php echo vipub_translate("account_information"); ?></h5>
+        <h5><?php echo xclone_translate("account_information"); ?></h5>
     </div>
   <div class="menu-top-user-info">
-    <a href="<?php echo vipub_link("@".$mobile["username"]); ?>" id="mobile-left-sidebar">
-        <img src="<?php echo vipub_link($mobile["avatar"]); ?>">
+    <a href="<?php echo xclone_link("@".$mobile["username"]); ?>" id="mobile-left-sidebar">
+        <img src="<?php echo xclone_link($mobile["avatar"]); ?>">
     </a>
-    <a href="<?php echo vipub_link("@".$mobile["username"]); ?>" id="mobile-left-sidebar">
+    <a href="<?php echo xclone_link("@".$mobile["username"]); ?>" id="mobile-left-sidebar">
        <h5><?php echo $mobile["fullname"]; ?></h5>
     </a>
-    <a href="<?php echo vipub_link("@".$mobile["username"]); ?>" id="mobile-left-sidebar">
+    <a href="<?php echo xclone_link("@".$mobile["username"]); ?>" id="mobile-left-sidebar">
        <span>@<?php echo $mobile["username"]; ?></span>
     </a>
     <div class="mobile-menu-user-follow-info">
-        <a href="<?php echo vipub_link($mobile["username"]."/following/".$mobile["id"]); ?>">
-            <span><strong><?php echo $mobile["following"]; ?></strong><?php echo vipub_translate("my_following"); ?></span>
+        <a href="<?php echo xclone_link($mobile["username"]."/following/".$mobile["id"]); ?>">
+            <span><strong><?php echo $mobile["following"]; ?></strong><?php echo xclone_translate("my_following"); ?></span>
         </a>
-        <a href="<?php echo vipub_link($mobile["username"]."/followers/".$mobile["id"]); ?>">
-            <span><strong><?php echo $mobile["followers"]; ?></strong><?php echo vipub_translate("my_followers"); ?></span>
+        <a href="<?php echo xclone_link($mobile["username"]."/followers/".$mobile["id"]); ?>">
+            <span><strong><?php echo $mobile["followers"]; ?></strong><?php echo xclone_translate("my_followers"); ?></span>
         </a>
     </div>
     <div class="mobile-left-page-menu">
-        <a href="<?php echo vipub_site_url("home"); ?>">
+        <a href="<?php echo xclone_site_url("home"); ?>">
             <h5>
-                <i class="bi bi-house-door <?php echo ($app == 'home') ? 'menu-active' : ''; ?>"></i><?php echo vipub_translate("homepage"); ?>
+                <i class="bi bi-house-door <?php echo ($app == 'home') ? 'menu-active' : ''; ?>"></i><?php echo xclone_translate("homepage"); ?>
             </h5>
         </a>
 
-        <a href="<?php echo vipub_site_url("search"); ?>">
+        <a href="<?php echo xclone_site_url("search"); ?>">
             <h5>
                 <i class="bi bi-search <?php echo ($app == 'search') ? 'menu-active' : ''; ?>"></i>
-                <?php echo vipub_translate("search"); ?>
+                <?php echo xclone_translate("search"); ?>
             </h5>
         </a>
 
-        <a href="<?php echo vipub_site_url("notifications"); ?>">
+        <a href="<?php echo xclone_site_url("notifications"); ?>">
             <h5>
                 <i class="bi bi-bell <?php echo ($app == 'notifications') ? 'menu-active' : ''; ?>"></i>
-                <?php echo vipub_translate("notifications"); ?>
+                <?php echo xclone_translate("notifications"); ?>
             </h5>
         </a>
 
-        <a href="<?php echo vipub_site_url("messages"); ?>">
+        <a href="<?php echo xclone_site_url("messages"); ?>">
             <h5>
                 <i class="bi bi-envelope <?php echo ($app == 'messages') ? 'menu-active' : ''; ?>"></i>
-                <?php echo vipub_translate("messages"); ?>
+                <?php echo xclone_translate("messages"); ?>
             </h5>
         </a>
 
 
-        <a href="<?php echo vipub_site_url("@".$mobile["username"]); ?>">
+        <a href="<?php echo xclone_site_url("@".$mobile["username"]); ?>">
             <h5>
                 <i class="bi bi-person"></i>
-                <?php echo vipub_translate("profile"); ?>
+                <?php echo xclone_translate("profile"); ?>
             </h5>
         </a>
     </div>
 
     <div class="menu-left-extra-mobile">
         <?php if($mobile["admin_status"]==1): ?>
-        <a href="<?php echo vipub_site_url("admin_panel"); ?>">
+        <a href="<?php echo xclone_site_url("admin_panel"); ?>">
             <h5>
                 <i class="bi bi-sliders"></i>
                 Admin panel
@@ -89,29 +89,29 @@
         </a>
         <?php endif; ?>
 
-        <a href="<?php echo vipub_site_url("settings"); ?>">
+        <a href="<?php echo xclone_site_url("settings"); ?>">
             <h5>
                 <i class="bi bi-gear"></i>
-                <?php echo vipub_translate("mobile_menu_left_sidebar_1"); ?>
+                <?php echo xclone_translate("mobile_menu_left_sidebar_1"); ?>
             </h5>
         </a>
 
-        <a href="<?php echo vipub_site_url("help-center"); ?>">
+        <a href="<?php echo xclone_site_url("help-center"); ?>">
             <h5>
                  <i class="bi bi-patch-question"></i>
-                 <?php echo vipub_translate("mobile_menu_left_sidebar_2"); ?>
+                 <?php echo xclone_translate("mobile_menu_left_sidebar_2"); ?>
             </h5>
         </a>
 
-        <a href="<?php echo vipub_site_url("settings/display"); ?>">
+        <a href="<?php echo xclone_site_url("settings/display"); ?>">
             <h5>
                 <i class="bi bi-pencil-square"></i>
-                <?php echo vipub_translate("mobile_menu_left_sidebar_3"); ?>
+                <?php echo xclone_translate("mobile_menu_left_sidebar_3"); ?>
             </h5>
         </a>
 
-        <a href="<?php echo vipub_site_url("logout"); ?>">
-            <span>@<?php echo $mobile["username"]; ?> <?php echo vipub_translate("mobile_menu_left_sidebar_4"); ?></span>
+        <a href="<?php echo xclone_site_url("logout"); ?>">
+            <span>@<?php echo $mobile["username"]; ?> <?php echo xclone_translate("mobile_menu_left_sidebar_4"); ?></span>
         </a>
     </div>
   </div>

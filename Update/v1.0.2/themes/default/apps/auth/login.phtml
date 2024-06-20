@@ -1,5 +1,5 @@
-<link href="<?php echo vipub_template_master("style/welcome.theme.css"); ?>" rel="stylesheet">
-<link href="<?php echo vipub_template_master("style/welcome.main.theme.css"); ?>" rel="stylesheet">
+<link href="<?php echo xclone_template_master("style/welcome.theme.css"); ?>" rel="stylesheet">
+<link href="<?php echo xclone_template_master("style/welcome.main.theme.css"); ?>" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -10,14 +10,14 @@
         <div class="col-lg-5 col-xl-4 p-12 p-xl-7 position-fixed start-0 top-0 h-screen overflow-y-hidden d-none d-lg-flex flex-column">
             <div class="d-lg-flex flex-column w-full h-full p-16 bg-surface-secondary rounded-5">
                 <!-- Logo -->
-                <a class="d-block" href="<?php echo vipub_link("welcome/login"); ?>">
-                    <img style="width: 60px;" src="<?php echo vipub_template_master("images/logo.png"); ?>" alt="">
+                <a class="d-block" href="<?php echo xclone_link("welcome/login"); ?>">
+                    <img style="width: 60px;" src="<?php echo xclone_template_master("images/logo.png"); ?>" alt="">
                 </a>
 
                 <!-- Title -->
                 <div class="mt-10 mt-xl-16">
                     <h1 class="lh-tight ls-tighter font-bolder display-5">
-                        <?php echo vipub_translate("welcome_page_text_2"); ?>
+                        <?php echo xclone_translate("welcome_page_text_2"); ?>
                     </h1>
                 </div>
 
@@ -219,14 +219,14 @@
 
                     <a class="navbar-brand d-flex w-full d-lg-none" href="/">
                         <div class="w-md-auto  text-dark">
-                            <img style="width: 35px;" src="<?php echo vipub_template_master("images/logo.png"); ?>" alt="">
+                            <img style="width: 35px;" src="<?php echo xclone_template_master("images/logo.png"); ?>" alt="">
                         </div>
                     </a>
 
                     <div class="mt-10 mt-lg-5 mb-6 d-flex align-items-center d-lg-block">
                         <span class="d-inline-block d-lg-block h1 mt-lg-n12 mb-lg-6 me-3">👀</span>
                         <h1 class="lh-tight ls-tighter font-bolder d-inline-block d-lg-block h2 font-bolder">
-                            <?php echo vipub_translate("welcome_page_text_1"); ?>
+                            <?php echo xclone_translate("welcome_page_text_1"); ?>
                         </h1>
                     </div>
 
@@ -235,7 +235,7 @@
                     <form id="login-form">
                         <div class="mb-5">
                             <label class="form-label" for="username">
-                                <?php echo vipub_translate("welcome_page_text_3"); ?>
+                                <?php echo xclone_translate("welcome_page_text_3"); ?>
                             </label>
                             <input class="form-control" id="username" type="text" name="username">
                         </div>
@@ -244,11 +244,11 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <label class="form-label" for="password">
-                                        <?php echo vipub_translate("welcome_page_text_4"); ?>
+                                        <?php echo xclone_translate("welcome_page_text_4"); ?>
                                     </label>
                                 </div>
                                 <div class="mb-2">
-                                    <a href="<?php echo vipub_link("welcome/refresh_password"); ?>" class="small text-muted"><?php echo vipub_translate("welcome_page_text_5"); ?></a>
+                                    <a href="<?php echo xclone_link("welcome/refresh_password"); ?>" class="small text-muted"><?php echo xclone_translate("welcome_page_text_5"); ?></a>
                                 </div>
                             </div>
                             <input class="form-control" id="password" type="password" name="password">
@@ -265,18 +265,18 @@
 
                         <div class="d-grid">
                             <button type="submit" id="login-button" class="btn btn-lg btn-dark" style="font-weight: 700; border-radius: 50px;">
-                                <?php echo vipub_translate("welcome_page_text_6"); ?>
+                                <?php echo xclone_translate("welcome_page_text_6"); ?>
                             </button>
                         </div>
 
                     </form>
 
                     <div class="my-6">
-                        <small><?php echo vipub_translate("welcome_page_text_7"); ?></small>
+                        <small><?php echo xclone_translate("welcome_page_text_7"); ?></small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<?php vipub_template("auth/script/vipub.master.script"); ?>
+<?php xclone_template("auth/script/xclone.master.script"); ?>

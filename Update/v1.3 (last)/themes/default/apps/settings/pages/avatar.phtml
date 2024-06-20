@@ -1,30 +1,30 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
-<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = xcloneConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = xclone_get_my_profile($conn, $uname); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         
         <div class="site-header-box">
             <h5>
             <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-            <?php echo vipub_translate("account_settings"); ?></h5>
+            <?php echo xclone_translate("account_settings"); ?></h5>
         </div>
 
         <div class="account-settings-page">
             
             <div class="settings-page-container">
                 <div class="settings-page-title">
-                    <h5><?php echo vipub_translate("account_information"); ?></h5>
+                    <h5><?php echo xclone_translate("account_information"); ?></h5>
                 </div>
 
                 <div class="setpage-save-info">
-                    <?php echo vipub_translate("account_settings_menu_23"); ?>
+                    <?php echo xclone_translate("account_settings_menu_23"); ?>
                 </div>
 
                 <div class="form-save-element-value">
                     <form id="change-avatar" enctype="multipart/form-data">
                         <span id="changeAvatar">
                             <img src="/<?php echo $row["avatar"]; ?>"> 
-                            <?php echo vipub_translate("account_settings_menu_24"); ?>
+                            <?php echo xclone_translate("account_settings_menu_24"); ?>
                         </span>
                         <input type="file" name="avatar" id="avatarInput" style="display:none;">
                     </form>
@@ -61,7 +61,7 @@
                 $('#changeAvatar img').attr('src', response);
                 new Noty({
                     type: 'success',
-                    text: '<?php echo vipub_translate("settings_page_save_value_desc_8"); ?>',
+                    text: '<?php echo xclone_translate("settings_page_save_value_desc_8"); ?>',
                     timeout: 2000
                 }).show();
             },
@@ -77,4 +77,4 @@
 });
 </script>
 
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>

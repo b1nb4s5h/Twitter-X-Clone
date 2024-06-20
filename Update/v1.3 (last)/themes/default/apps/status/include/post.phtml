@@ -1,17 +1,17 @@
-<?php $post_id = $row["p_id"]; $link = vipub_link($row["username"]."/status/".$post_id); ?>
-<?php $settings = vipub_site_settings(); ?>
-<?php $vipub["admin"] = vipub_my_user_info(); ?>
+<?php $post_id = $row["p_id"]; $link = xclone_link($row["username"]."/status/".$post_id); ?>
+<?php $settings = xclone_site_settings(); ?>
+<?php $xclone["admin"] = xclone_my_user_info(); ?>
 <div class="status-post-container-name" data-post-id="<?php echo $row["p_id"]; ?>">
 
     <div class="post-status-user">
-        <a href="<?php echo vipub_link("@".$row["username"]); ?>">
-            <img src="<?php echo vipub_link($row["avatar"]); ?>">
+        <a href="<?php echo xclone_link("@".$row["username"]); ?>">
+            <img src="<?php echo xclone_link($row["avatar"]); ?>">
         </a>
-        <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <a href="<?php echo xclone_link("@".$row["username"]); ?>">
             <h5>
-                <?php echo vipub_croptxt($row["username"], 0, 15); ?>
+                <?php echo xclone_croptxt($row["username"], 0, 15); ?>
                 <?php if($row["verified"]=="1"): ?>
-                    <?php echo vipub_userBlue(); ?>
+                    <?php echo xclone_userBlue(); ?>
                 <?php endif; ?>
             </h5>
         </a>
@@ -20,7 +20,7 @@
     <div class="status-post-content">
         <?php if($row["content_image"] != NULL): ?>
             <div class="status-page-content-image">
-                <img src="<?php echo vipub_link($row["content_image"]); ?>"/>
+                <img src="<?php echo xclone_link($row["content_image"]); ?>"/>
             </div>
         <?php endif; ?>
         
@@ -33,7 +33,7 @@
         <?php if($row["content_video"] != NULL): ?>
             <div class="status-page-content-video">
                 <video id="custom-video" playsinline autoplay muted>
-                    <source src="<?php echo vipub_link($row["content_video"]); ?>">
+                    <source src="<?php echo xclone_link($row["content_video"]); ?>">
                     Your browser does not support the video tag.
                 </video>
 
@@ -48,7 +48,7 @@
         <?php endif; ?>
         
         <?php if($row["content_post"]!=NULL): ?>
-            <p><strong><?php echo vipub_croptxt($row["username"], 0, 15); ?></strong> <?php echo convertVipubText($row["content_post"]); ?></p>
+            <p><strong><?php echo xclone_croptxt($row["username"], 0, 15); ?></strong> <?php echo convertxcloneText($row["content_post"]); ?></p>
         <?php endif; ?>
         
         <p class="status-post-translate-text"></p>
@@ -56,7 +56,7 @@
         <?php echo date("h:i A · d M Y", strtotime($row["post_joined"])); ?>
         <?php if($settings["translate_tweet"]=="Active"): ?>
         · 
-        <strong class="vipub-post-translate-btn" style="font-weight: 400; color: #1d9bf0;"><?php echo vipub_translate("post_translate_text_name"); ?></strong>
+        <strong class="xclone-post-translate-btn" style="font-weight: 400; color: #1d9bf0;"><?php echo xclone_translate("post_translate_text_name"); ?></strong>
         <?php endif; ?>
         <?php if($row["post_type"]=="postAds"): ?><strong style="font-weight: 400;">· Sponsored</strong><?php endif; ?></span>
     </div>
@@ -64,29 +64,29 @@
     <div class="status-post-content-selection">
         <span>
             <strong id="reply-live-count"><?php echo $row["reply"]; ?></strong>
-            <?php echo vipub_translate("status_page_post_like_reply_repost_1"); ?>
+            <?php echo xclone_translate("status_page_post_like_reply_repost_1"); ?>
         </span>
         
-        <span data-vipub-url="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>/likes">
+        <span data-xclone-url="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>/likes">
             <strong id="status-post-like"><?php echo $row["likes"]; ?></strong>
-            <?php echo vipub_translate("status_page_post_like_reply_repost_2"); ?>
+            <?php echo xclone_translate("status_page_post_like_reply_repost_2"); ?>
         </span>
 
-        <span data-vipub-url="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>/repost">
+        <span data-xclone-url="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>/repost">
             <strong id="status-post-retweet"><?php echo $row["repost"]; ?></strong>
-            <?php echo vipub_translate("status_page_post_like_reply_repost_3"); ?>
+            <?php echo xclone_translate("status_page_post_like_reply_repost_3"); ?>
         </span>
 
         <span>
             <strong id="status-post-bookmarks"><?php echo $row["bookmarks"]; ?></strong>
-            <?php echo vipub_translate("bookmarks"); ?>
+            <?php echo xclone_translate("bookmarks"); ?>
         </span>
     </div>
 
     <div class="status-post-value-select">
         <span type="button" type="button" class="statlike-btn" data-post-id="<?php echo $row["p_id"]; ?>">
             <?php if(isset($_SESSION["user_id"])): ?>
-                <?php $likeStatus = vipub_check_like($_SESSION["user_id"], $post_id); if ($likeStatus) { ?>
+                <?php $likeStatus = xclone_check_like($_SESSION["user_id"], $post_id); if ($likeStatus) { ?>
                     <i class="bi bi-heart-fill post-unlike-icon"></i>
                 <?php } else { ?>
                         <i class="bi bi-heart"></i>
@@ -98,7 +98,7 @@
 
         <?php if(isset($_SESSION["user_id"])): ?>
             <span type="button" type="button" class="statretweet-btn" data-post-id="<?php echo $row["p_id"]; ?>">
-                <?php $repostStatus = vipub_check_repost($_SESSION["user_id"], $post_id); if ($repostStatus) { ?>
+                <?php $repostStatus = xclone_check_repost($_SESSION["user_id"], $post_id); if ($repostStatus) { ?>
                     <i class="bi bi-arrow-left-right unretweet-class"></i>
                 <?php } else { ?>
                     <i class="bi bi-arrow-left-right"></i>
@@ -112,7 +112,7 @@
 
             <?php if(isset($_SESSION["user_id"])): ?>
                 <span type="button" type="button" class="statbookmarks-btn" data-post-id="<?php echo $row["p_id"]; ?>">
-                    <?php $bookmarksStatus = vipub_check_bookmarks($_SESSION["user_id"], $post_id); if ($bookmarksStatus) { ?>
+                    <?php $bookmarksStatus = xclone_check_bookmarks($_SESSION["user_id"], $post_id); if ($bookmarksStatus) { ?>
                             <i class="bi bi-bookmark-fill post-unbookmarks"></i>
                         <?php } else { ?>
                             <i class="bi bi-bookmark"></i>
@@ -134,33 +134,33 @@
                     <?php if($row["user_id"]==$_SESSION["user_id"]): ?>
                         <button type="button" class="delete-post" data-post-id="<?php echo $row["p_id"]; ?>">
                             <i class="bi bi-trash"></i>
-                            <?php echo vipub_translate("post_select_dropdown_1"); ?>
+                            <?php echo xclone_translate("post_select_dropdown_1"); ?>
                         </button>
-                    <?php elseif($vipub["admin"]["admin_status"]=="1"): ?>
+                    <?php elseif($xclone["admin"]["admin_status"]=="1"): ?>
                     <button type="button" class="delete-post" data-post-id="<?php echo $row["p_id"]; ?>">
                         <i class="bi bi-trash"></i>
-                        <?php echo vipub_translate("post_select_dropdown_1"); ?></button>
+                        <?php echo xclone_translate("post_select_dropdown_1"); ?></button>
                     <?php endif; ?>
                 <?php endif; ?>
 
                 <li>
                     <a href="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>/likes">
                         <i class="bi bi-heart"></i>
-                        <?php echo vipub_translate("post_in_view_like_page"); ?>
+                        <?php echo xclone_translate("post_in_view_like_page"); ?>
                     </a>
                 </li>
 
                 <li>
                     <a href="#">
                         <i class="bi bi-code-slash"></i>
-                        <?php echo vipub_translate("post_select_dropdown_3"); ?>
+                        <?php echo xclone_translate("post_select_dropdown_3"); ?>
                     </a>
                 </li>
 
                 <li>
                     <a class="copy_post" href="#" data-post-id="<?php echo $post_id; ?>">                   
                         <i class="bi bi-link-45deg"></i>
-                        <?php echo vipub_translate("post_select_dropdown_4"); ?>
+                        <?php echo xclone_translate("post_select_dropdown_4"); ?>
                     </a>
                 </li>
             </ul>
@@ -168,35 +168,35 @@
     </div>
 </div>
 <?php if(isset($_SESSION["user_id"])): ?>
-    <?php $my = vipub_my_user_info(); ?>
+    <?php $my = xclone_my_user_info(); ?>
         <div class="send-to-post-reply">
             <form id="reply-form" enctype="multipart/form-data">
                 <div class="post-reply-container">
-                    <a href="<?php echo vipub_link("@".$my["username"]); ?>">
-                        <img src="<?php echo vipub_link($my["avatar"]); ?>">
+                    <a href="<?php echo xclone_link("@".$my["username"]); ?>">
+                        <img src="<?php echo xclone_link($my["avatar"]); ?>">
                     </a>
                     <?php if($row["reply_status"]=="1"): ?>     
                     <input type="hidden" name="reply_post_id" value="<?php echo $row["p_id"]; ?>">
-                        <textarea name="content_post" id="content_post" placeholder="<?php echo vipub_translate("timeline_new_reply_popup_4"); ?>"></textarea>
+                        <textarea name="content_post" id="content_post" placeholder="<?php echo xclone_translate("timeline_new_reply_popup_4"); ?>"></textarea>
                         
                     <?php elseif($row["id"]==$_SESSION["user_id"]): ?>     
                         <input type="hidden" name="reply_post_id" value="<?php echo $row["p_id"]; ?>">
-                        <textarea name="content_post" id="content_post" placeholder="<?php echo vipub_translate("timeline_new_reply_popup_4"); ?>"></textarea>
+                        <textarea name="content_post" id="content_post" placeholder="<?php echo xclone_translate("timeline_new_reply_popup_4"); ?>"></textarea>
                     
                         <?php else: ?>
-                        <textarea style="font-size: 14px; background: none;" disabled placeholder="<?php echo vipub_translate("set_new_post_privacy_3"); ?>"></textarea>
+                        <textarea style="font-size: 14px; background: none;" disabled placeholder="<?php echo xclone_translate("set_new_post_privacy_3"); ?>"></textarea>
                     <?php endif; ?>
                 </div>
                     
                 <?php if($row["reply_status"]=="1"): ?> 
                     <div class="form-value-reply">
                         <span id="reply-textarea-count"><?php echo $settings["post_maxlength"]; ?></span>
-                        <button type="submit" id="reply-button"><?php echo vipub_translate("post_share"); ?></button>
+                        <button type="submit" id="reply-button"><?php echo xclone_translate("post_share"); ?></button>
                     </div>
                 <?php elseif($row["id"]==$_SESSION["user_id"]): ?> 
                     <div class="form-value-reply">
                         <span id="reply-textarea-count"><?php echo $settings["post_maxlength"]; ?></span>
-                        <button type="submit" id="reply-button"><?php echo vipub_translate("post_share"); ?></button>
+                        <button type="submit" id="reply-button"><?php echo xclone_translate("post_share"); ?></button>
                     </div>
                 <?php endif; ?>
                 
@@ -224,7 +224,7 @@
 <?php if($settings["translate_tweet"]=="Active"): ?>
 <script>
 	var isTranslated = false;
-    $('.vipub-post-translate-btn').on('click', function() {
+    $('.xclone-post-translate-btn').on('click', function() {
         if (isTranslated) return;
         var text = '<?php echo str_replace(array("\r", "\n"), "", str_replace("'", '', $row["content_post"])); ?>';
         var targetLang = navigator.language.substring(0, 2);
@@ -252,7 +252,7 @@
     });
 </script>
 <style>
-    .vipub-post-translate-btn:hover{
+    .xclone-post-translate-btn:hover{
         text-decoration: underline;
     }
 </style>
@@ -340,19 +340,19 @@
             var content = $('textarea[name="content_post"]').val();
 
             if (content.trim() == '') {
-            var vipubSM_msgIcon = '<i class="bi bi-x-circle-fill"></i>';
-            var vipubSM_msgText = '<?php echo vipub_translate("tweet_your_empty_reply_error_msg"); ?>';
-            var vipubSM_alertTimeout = 3000;
-            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            var xcloneSM_msgIcon = '<i class="bi bi-x-circle-fill"></i>';
+            var xcloneSM_msgText = '<?php echo xclone_translate("tweet_your_empty_reply_error_msg"); ?>';
+            var xcloneSM_alertTimeout = 3000;
+            xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
 
             return false;
             }
 
             if (content.length > <?php echo $settings["post_maxlength"]; ?> && !content.includes("'") && !content.includes("\"")) {
-                var vipubSM_msgIcon = '<i class="bi bi-x-circle-fill"></i>';
-                var vipubSM_msgText = '<?php echo vipub_translate("charracter_limit_not_yet"); ?>';
-                var vipubSM_alertTimeout = 2000;
-                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                var xcloneSM_msgIcon = '<i class="bi bi-x-circle-fill"></i>';
+                var xcloneSM_msgText = '<?php echo xclone_translate("charracter_limit_not_yet"); ?>';
+                var xcloneSM_alertTimeout = 2000;
+                xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
                 return false;
             }
 
@@ -360,10 +360,10 @@
             $('textarea[name="content_post"]').attr('maxlength', <?php echo $settings["post_maxlength"]; ?>);
             }
 
-            var vipubSM_msgIcon = '<i class="bi bi-reply-all-fill"></i>';
-            var vipubSM_msgText = '<?php echo vipub_translate("tweet_your_not_empty_reply_success_msg"); ?>';
-            var vipubSM_alertTimeout = 1000;
-            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            var xcloneSM_msgIcon = '<i class="bi bi-reply-all-fill"></i>';
+            var xcloneSM_msgText = '<?php echo xclone_translate("tweet_your_not_empty_reply_success_msg"); ?>';
+            var xcloneSM_alertTimeout = 1000;
+            xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
 
             $('textarea[name="content_post"]').val('');
 
@@ -425,7 +425,7 @@
 
             if (remainingChars < 0) {
             countEl.css('color', 'red');
-            countEl.text('<?php echo vipub_translate("charracter_limit_not_yet"); ?>');
+            countEl.text('<?php echo xclone_translate("charracter_limit_not_yet"); ?>');
             $('button[type="submit"]').prop('disabled', true);
             } else {
             countEl.css('color', 'inherit');
@@ -447,10 +447,10 @@ $(document).ready(function() {
     textarea.select();
     document.execCommand("copy");
     document.body.removeChild(textarea);
-    var vipubSM_msgIcon = '<i class="bi bi-clipboard2-check"></i>';
-    var vipubSM_msgText = '<?php echo vipub_translate("post_select_dropdown_5"); ?>';
-    var vipubSM_alertTimeout = 3000;
-    vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+    var xcloneSM_msgIcon = '<i class="bi bi-clipboard2-check"></i>';
+    var xcloneSM_msgText = '<?php echo xclone_translate("post_select_dropdown_5"); ?>';
+    var xcloneSM_alertTimeout = 3000;
+    xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
   });
 });
 </script>
@@ -484,14 +484,14 @@ $(document).ready(function() {
         var postId = $(this).data("post-id");
 
         Swal.fire({
-            title: '<?php echo vipub_translate("delete_your_post"); ?>',
-            text: "<?php echo vipub_translate("delete_your_post_2"); ?>",
+            title: '<?php echo xclone_translate("delete_your_post"); ?>',
+            text: "<?php echo xclone_translate("delete_your_post_2"); ?>",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#F4212D',
             cancelButtonColor: '#0f1419',
-            confirmButtonText: '<?php echo vipub_translate("delete"); ?>',
-            cancelButtonText: '<?php echo vipub_translate("cancel"); ?>'
+            confirmButtonText: '<?php echo xclone_translate("delete"); ?>',
+            cancelButtonText: '<?php echo xclone_translate("cancel"); ?>'
         }).then((result) => {
             if (result.isConfirmed) {
             $.ajax({
@@ -505,10 +505,10 @@ $(document).ready(function() {
                         $(this).remove();
                     });
                     }, 2000);
-                    var vipubSM_msgIcon = '<i class="bi bi-check-circle-fill"></i>';
-                    var vipubSM_msgText = '<?php echo vipub_translate("post_success_delete"); ?>';
-                    var vipubSM_alertTimeout = 2000;
-                    vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                    var xcloneSM_msgIcon = '<i class="bi bi-check-circle-fill"></i>';
+                    var xcloneSM_msgText = '<?php echo xclone_translate("post_success_delete"); ?>';
+                    var xcloneSM_alertTimeout = 2000;
+                    xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
 
                     setTimeout(function() {
                     window.location.href = "/home";
@@ -738,10 +738,10 @@ $(document).ready(function() {
             icon.removeClass("bi-bookmark").addClass("bi-bookmark-fill post-unbookmarks");
         } else if (icon.hasClass("bi-bookmark-fill") && icon.hasClass("post-unbookmarks")) {
             icon.removeClass("bi-bookmark-fill post-unbookmarks").addClass("bi-bookmark");
-            var vipubSM_msgIcon = '<i class="bi bi-bookmark"></i>';
-            var vipubSM_msgText = "The bookmarks has been withdrawn.";
-            var vipubSM_alertTimeout = 700;
-            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            var xcloneSM_msgIcon = '<i class="bi bi-bookmark"></i>';
+            var xcloneSM_msgText = "The bookmarks has been withdrawn.";
+            var xcloneSM_alertTimeout = 700;
+            xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
         }
     });
 });
@@ -825,10 +825,10 @@ $(document).ready(function() {
                 icon.removeClass("unretweet-class");
                 icon.removeClass("bi-arrow-left-right");
                 icon.addClass("bi bi-arrow-left-right");
-                var vipubSM_msgIcon = '<i class="bi bi-arrow-left-right"></i>';
-                var vipubSM_msgText = "The retweet has been withdrawn.";
-                var vipubSM_alertTimeout = 700;
-                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                var xcloneSM_msgIcon = '<i class="bi bi-arrow-left-right"></i>';
+                var xcloneSM_msgText = "The retweet has been withdrawn.";
+                var xcloneSM_alertTimeout = 700;
+                xcloneSM.showAlert(xcloneSM_msgIcon, xcloneSM_msgText, xcloneSM_alertTimeout);
             } else {
                 icon.addClass("unretweet-class");
                 icon.removeClass("bi-arrow-left-right");

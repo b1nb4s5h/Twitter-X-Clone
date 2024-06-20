@@ -1,32 +1,32 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
-<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = xcloneConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = xclone_get_my_profile($conn, $uname); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         
         <div class="site-header-box">
             <h5>
             <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-            <?php echo vipub_translate("account_settings"); ?></h5>
+            <?php echo xclone_translate("account_settings"); ?></h5>
         </div>
 
         <div class="account-settings-page">
             
             <div class="settings-page-container">
                 <div class="settings-page-title">
-                    <h5><?php echo vipub_translate("account_information"); ?></h5>
+                    <h5><?php echo xclone_translate("account_information"); ?></h5>
                 </div>
 
                 <div class="setpage-save-info">
-                    <?php echo vipub_translate("account_settings_menu_38"); ?>
+                    <?php echo xclone_translate("account_settings_menu_38"); ?>
                 </div>
 
                 <div class="form-save-element-value">
                     <form id="change-email">
                         <div class="form-floating">
-                            <input type="text" class="form-control" name="email" id="email" value="<?php echo $row["email"]; ?>" placeholder="<?php echo vipub_translate("account_settings_menu_39"); ?>">
-                            <label for="email"><?php echo vipub_translate("account_settings_menu_39"); ?></label>
+                            <input type="text" class="form-control" name="email" id="email" value="<?php echo $row["email"]; ?>" placeholder="<?php echo xclone_translate("account_settings_menu_39"); ?>">
+                            <label for="email"><?php echo xclone_translate("account_settings_menu_39"); ?></label>
                         </div>
-                        <button type="submit" class="email-save"><?php echo vipub_translate("account_settings_menu_27"); ?></button>
+                        <button type="submit" class="email-save"><?php echo xclone_translate("account_settings_menu_27"); ?></button>
                     </form>
                 </div>
 
@@ -43,13 +43,13 @@
         if (email === '') {
             new Noty({
                 type: 'error',
-                text: '<?php echo vipub_translate("settings_page_save_value_desc_10"); ?>',
+                text: '<?php echo xclone_translate("settings_page_save_value_desc_10"); ?>',
                 timeout: 1500
             }).show();
         } else if (!isValidEmail(email)) {
             new Noty({
                 type: 'error',
-                text: '<?php echo vipub_translate("settings_page_save_value_desc_11"); ?>',
+                text: '<?php echo xclone_translate("settings_page_save_value_desc_11"); ?>',
                 timeout: 1500
             }).show();
         } else {
@@ -63,7 +63,7 @@
                     if (response === '1') {
                         new Noty({
                             type: 'error',
-                            text: '<?php echo vipub_translate("settings_page_save_value_desc_12"); ?>',
+                            text: '<?php echo xclone_translate("settings_page_save_value_desc_12"); ?>',
                             timeout: 1500
                         }).show();
                     } else {
@@ -77,7 +77,7 @@
                                 $('#email').val(response);
                                 new Noty({
                                     type: 'success',
-                                    text: '<?php echo vipub_translate("settings_page_save_value_desc_13"); ?>',
+                                    text: '<?php echo xclone_translate("settings_page_save_value_desc_13"); ?>',
                                     timeout: 1500
                                 }).show();
                             },
@@ -104,5 +104,5 @@
 </script>
 
 
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
-<?php vipub_template("main/footer.content"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("main/footer.content"); ?>

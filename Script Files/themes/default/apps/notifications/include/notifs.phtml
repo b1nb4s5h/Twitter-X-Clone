@@ -1,80 +1,80 @@
 <div class="user-notitications-container">
     <div class="get-notifs-informations">
         <?php if($type=="follow"): ?>
-            <a href="<?php echo vipub_link("@".$username); ?>">
+            <a href="<?php echo xclone_link("@".$username); ?>">
                 <div class="list-on-notifications">
-                    <img src="<?php echo vipub_link($avatar); ?>">
+                    <img src="<?php echo xclone_link($avatar); ?>">
                     <h5>
-                        <?php echo vipub_croptxt($username, 0, 7); ?>
+                        <?php echo xclone_croptxt($username, 0, 7); ?>
                         <?php if($verified=="1"): ?>
-                            <?php echo vipub_userBlue(); ?>
+                            <?php echo xclone_userBlue(); ?>
                         <?php endif; ?>
-                        <span><?php echo vipub_translate("notification_notif_name_1"); ?></span>
-                        <span><small>• <?php echo vipub_post_new_date($row["notifs_date"]); ?></small></span>
+                        <span><?php echo xclone_translate("notification_notif_name_1"); ?></span>
+                        <span><small>• <?php echo xclone_post_new_date($row["notifs_date"]); ?></small></span>
                     </h5>
-                    <button data-vipub-url="<?php echo vipub_link("@".$row["username"]); ?>"><?php echo vipub_translate("profile"); ?></button>
+                    <button data-xclone-url="<?php echo xclone_link("@".$row["username"]); ?>"><?php echo xclone_translate("profile"); ?></button>
                 </div>
             </a>
             
             
         <?php elseif($type=="like"): ?>
-            <a href="<?php echo vipub_link($vipub_user["username"]."/status/".$post_id); ?>">
+            <a href="<?php echo xclone_link($xclone_user["username"]."/status/".$post_id); ?>">
                 <div class="list-on-notifications">
-                    <img src="<?php echo vipub_link($avatar); ?>">
-                        <img id="two-picture-extra" src="<?php echo vipub_link($avatar); ?>">
+                    <img src="<?php echo xclone_link($avatar); ?>">
+                        <img id="two-picture-extra" src="<?php echo xclone_link($avatar); ?>">
 
                     <h5>
-                        <?php echo vipub_croptxt($username, 0, 7); ?>
+                        <?php echo xclone_croptxt($username, 0, 7); ?>
                         <?php if($verified=="1"): ?>
-                            <?php echo vipub_userBlue(); ?>
+                            <?php echo xclone_userBlue(); ?>
                         <?php endif; ?>
-                        <span><?php echo vipub_translate("notification_notif_name_2"); ?></span> 
-                        <span><small>• <?php echo vipub_post_new_date($row["notifs_date"]); ?></small></span>
+                        <span><?php echo xclone_translate("notification_notif_name_2"); ?></span> 
+                        <span><small>• <?php echo xclone_post_new_date($row["notifs_date"]); ?></small></span>
                     </h5>
                 </div>
             </a>
         <?php elseif($type=="mention"): ?>
-            <a href="<?php echo vipub_link($username."/status/".$post_id); ?>">
+            <a href="<?php echo xclone_link($username."/status/".$post_id); ?>">
                 <div class="list-on-notifications">
-                    <img src="<?php echo vipub_link($avatar); ?>">
+                    <img src="<?php echo xclone_link($avatar); ?>">
 
                     <h5>
-                        <?php echo vipub_croptxt($username, 0, 7); ?>
+                        <?php echo xclone_croptxt($username, 0, 7); ?>
                         <?php if($verified=="1"): ?>
-                            <?php echo vipub_userBlue(); ?>
+                            <?php echo xclone_userBlue(); ?>
                         <?php endif; ?>
-                        <span><?php echo vipub_translate("user_notifications_page_1"); ?></span> 
-                        <span><small>• <?php echo vipub_post_new_date($row["notifs_date"]); ?></small></span>
+                        <span><?php echo xclone_translate("user_notifications_page_1"); ?></span> 
+                        <span><small>• <?php echo xclone_post_new_date($row["notifs_date"]); ?></small></span>
                     </h5>
                 </div>
             </a>
         <?php elseif($type=="mention_reply"): ?>
-            <a href="<?php echo vipub_link($username."/status/".$post_id); ?>">
+            <a href="<?php echo xclone_link($username."/status/".$post_id); ?>">
                 <div class="list-on-notifications">
-                    <img src="<?php echo vipub_link($avatar); ?>">
+                    <img src="<?php echo xclone_link($avatar); ?>">
 
                     <h5>
-                        <?php echo vipub_croptxt($username, 0, 7); ?>
+                        <?php echo xclone_croptxt($username, 0, 7); ?>
                         <?php if($verified=="1"): ?>
-                            <?php echo vipub_userBlue(); ?>
+                            <?php echo xclone_userBlue(); ?>
                         <?php endif; ?>
-                        <span><?php echo vipub_translate("user_notifications_page_2"); ?></span> 
-                        <span><small>• <?php echo vipub_post_new_date($row["notifs_date"]); ?></small></span>
+                        <span><?php echo xclone_translate("user_notifications_page_2"); ?></span> 
+                        <span><small>• <?php echo xclone_post_new_date($row["notifs_date"]); ?></small></span>
                     </h5>
                 </div>
             </a>
         <?php elseif($type=="comment"): ?>
-            <a href="<?php echo vipub_link($vipub_user["username"]."/status/".$post_id); ?>">
+            <a href="<?php echo xclone_link($xclone_user["username"]."/status/".$post_id); ?>">
                 <div class="list-on-notifications">
-                    <img src="<?php echo vipub_link($avatar); ?>">
+                    <img src="<?php echo xclone_link($avatar); ?>">
 
                     <h5>
-                        <?php echo vipub_croptxt($username, 0, 7); ?>
+                        <?php echo xclone_croptxt($username, 0, 7); ?>
                         <?php if($verified=="1"): ?>
-                            <?php echo vipub_userBlue(); ?>
+                            <?php echo xclone_userBlue(); ?>
                         <?php endif; ?>
-                        <span><?php echo vipub_translate("notification_notif_name_comment"); ?></span> 
-                        <span><small>• <?php echo vipub_post_new_date($row["notifs_date"]); ?></small></span>
+                        <span><?php echo xclone_translate("notification_notif_name_comment"); ?></span> 
+                        <span><small>• <?php echo xclone_post_new_date($row["notifs_date"]); ?></small></span>
                     </h5>
                 </div>
             </a>
@@ -82,18 +82,18 @@
             <a>
                 <div class="list-on-notifications">
                     <span>
-                        <img src="<?php echo vipub_template_master("images/logo.png"); ?>">
+                        <img src="<?php echo xclone_template_master("images/logo.png"); ?>">
                     </span>
-                    <h5><?php echo vipub_translate("user_verified_one_notifs"); ?></h5>
+                    <h5><?php echo xclone_translate("user_verified_one_notifs"); ?></h5>
                 </div>
             </a>
         <?php elseif($type=="premium"): ?>
             <a>
                 <div class="list-on-notifications">
                     <span>
-                        <img src="<?php echo vipub_template_master("images/logo.png"); ?>">
+                        <img src="<?php echo xclone_template_master("images/logo.png"); ?>">
                     </span>
-                    <h5>Vipub Verified aboneliğiniz başladı!</h5>
+                    <h5>Xclone Verified aboneliğiniz başladı!</h5>
                 </div>
             </a>
         <?php endif; ?>

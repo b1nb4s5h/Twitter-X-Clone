@@ -1,14 +1,14 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 if (!isset($_SESSION["user_id"])) {
-    vipub_redirect("/welcome/login");
+    xclone_redirect("/welcome/login");
     exit;
   }
  
   $email = mysqli_real_escape_string($conn, $_POST['email']);
   $user_id = mysqli_real_escape_string($conn, $_SESSION['user_id']);
   
-  $query = "SELECT id FROM vipub_users WHERE email=? AND id != ?";
+  $query = "SELECT id FROM xclone_users WHERE email=? AND id != ?";
   $stmt = mysqli_prepare($conn, $query);
   
   mysqli_stmt_bind_param($stmt, 'si', $email, $user_id);

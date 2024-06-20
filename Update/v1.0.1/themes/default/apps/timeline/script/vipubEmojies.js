@@ -1,4 +1,4 @@
-const VipubEmojiSelect = function(options) {
+const xcloneEmojiSelect = function(options) {
 
     this.options = options;
     this.trigger = this.options.trigger.map(item => item.selector);

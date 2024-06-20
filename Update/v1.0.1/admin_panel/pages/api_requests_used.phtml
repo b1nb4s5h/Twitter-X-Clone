@@ -4,7 +4,7 @@
       <h1>API requests used</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">API functions</li>
           <li class="breadcrumb-item active">API requests</li>
         </ol>
@@ -39,7 +39,7 @@
                 <tbody>
                 <?php
 
-                    $sql = "SELECT usage_id, user_ip, request_url, url_using, usage_type, api_user_key, usage_date FROM vipub_api_usage";
+                    $sql = "SELECT usage_id, user_ip, request_url, url_using, usage_type, api_user_key, usage_date FROM xclone_api_usage";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
@@ -48,14 +48,14 @@
                     <tr>
                         <th scope="row"><?php echo $row["usage_id"]; ?></th>
                         <td><?php echo $row["user_ip"]; ?></td>
-                        <td><a target="_blank" href="<?php echo $row["request_url"]; ?>" class="text-primary"><?php echo vipub_croptxt($row["request_url"], 0,33); ?></a></td>
-                        <td><a target="_blank" href="<?php echo $row["url_using"]; ?>" class="text-primary"><?php echo vipub_croptxt($row["url_using"], 0,33); ?></a></td>
+                        <td><a target="_blank" href="<?php echo $row["request_url"]; ?>" class="text-primary"><?php echo xclone_croptxt($row["request_url"], 0,33); ?></a></td>
+                        <td><a target="_blank" href="<?php echo $row["url_using"]; ?>" class="text-primary"><?php echo xclone_croptxt($row["url_using"], 0,33); ?></a></td>
                         <td><span class="badge bg-success"><?php echo $row["usage_type"]; ?></span></td>
 
                         <?php if($row["api_user_key"]=="NULL"): ?>
                             <td><span class="badge bg-danger">Empty</span></td>
                         <?php else: ?>
-                            <td><a target="_blank" href="<?php echo vipub_link("admin_panel/edit_user?edit=".$row["api_user_key"]); ?>" class="text-primary">
+                            <td><a target="_blank" href="<?php echo xclone_link("admin_panel/edit_user?edit=".$row["api_user_key"]); ?>" class="text-primary">
                             <span class="badge bg-info"><?php echo $row["api_user_key"]; ?></span>
                             </a></td>
                         <?php endif; ?>

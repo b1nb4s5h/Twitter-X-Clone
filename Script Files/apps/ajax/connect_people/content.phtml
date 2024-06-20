@@ -1,12 +1,12 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (isset($_SESSION["user_id"])) {
     $sql = "SELECT *
-            FROM vipub_users 
-            WHERE id NOT IN (SELECT user_id FROM vipub_follow WHERE follower_id = ?)
+            FROM xclone_users 
+            WHERE id NOT IN (SELECT user_id FROM xclone_follow WHERE follower_id = ?)
             AND id != ?
             AND account_status = 0
             ORDER BY RAND()
@@ -16,7 +16,7 @@ if (isset($_SESSION["user_id"])) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
-    $stmt = mysqli_prepare($conn, "SELECT fullname, username, avatar, user_bio, id, verified, followers FROM vipub_users ORDER BY RAND()");
+    $stmt = mysqli_prepare($conn, "SELECT fullname, username, avatar, user_bio, id, verified, followers FROM xclone_users ORDER BY RAND()");
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 }

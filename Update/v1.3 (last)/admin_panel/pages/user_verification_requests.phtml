@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
     $user_id = $_GET["edit"];
-    $sql = "SELECT * FROM vipub_users WHERE verified='2' AND id=$user_id";
+    $sql = "SELECT * FROM xclone_users WHERE verified='2' AND id=$user_id";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -13,7 +13,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
       <h1>User account</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Users</li>
           <li class="breadcrumb-item active">User verification request decision</li>
         </ol>
@@ -27,8 +27,8 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="<?php echo vipub_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
-              <h2><?php echo vipub_croptxt($row["fullname"], 0, 25); ?></h2>
+              <img src="<?php echo xclone_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
+              <h2><?php echo xclone_croptxt($row["fullname"], 0, 25); ?></h2>
               <h3>@<?php echo $row["username"]; ?></h3>
             </div>
           </div>
@@ -73,26 +73,26 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
                         <div class="col-md-8 col-lg-9">
                             <select class="form-select" name="verified_category" id="verified_category">
                                 <?php if($_GET["category"]=="1"): ?>
-                                    <option selected value="1"><?php echo vipub_translate("new_verified_account_reguested_category_1"); ?></option>
+                                    <option selected value="1"><?php echo xclone_translate("new_verified_account_reguested_category_1"); ?></option>
                                 <?php endif; ?>
                                 <?php if($_GET["category"]=="2"): ?>
-                                    <option selected value="2"><?php echo vipub_translate("new_verified_account_reguested_category_2"); ?></option>
+                                    <option selected value="2"><?php echo xclone_translate("new_verified_account_reguested_category_2"); ?></option>
                                 <?php endif; ?>
                                 <?php if($_GET["category"]=="3"): ?>
-                                    <option selected value="3"><?php echo vipub_translate("new_verified_account_reguested_category_3"); ?></option>
+                                    <option selected value="3"><?php echo xclone_translate("new_verified_account_reguested_category_3"); ?></option>
                                 <?php endif; ?>
                         
                                 <?php if($_GET["category"]=="4"): ?>
-                                    <option selected value="4"><?php echo vipub_translate("new_verified_account_reguested_category_4"); ?></option>
+                                    <option selected value="4"><?php echo xclone_translate("new_verified_account_reguested_category_4"); ?></option>
                                 <?php endif; ?>
                                 <?php if($_GET["category"]=="5"): ?>
-                                    <option selected value="5"><?php echo vipub_translate("new_verified_account_reguested_category_5"); ?></option>
+                                    <option selected value="5"><?php echo xclone_translate("new_verified_account_reguested_category_5"); ?></option>
                                 <?php endif; ?>
                                 <?php if($_GET["category"]=="6"): ?>
-                                    <option selected value="6"><?php echo vipub_translate("new_verified_account_reguested_category_6"); ?></option>
+                                    <option selected value="6"><?php echo xclone_translate("new_verified_account_reguested_category_6"); ?></option>
                                 <?php endif; ?>
                                 <?php if($_GET["category"]=="7"): ?>
-                                    <option selected value="7"><?php echo vipub_translate("new_verified_account_reguested_category_7"); ?></option>
+                                    <option selected value="7"><?php echo xclone_translate("new_verified_account_reguested_category_7"); ?></option>
                                 <?php endif; ?>
                                 
                             </select>
@@ -101,7 +101,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
                   </div>
 
                   <div class="text-center" style="margin-top:40px; position: relative;">
-                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                    <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                       <button type="submit" style="width: 100%;" class="btn btn-primary" name="saveVerified">Save Changes</button>
                       <?php else: ?>
                             <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -166,11 +166,11 @@ if(isset($_POST["saveVerified"])) {
     $verified = $_POST["verified"];
     $verified_category = $_POST["verified_category"];
     
-    $stmt = $conn->prepare("UPDATE vipub_users SET verified=?, verified_category=? WHERE id=?");
+    $stmt = $conn->prepare("UPDATE xclone_users SET verified=?, verified_category=? WHERE id=?");
     $stmt->bind_param("sii", $verified, $verified_category, $id);
     $stmt->execute();
 
-    $stmt = $conn->prepare("DELETE FROM vipub_verified WHERE verified_uid=?");
+    $stmt = $conn->prepare("DELETE FROM xclone_verified WHERE verified_uid=?");
     $stmt->bind_param("s", $id);
     $stmt->execute();
     
@@ -180,7 +180,7 @@ if(isset($_POST["saveVerified"])) {
             $sender_id = $_SESSION["user_id"];
             $type = "verified";
 
-            $notifsverfy = "INSERT INTO vipub_notifs (user_id, sender_id, type) VALUES ('$id','$sender_id','$type')";
+            $notifsverfy = "INSERT INTO xclone_notifs (user_id, sender_id, type) VALUES ('$id','$sender_id','$type')";
             $result = mysqli_query($conn, $notifsverfy);
         }
         

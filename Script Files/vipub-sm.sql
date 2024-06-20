@@ -18,16 +18,16 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Veritabanı: `vipub-sm`
+-- Veritabanı: `xclone-sm`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_add_balance`
+-- Tablo için tablo yapısı `xclone_add_balance`
 --
 
-CREATE TABLE `vipub_add_balance` (
+CREATE TABLE `xclone_add_balance` (
   `b_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
   `added_balance` varchar(255) NOT NULL,
@@ -40,10 +40,10 @@ CREATE TABLE `vipub_add_balance` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_api_usage`
+-- Tablo için tablo yapısı `xclone_api_usage`
 --
 
-CREATE TABLE `vipub_api_usage` (
+CREATE TABLE `xclone_api_usage` (
   `usage_id` int(11) NOT NULL,
   `user_ip` varchar(255) DEFAULT NULL,
   `request_url` varchar(255) DEFAULT NULL,
@@ -56,10 +56,10 @@ CREATE TABLE `vipub_api_usage` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_bookmarks`
+-- Tablo için tablo yapısı `xclone_bookmarks`
 --
 
-CREATE TABLE `vipub_bookmarks` (
+CREATE TABLE `xclone_bookmarks` (
   `b_id` int(11) UNSIGNED NOT NULL,
   `user_id` varchar(255) NOT NULL,
   `post_id` int(11) NOT NULL,
@@ -69,10 +69,10 @@ CREATE TABLE `vipub_bookmarks` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_follow`
+-- Tablo için tablo yapısı `xclone_follow`
 --
 
-CREATE TABLE `vipub_follow` (
+CREATE TABLE `xclone_follow` (
   `f_id` int(11) NOT NULL,
   `user_id` varchar(255) NOT NULL,
   `follower_id` varchar(255) NOT NULL
@@ -81,10 +81,10 @@ CREATE TABLE `vipub_follow` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_hashtag`
+-- Tablo için tablo yapısı `xclone_hashtag`
 --
 
-CREATE TABLE `vipub_hashtag` (
+CREATE TABLE `xclone_hashtag` (
   `h_id` int(11) NOT NULL,
   `htag` varchar(255) NOT NULL,
   `total_post` varchar(255) DEFAULT NULL,
@@ -94,10 +94,10 @@ CREATE TABLE `vipub_hashtag` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_likes`
+-- Tablo için tablo yapısı `xclone_likes`
 --
 
-CREATE TABLE `vipub_likes` (
+CREATE TABLE `xclone_likes` (
   `l_id` int(11) NOT NULL,
   `user_id` varchar(255) NOT NULL,
   `post_id` int(11) NOT NULL
@@ -106,10 +106,10 @@ CREATE TABLE `vipub_likes` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_messages`
+-- Tablo için tablo yapısı `xclone_messages`
 --
 
-CREATE TABLE `vipub_messages` (
+CREATE TABLE `xclone_messages` (
   `m_id` int(11) NOT NULL,
   `sender_id` varchar(255) NOT NULL,
   `receiver_id` varchar(255) NOT NULL,
@@ -121,10 +121,10 @@ CREATE TABLE `vipub_messages` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_notifs`
+-- Tablo için tablo yapısı `xclone_notifs`
 --
 
-CREATE TABLE `vipub_notifs` (
+CREATE TABLE `xclone_notifs` (
   `n_id` int(11) NOT NULL,
   `user_id` varchar(255) NOT NULL,
   `sender_id` varchar(255) NOT NULL,
@@ -137,10 +137,10 @@ CREATE TABLE `vipub_notifs` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_oauth_settings`
+-- Tablo için tablo yapısı `xclone_oauth_settings`
 --
 
-CREATE TABLE `vipub_oauth_settings` (
+CREATE TABLE `xclone_oauth_settings` (
   `oa_id` int(11) UNSIGNED NOT NULL,
   `twitter_api_key` varchar(255) DEFAULT NULL,
   `twitter_api_key_secret` varchar(255) DEFAULT NULL,
@@ -150,19 +150,19 @@ CREATE TABLE `vipub_oauth_settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Tablo döküm verisi `vipub_oauth_settings`
+-- Tablo döküm verisi `xclone_oauth_settings`
 --
 
-INSERT INTO `vipub_oauth_settings` (`oa_id`, `twitter_api_key`, `twitter_api_key_secret`, `twitter_callback_url`, `twitter_login_status`, `oauth_name`) VALUES
+INSERT INTO `xclone_oauth_settings` (`oa_id`, `twitter_api_key`, `twitter_api_key_secret`, `twitter_callback_url`, `twitter_login_status`, `oauth_name`) VALUES
 (1, NULL, NULL, 'YourTwitterCallbackURL', '0', '');
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_pages`
+-- Tablo için tablo yapısı `xclone_pages`
 --
 
-CREATE TABLE `vipub_pages` (
+CREATE TABLE `xclone_pages` (
   `page_id` int(11) NOT NULL,
   `page_title` varchar(255) NOT NULL,
   `page_title_seo` varchar(255) NOT NULL,
@@ -172,10 +172,10 @@ CREATE TABLE `vipub_pages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Tablo döküm verisi `vipub_pages`
+-- Tablo döküm verisi `xclone_pages`
 --
 
-INSERT INTO `vipub_pages` (`page_id`, `page_title`, `page_title_seo`, `page_name`, `page_content`, `page_date`) VALUES
+INSERT INTO `xclone_pages` (`page_id`, `page_title`, `page_title_seo`, `page_name`, `page_content`, `page_date`) VALUES
 (1, 'Privacy policy', 'privacy-policy', 'Privacy policy', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam nunc, sollicitudin ac tempor pretium, tristique nec sem. Aenean accumsan, urna sed porttitor interdum, erat ligula lacinia dui, ut sodales ante neque vel quam. Donec efficitur arcu id metus condimentum, quis luctus tellus condimentum. Sed erat erat, placerat non neque suscipit, tempor efficitur dolor. Donec eget posuere est. Fusce volutpat metus at sagittis ultricies. Suspendisse eget ex consectetur, ultricies arcu ut, accumsan enim. Praesent sollicitudin orci ac sem venenatis, eget ultricies urna mollis. Sed dapibus malesuada tellus finibus dignissim. Nam ac arcu sed turpis elementum pellentesque. Donec porta pretium dolor. Curabitur quis mi ligula.</p>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam nunc, sollicitudin ac tempor pretium, tristique nec sem. Aenean accumsan, urna sed porttitor interdum, erat ligula lacinia dui, ut sodales ante neque vel quam. Donec efficitur arcu id metus condimentum, quis luctus tellus condimentum. Sed erat erat, placerat non neque suscipit, tempor efficitur dolor. Donec eget posuere est. Fusce volutpat metus at sagittis ultricies. Suspendisse eget ex consectetur, ultricies arcu ut, accumsan enim. Praesent sollicitudin orci ac sem venenatis, eget ultricies urna mollis. Sed dapibus malesuada tellus finibus dignissim. Nam ac arcu sed turpis elementum pellentesque. Donec porta pretium dolor. Curabitur quis mi ligula.</p>\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam nunc, sollicitudin ac tempor pretium, tristique nec sem. Aenean accumsan, urna sed porttitor interdum, erat ligula lacinia dui, ut sodales ante neque vel quam. Donec efficitur arcu id metus condimentum, quis luctus tellus condimentum. Sed erat erat, placerat non neque suscipit, tempor efficitur dolor. Donec eget posuere est. Fusce volutpat metus at sagittis ultricies. Suspendisse eget ex consectetur, ultricies arcu ut, accumsan enim. Praesent sollicitudin orci ac sem venenatis, eget ultricies urna mollis. Sed dapibus malesuada tellus finibus dignissim. Nam ac arcu sed turpis elementum pellentesque. Donec porta pretium dolor. Curabitur quis mi ligula.</p>', '2023-04-08 17:11:36'),
 (2, 'Terms policy', 'terms-policy', 'Terms policy', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dui augue, pretium in lacus sed, aliquam ultricies risus. Suspendisse iaculis massa ut ex aliquam tempus. Ut eu laoreet nulla. Cras at orci sit amet lectus fermentum luctus. Nunc tristique sagittis mauris eget dapibus. Quisque aliquam sem nec mattis convallis. Nullam interdum diam orci, nec sollicitudin sapien iaculis id. Nam vulputate tristique felis non ultricies. Integer velit velit, sagittis a nulla non, tincidunt tempor nunc. Integer ut lectus nunc. Suspendisse commodo auctor tellus, a sollicitudin dolor.\r\n\r\nClass aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce ornare sollicitudin porta. Proin sit amet dolor lacinia, pharetra augue ac, lacinia arcu. Sed iaculis, dui quis lobortis ultricies, neque lorem cursus nulla, non tempor massa quam nec orci. Ut porttitor sapien at congue rutrum. Praesent pharetra dapibus orci non laoreet. Aliquam nec justo imperdiet turpis tincidunt tempor. Suspendisse potenti. Mauris ut justo et sapien auctor blandit non a nunc. Pellentesque in justo id elit auctor ultrices id ut quam. Vivamus interdum tortor a sem porttitor, eget bibendum lectus auctor. Sed eu dignissim ligula. Praesent semper nec orci vel sodales. Integer nec consectetur sapien.\r\n\r\nSed euismod, mauris quis placerat finibus, mi ligula molestie tellus, varius tempor arcu augue in urna. Aliquam leo diam, consectetur et orci vel, interdum ornare nibh. Ut elementum, quam et elementum efficitur, neque ipsum maximus nisl, vel aliquam purus arcu vel metus. Maecenas luctus mattis lacus, sit amet viverra mauris tristique placerat. In a tempus sapien. Nam eget consectetur eros. In sapien lectus, venenatis quis volutpat nec, convallis eget magna. Integer hendrerit at risus vitae tincidunt. Integer dignissim ultricies finibus. Quisque a velit eget enim imperdiet condimentum. Nam posuere eros vel placerat ultrices. Sed nibh arcu, lacinia id neque eget, egestas consequat mauris. Pellentesque mollis condimentum imperdiet. Vivamus mollis sed ipsum et condimentum.\r\n\r\n', '2023-04-08 17:11:36'),
 (3, 'Cookies policy', 'cookies-policy', 'Cookies policy', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dui augue, pretium in lacus sed, aliquam ultricies risus. Suspendisse iaculis massa ut ex aliquam tempus. Ut eu laoreet nulla. Cras at orci sit amet lectus fermentum luctus. Nunc tristique sagittis mauris eget dapibus. Quisque aliquam sem nec mattis convallis. Nullam interdum diam orci, nec sollicitudin sapien iaculis id. Nam vulputate tristique felis non ultricies. Integer velit velit, sagittis a nulla non, tincidunt tempor nunc. Integer ut lectus nunc. Suspendisse commodo auctor tellus, a sollicitudin dolor.\r\n\r\nClass aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce ornare sollicitudin porta. Proin sit amet dolor lacinia, pharetra augue ac, lacinia arcu. Sed iaculis, dui quis lobortis ultricies, neque lorem cursus nulla, non tempor massa quam nec orci. Ut porttitor sapien at congue rutrum. Praesent pharetra dapibus orci non laoreet. Aliquam nec justo imperdiet turpis tincidunt tempor. Suspendisse potenti. Mauris ut justo et sapien auctor blandit non a nunc. Pellentesque in justo id elit auctor ultrices id ut quam. Vivamus interdum tortor a sem porttitor, eget bibendum lectus auctor. Sed eu dignissim ligula. Praesent semper nec orci vel sodales. Integer nec consectetur sapien.\r\n\r\nSed euismod, mauris quis placerat finibus, mi ligula molestie tellus, varius tempor arcu augue in urna. Aliquam leo diam, consectetur et orci vel, interdum ornare nibh. Ut elementum, quam et elementum efficitur, neque ipsum maximus nisl, vel aliquam purus arcu vel metus. Maecenas luctus mattis lacus, sit amet viverra mauris tristique placerat. In a tempus sapien. Nam eget consectetur eros. In sapien lectus, venenatis quis volutpat nec, convallis eget magna. Integer hendrerit at risus vitae tincidunt. Integer dignissim ultricies finibus. Quisque a velit eget enim imperdiet condimentum. Nam posuere eros vel placerat ultrices. Sed nibh arcu, lacinia id neque eget, egestas consequat mauris. Pellentesque mollis condimentum imperdiet. Vivamus mollis sed ipsum et condimentum.\r\n\r\n', '2023-04-08 17:11:36'),
@@ -185,10 +185,10 @@ INSERT INTO `vipub_pages` (`page_id`, `page_title`, `page_title_seo`, `page_name
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_posts`
+-- Tablo için tablo yapısı `xclone_posts`
 --
 
-CREATE TABLE `vipub_posts` (
+CREATE TABLE `xclone_posts` (
   `p_id` int(11) NOT NULL,
   `reply_post_id` varchar(255) DEFAULT NULL,
   `user_id` varchar(255) NOT NULL,
@@ -210,10 +210,10 @@ CREATE TABLE `vipub_posts` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_premium_active_users`
+-- Tablo için tablo yapısı `xclone_premium_active_users`
 --
 
-CREATE TABLE `vipub_premium_active_users` (
+CREATE TABLE `xclone_premium_active_users` (
   `au_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
@@ -225,30 +225,30 @@ CREATE TABLE `vipub_premium_active_users` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_premium_package`
+-- Tablo için tablo yapısı `xclone_premium_package`
 --
 
-CREATE TABLE `vipub_premium_package` (
+CREATE TABLE `xclone_premium_package` (
   `pack_id` int(11) UNSIGNED NOT NULL,
   `package_price` varchar(255) NOT NULL,
   `package_name` varchar(255) NOT NULL DEFAULT 'Individual'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Tablo döküm verisi `vipub_premium_package`
+-- Tablo döküm verisi `xclone_premium_package`
 --
 
-INSERT INTO `vipub_premium_package` (`pack_id`, `package_price`, `package_name`) VALUES
+INSERT INTO `xclone_premium_package` (`pack_id`, `package_price`, `package_name`) VALUES
 (1, '25', 'Individual'),
 (2, '75', 'Establishment');
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_repost`
+-- Tablo için tablo yapısı `xclone_repost`
 --
 
-CREATE TABLE `vipub_repost` (
+CREATE TABLE `xclone_repost` (
   `r_id` int(11) UNSIGNED NOT NULL,
   `repost_user_id` int(11) NOT NULL,
   `repost_post_id` int(11) NOT NULL,
@@ -258,34 +258,34 @@ CREATE TABLE `vipub_repost` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_session`
+-- Tablo için tablo yapısı `xclone_session`
 --
 
-CREATE TABLE `vipub_session` (
+CREATE TABLE `xclone_session` (
   `id` int(11) NOT NULL,
   `session_user_id` int(11) NOT NULL,
   `last_seen` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Tablo döküm verisi `vipub_session`
+-- Tablo döküm verisi `xclone_session`
 --
 
-INSERT INTO `vipub_session` (`id`, `session_user_id`, `last_seen`) VALUES
+INSERT INTO `xclone_session` (`id`, `session_user_id`, `last_seen`) VALUES
 (1, 1, '2023-09-07 09:33:49');
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_settings`
+-- Tablo için tablo yapısı `xclone_settings`
 --
 
-CREATE TABLE `vipub_settings` (
+CREATE TABLE `xclone_settings` (
   `id` int(11) NOT NULL,
   `site_name` varchar(255) NOT NULL,
   `site_title` varchar(255) NOT NULL DEFAULT '',
   `site_description` varchar(255) NOT NULL DEFAULT 'Now login, now register!',
-  `site_keywords` varchar(255) NOT NULL DEFAULT 'vipub, login, register, vipub codecanyon, vipub teskale, vipub codecanyon script, twitter analog, twitter script, twitter buy script, vipub buy, vipub twitter script',
+  `site_keywords` varchar(255) NOT NULL DEFAULT 'xclone, login, register, xclone codecanyon, xclone teskale, xclone codecanyon script, twitter analog, twitter script, twitter buy script, xclone buy, xclone twitter script',
   `site_register_status` tinyint(25) NOT NULL DEFAULT 0,
   `user_sent_verified` enum('No','Active') NOT NULL DEFAULT 'Active',
   `upload_image` varchar(55) NOT NULL,
@@ -307,19 +307,19 @@ CREATE TABLE `vipub_settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Tablo döküm verisi `vipub_settings`
+-- Tablo döküm verisi `xclone_settings`
 --
 
-INSERT INTO `vipub_settings` (`id`, `site_name`, `site_title`, `site_description`, `site_keywords`, `site_register_status`, `user_sent_verified`, `upload_image`, `upload_video`, `translate_tweet`, `hashtag_display`, `user_display`, `default_theme`, `post_maxlength`, `message_maxlength`, `site_white_logo`, `site_dark_logo`, `site_favicon`, `email_notifications`, `chat_time_interval`, `timeline_time_interval`, `site_currency`, `premium_verified`) VALUES
-(1, 'Vipub', 'Welcome to Vipub', 'Quickly launch your own Twitter website with Vipub Social Media Sharing Platform.', 'vipub, login, register, vipub codecanyon, vipub teskale, vipub codecanyon script, twitter analog, twitter script, twitter buy script, vipub buy, vipub twitter script', 0, 'Active', 'Active', 'Active', 'Active', 'all', 'Most followed', 'master.white.theme', '2000', '2000', 'themes/default/statics/images/logo.png', 'themes/default/statics/images/logo_white.png', 'themes/default/statics/images/favicon.png', 'Active', '7000', '10000', 'usd', 0);
+INSERT INTO `xclone_settings` (`id`, `site_name`, `site_title`, `site_description`, `site_keywords`, `site_register_status`, `user_sent_verified`, `upload_image`, `upload_video`, `translate_tweet`, `hashtag_display`, `user_display`, `default_theme`, `post_maxlength`, `message_maxlength`, `site_white_logo`, `site_dark_logo`, `site_favicon`, `email_notifications`, `chat_time_interval`, `timeline_time_interval`, `site_currency`, `premium_verified`) VALUES
+(1, 'Xclone', 'Welcome to Xclone', 'Quickly launch your own Twitter website with Xclone Social Media Sharing Platform.', 'xclone, login, register, xclone codecanyon, xclone teskale, xclone codecanyon script, twitter analog, twitter script, twitter buy script, xclone buy, xclone twitter script', 0, 'Active', 'Active', 'Active', 'Active', 'all', 'Most followed', 'master.white.theme', '2000', '2000', 'themes/default/statics/images/logo.png', 'themes/default/statics/images/logo_white.png', 'themes/default/statics/images/favicon.png', 'Active', '7000', '10000', 'usd', 0);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_smtp`
+-- Tablo için tablo yapısı `xclone_smtp`
 --
 
-CREATE TABLE `vipub_smtp` (
+CREATE TABLE `xclone_smtp` (
   `smtp_id` int(11) UNSIGNED NOT NULL,
   `smtp_host` varchar(255) NOT NULL DEFAULT 'smtp.gmail.com',
   `smtp_username` varchar(255) NOT NULL DEFAULT 'robertdayzen@gmail.com',
@@ -328,19 +328,19 @@ CREATE TABLE `vipub_smtp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Tablo döküm verisi `vipub_smtp`
+-- Tablo döküm verisi `xclone_smtp`
 --
 
-INSERT INTO `vipub_smtp` (`smtp_id`, `smtp_host`, `smtp_username`, `smtp_password`, `smtp_port`) VALUES
+INSERT INTO `xclone_smtp` (`smtp_id`, `smtp_host`, `smtp_username`, `smtp_password`, `smtp_port`) VALUES
 (1, 'smtp.gmail.com', 'robertdayzen@gmail.com', 'owphckyevuarefwo', 587);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_users`
+-- Tablo için tablo yapısı `xclone_users`
 --
 
-CREATE TABLE `vipub_users` (
+CREATE TABLE `xclone_users` (
   `id` int(11) NOT NULL,
   `fullname` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
@@ -370,19 +370,19 @@ CREATE TABLE `vipub_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Tablo döküm verisi `vipub_users`
+-- Tablo döküm verisi `xclone_users`
 --
 
-INSERT INTO `vipub_users` (`id`, `fullname`, `username`, `email`, `password`, `avatar`, `cover`, `user_bio`, `user_location`, `user_website`, `following`, `followers`, `verified`, `theme_color`, `admin_status`, `account_status`, `dm_notification`, `follow_notification`, `like_notification`, `reply_notification`, `joined`, `user_wallet`, `reset_token`, `premium_account`, `verified_category`, `oauth`) VALUES
-(1, 'Robert Dayzen', 'admin', 'site-admin@vipubsm.com', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'upload/default/avatar.png', 'upload/default/cover.png', 'Thank you for purchasing Vipub!', 'CodeCanyon', 'https://vipubsm.com', '0', '0', '0', 'master.white.theme', '1', '0', 'Active', 'Active', 'Active', 'Active', '2023-04-10 13:02:36', '0.00', NULL, 0, 0, NULL);
+INSERT INTO `xclone_users` (`id`, `fullname`, `username`, `email`, `password`, `avatar`, `cover`, `user_bio`, `user_location`, `user_website`, `following`, `followers`, `verified`, `theme_color`, `admin_status`, `account_status`, `dm_notification`, `follow_notification`, `like_notification`, `reply_notification`, `joined`, `user_wallet`, `reset_token`, `premium_account`, `verified_category`, `oauth`) VALUES
+(1, 'Robert Dayzen', 'admin', 'site-admin@xclonesm.com', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'upload/default/avatar.png', 'upload/default/cover.png', 'Thank you for purchasing Xclone!', 'CodeCanyon', 'https://xclonesm.com', '0', '0', '0', 'master.white.theme', '1', '0', 'Active', 'Active', 'Active', 'Active', '2023-04-10 13:02:36', '0.00', NULL, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `vipub_verified`
+-- Tablo için tablo yapısı `xclone_verified`
 --
 
-CREATE TABLE `vipub_verified` (
+CREATE TABLE `xclone_verified` (
   `verified_id` int(11) UNSIGNED NOT NULL,
   `verified_uid` varchar(255) NOT NULL,
   `verified_category` varchar(255) NOT NULL,
@@ -394,120 +394,120 @@ CREATE TABLE `vipub_verified` (
 --
 
 --
--- Tablo için indeksler `vipub_add_balance`
+-- Tablo için indeksler `xclone_add_balance`
 --
-ALTER TABLE `vipub_add_balance`
+ALTER TABLE `xclone_add_balance`
   ADD PRIMARY KEY (`b_id`);
 
 --
--- Tablo için indeksler `vipub_api_usage`
+-- Tablo için indeksler `xclone_api_usage`
 --
-ALTER TABLE `vipub_api_usage`
+ALTER TABLE `xclone_api_usage`
   ADD PRIMARY KEY (`usage_id`);
 
 --
--- Tablo için indeksler `vipub_bookmarks`
+-- Tablo için indeksler `xclone_bookmarks`
 --
-ALTER TABLE `vipub_bookmarks`
+ALTER TABLE `xclone_bookmarks`
   ADD PRIMARY KEY (`b_id`);
 
 --
--- Tablo için indeksler `vipub_follow`
+-- Tablo için indeksler `xclone_follow`
 --
-ALTER TABLE `vipub_follow`
+ALTER TABLE `xclone_follow`
   ADD PRIMARY KEY (`f_id`);
 
 --
--- Tablo için indeksler `vipub_hashtag`
+-- Tablo için indeksler `xclone_hashtag`
 --
-ALTER TABLE `vipub_hashtag`
+ALTER TABLE `xclone_hashtag`
   ADD PRIMARY KEY (`h_id`);
 
 --
--- Tablo için indeksler `vipub_likes`
+-- Tablo için indeksler `xclone_likes`
 --
-ALTER TABLE `vipub_likes`
+ALTER TABLE `xclone_likes`
   ADD PRIMARY KEY (`l_id`),
   ADD UNIQUE KEY `user_id` (`user_id`,`post_id`),
   ADD UNIQUE KEY `user_id_2` (`user_id`,`post_id`),
   ADD UNIQUE KEY `user_id_3` (`user_id`,`post_id`);
 
 --
--- Tablo için indeksler `vipub_messages`
+-- Tablo için indeksler `xclone_messages`
 --
-ALTER TABLE `vipub_messages`
+ALTER TABLE `xclone_messages`
   ADD PRIMARY KEY (`m_id`);
 
 --
--- Tablo için indeksler `vipub_notifs`
+-- Tablo için indeksler `xclone_notifs`
 --
-ALTER TABLE `vipub_notifs`
+ALTER TABLE `xclone_notifs`
   ADD PRIMARY KEY (`n_id`);
 
 --
--- Tablo için indeksler `vipub_oauth_settings`
+-- Tablo için indeksler `xclone_oauth_settings`
 --
-ALTER TABLE `vipub_oauth_settings`
+ALTER TABLE `xclone_oauth_settings`
   ADD PRIMARY KEY (`oa_id`);
 
 --
--- Tablo için indeksler `vipub_pages`
+-- Tablo için indeksler `xclone_pages`
 --
-ALTER TABLE `vipub_pages`
+ALTER TABLE `xclone_pages`
   ADD PRIMARY KEY (`page_id`);
 
 --
--- Tablo için indeksler `vipub_posts`
+-- Tablo için indeksler `xclone_posts`
 --
-ALTER TABLE `vipub_posts`
+ALTER TABLE `xclone_posts`
   ADD PRIMARY KEY (`p_id`);
 
 --
--- Tablo için indeksler `vipub_premium_active_users`
+-- Tablo için indeksler `xclone_premium_active_users`
 --
-ALTER TABLE `vipub_premium_active_users`
+ALTER TABLE `xclone_premium_active_users`
   ADD PRIMARY KEY (`au_id`);
 
 --
--- Tablo için indeksler `vipub_premium_package`
+-- Tablo için indeksler `xclone_premium_package`
 --
-ALTER TABLE `vipub_premium_package`
+ALTER TABLE `xclone_premium_package`
   ADD PRIMARY KEY (`pack_id`);
 
 --
--- Tablo için indeksler `vipub_repost`
+-- Tablo için indeksler `xclone_repost`
 --
-ALTER TABLE `vipub_repost`
+ALTER TABLE `xclone_repost`
   ADD PRIMARY KEY (`r_id`);
 
 --
--- Tablo için indeksler `vipub_session`
+-- Tablo için indeksler `xclone_session`
 --
-ALTER TABLE `vipub_session`
+ALTER TABLE `xclone_session`
   ADD PRIMARY KEY (`id`);
 
 --
--- Tablo için indeksler `vipub_settings`
+-- Tablo için indeksler `xclone_settings`
 --
-ALTER TABLE `vipub_settings`
+ALTER TABLE `xclone_settings`
   ADD PRIMARY KEY (`id`);
 
 --
--- Tablo için indeksler `vipub_smtp`
+-- Tablo için indeksler `xclone_smtp`
 --
-ALTER TABLE `vipub_smtp`
+ALTER TABLE `xclone_smtp`
   ADD PRIMARY KEY (`smtp_id`);
 
 --
--- Tablo için indeksler `vipub_users`
+-- Tablo için indeksler `xclone_users`
 --
-ALTER TABLE `vipub_users`
+ALTER TABLE `xclone_users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Tablo için indeksler `vipub_verified`
+-- Tablo için indeksler `xclone_verified`
 --
-ALTER TABLE `vipub_verified`
+ALTER TABLE `xclone_verified`
   ADD PRIMARY KEY (`verified_id`);
 
 --
@@ -515,117 +515,117 @@ ALTER TABLE `vipub_verified`
 --
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_add_balance`
+-- Tablo için AUTO_INCREMENT değeri `xclone_add_balance`
 --
-ALTER TABLE `vipub_add_balance`
+ALTER TABLE `xclone_add_balance`
   MODIFY `b_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_api_usage`
+-- Tablo için AUTO_INCREMENT değeri `xclone_api_usage`
 --
-ALTER TABLE `vipub_api_usage`
+ALTER TABLE `xclone_api_usage`
   MODIFY `usage_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_bookmarks`
+-- Tablo için AUTO_INCREMENT değeri `xclone_bookmarks`
 --
-ALTER TABLE `vipub_bookmarks`
+ALTER TABLE `xclone_bookmarks`
   MODIFY `b_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_follow`
+-- Tablo için AUTO_INCREMENT değeri `xclone_follow`
 --
-ALTER TABLE `vipub_follow`
+ALTER TABLE `xclone_follow`
   MODIFY `f_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_hashtag`
+-- Tablo için AUTO_INCREMENT değeri `xclone_hashtag`
 --
-ALTER TABLE `vipub_hashtag`
+ALTER TABLE `xclone_hashtag`
   MODIFY `h_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_likes`
+-- Tablo için AUTO_INCREMENT değeri `xclone_likes`
 --
-ALTER TABLE `vipub_likes`
+ALTER TABLE `xclone_likes`
   MODIFY `l_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_messages`
+-- Tablo için AUTO_INCREMENT değeri `xclone_messages`
 --
-ALTER TABLE `vipub_messages`
+ALTER TABLE `xclone_messages`
   MODIFY `m_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_notifs`
+-- Tablo için AUTO_INCREMENT değeri `xclone_notifs`
 --
-ALTER TABLE `vipub_notifs`
+ALTER TABLE `xclone_notifs`
   MODIFY `n_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_oauth_settings`
+-- Tablo için AUTO_INCREMENT değeri `xclone_oauth_settings`
 --
-ALTER TABLE `vipub_oauth_settings`
+ALTER TABLE `xclone_oauth_settings`
   MODIFY `oa_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_pages`
+-- Tablo için AUTO_INCREMENT değeri `xclone_pages`
 --
-ALTER TABLE `vipub_pages`
+ALTER TABLE `xclone_pages`
   MODIFY `page_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_posts`
+-- Tablo için AUTO_INCREMENT değeri `xclone_posts`
 --
-ALTER TABLE `vipub_posts`
+ALTER TABLE `xclone_posts`
   MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_premium_active_users`
+-- Tablo için AUTO_INCREMENT değeri `xclone_premium_active_users`
 --
-ALTER TABLE `vipub_premium_active_users`
+ALTER TABLE `xclone_premium_active_users`
   MODIFY `au_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_premium_package`
+-- Tablo için AUTO_INCREMENT değeri `xclone_premium_package`
 --
-ALTER TABLE `vipub_premium_package`
+ALTER TABLE `xclone_premium_package`
   MODIFY `pack_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_repost`
+-- Tablo için AUTO_INCREMENT değeri `xclone_repost`
 --
-ALTER TABLE `vipub_repost`
+ALTER TABLE `xclone_repost`
   MODIFY `r_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_session`
+-- Tablo için AUTO_INCREMENT değeri `xclone_session`
 --
-ALTER TABLE `vipub_session`
+ALTER TABLE `xclone_session`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_settings`
+-- Tablo için AUTO_INCREMENT değeri `xclone_settings`
 --
-ALTER TABLE `vipub_settings`
+ALTER TABLE `xclone_settings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_smtp`
+-- Tablo için AUTO_INCREMENT değeri `xclone_smtp`
 --
-ALTER TABLE `vipub_smtp`
+ALTER TABLE `xclone_smtp`
   MODIFY `smtp_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_users`
+-- Tablo için AUTO_INCREMENT değeri `xclone_users`
 --
-ALTER TABLE `vipub_users`
+ALTER TABLE `xclone_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Tablo için AUTO_INCREMENT değeri `vipub_verified`
+-- Tablo için AUTO_INCREMENT değeri `xclone_verified`
 --
-ALTER TABLE `vipub_verified`
+ALTER TABLE `xclone_verified`
   MODIFY `verified_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 

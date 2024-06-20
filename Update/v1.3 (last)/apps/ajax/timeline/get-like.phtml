@@ -1,8 +1,8 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-$smtp_settings = vipub_smtp();
+$smtp_settings = xclone_smtp();
 
 if (!isset($_SESSION["user_id"])) {
   header("Location: /welcome/login");
@@ -18,41 +18,41 @@ $post_id = $_POST["p_id"];
 $user_id = $_SESSION["user_id"];
 $post_user_id = $_POST["post_user_id"];
 
-$query = "SELECT * FROM vipub_likes WHERE user_id = ? AND post_id = ?";
+$query = "SELECT * FROM xclone_likes WHERE user_id = ? AND post_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ii", $user_id, $post_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows == 0) {
-  $query = "INSERT INTO vipub_likes (user_id, post_id) VALUES (?, ?)";
+  $query = "INSERT INTO xclone_likes (user_id, post_id) VALUES (?, ?)";
   $stmt = $conn->prepare($query);
   $stmt->bind_param("ii", $user_id, $post_id);
   $stmt->execute();
 
-  $owner_tweet_account = "SELECT * FROM vipub_posts WHERE p_id = '$post_id'";
+  $owner_tweet_account = "SELECT * FROM xclone_posts WHERE p_id = '$post_id'";
   $owner_tweet_account2 = mysqli_query($conn, $owner_tweet_account);
   $tweet_owner = mysqli_fetch_assoc($owner_tweet_account2);
 
-  $email_like_notification = "SELECT * FROM vipub_users WHERE id = '".$tweet_owner["user_id"]."'";
+  $email_like_notification = "SELECT * FROM xclone_users WHERE id = '".$tweet_owner["user_id"]."'";
   $send_user_email_like_notifications = mysqli_query($conn, $email_like_notification);
   $receiver_user = mysqli_fetch_assoc($send_user_email_like_notifications);
 
-  $email_like_notification2 = "SELECT * FROM vipub_users WHERE id = '$user_id'";
+  $email_like_notification2 = "SELECT * FROM xclone_users WHERE id = '$user_id'";
   $send_user_email_like_notifications2 = mysqli_query($conn, $email_like_notification2);
   $my_user_owner = mysqli_fetch_assoc($send_user_email_like_notifications2);
 
-  $like_post_detail_sql = "SELECT * FROM vipub_posts WHERE p_id = '$post_id'";
+  $like_post_detail_sql = "SELECT * FROM xclone_posts WHERE p_id = '$post_id'";
   $sql_conn_details = mysqli_query($conn, $like_post_detail_sql);
   $like_row = mysqli_fetch_assoc($sql_conn_details);
 
-  $query = "UPDATE vipub_posts SET likes = likes + 1 WHERE p_id = ?";
+  $query = "UPDATE xclone_posts SET likes = likes + 1 WHERE p_id = ?";
   $stmt = $conn->prepare($query);
   $stmt->bind_param("i", $post_id);
   $stmt->execute();
 
   if($post_user_id !== $user_id){
-    $notifSql = "INSERT INTO vipub_notifs (user_id, sender_id, post_id, type) VALUES ('$post_user_id', '$user_id', '$post_id', 'like')";
+    $notifSql = "INSERT INTO xclone_notifs (user_id, sender_id, post_id, type) VALUES ('$post_user_id', '$user_id', '$post_id', 'like')";
     mysqli_query($conn, $notifSql);
 
       if($settings["email_notifications"]=="Active"){
@@ -75,7 +75,7 @@ if ($result->num_rows == 0) {
             $mail->addAddress($receiver_user["email"], $receiver_user["fullname"]);
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8'; 
-            $mail->Subject = vipub_translate("email_notification_user_post_owner_like_1");
+            $mail->Subject = xclone_translate("email_notification_user_post_owner_like_1");
             $mail->Body = $body;
             $mail->send();
           } 
@@ -86,7 +86,7 @@ if ($result->num_rows == 0) {
       }
   }
 
-  $query = "SELECT likes FROM vipub_posts WHERE p_id = ?";
+  $query = "SELECT likes FROM xclone_posts WHERE p_id = ?";
   $stmt = $conn->prepare($query);
   $stmt->bind_param("i", $post_id);
   $stmt->execute();
@@ -96,17 +96,17 @@ if ($result->num_rows == 0) {
 
   echo json_encode(["status" => "success", "like_count" => $likes]);
 } else {
-  $query = "DELETE FROM vipub_likes WHERE user_id = ? AND post_id = ?";
+  $query = "DELETE FROM xclone_likes WHERE user_id = ? AND post_id = ?";
   $stmt = $conn->prepare($query);
   $stmt->bind_param("ii", $user_id, $post_id);
   $stmt->execute();
 
-  $query = "UPDATE vipub_posts SET likes = likes - 1 WHERE p_id = ?";
+  $query = "UPDATE xclone_posts SET likes = likes - 1 WHERE p_id = ?";
   $stmt = $conn->prepare($query);
   $stmt->bind_param("i", $post_id);
   $stmt->execute();
 
-  $query = "SELECT likes FROM vipub_posts WHERE p_id = ?";
+  $query = "SELECT likes FROM xclone_posts WHERE p_id = ?";
   $stmt = $conn->prepare($query);
   $stmt->bind_param("i", $post_id);
   $stmt->execute();

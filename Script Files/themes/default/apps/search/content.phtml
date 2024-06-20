@@ -1,21 +1,21 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         
         <div class="site-header-box">
             <?php
                 $q = !empty($_GET["q"]) ? $_GET["q"] : "";
             ?>
-            <form action="<?php echo vipub_link("explore"); ?>" method="GET">
+            <form action="<?php echo xclone_link("explore"); ?>" method="GET">
                 <i class="bi bi-search"></i>
-                <input type="text" name="q" placeholder="<?php echo vipub_translate("search_vipub"); ?>">
+                <input type="text" name="q" placeholder="<?php echo xclone_translate("search_xclone"); ?>">
             </form>
             <div class="search-header-menu">
-                <a href="<?php echo vipub_link("search"); ?>" class="search-active">
-                    <h6><?php echo vipub_translate("profile_menu_1"); ?></h6>
+                <a href="<?php echo xclone_link("search"); ?>" class="search-active">
+                    <h6><?php echo xclone_translate("profile_menu_1"); ?></h6>
                 </a>
                 <a href="#">
-                    <h6><?php echo vipub_translate("explore_page_menu_name"); ?></h6>
+                    <h6><?php echo xclone_translate("explore_page_menu_name"); ?></h6>
                 </a>
             </div>
         </div>
@@ -23,5 +23,5 @@
         <div id="search-page-timeline"></div>
     </div>
 </div>
-<?php vipub_template("search/script/vipub.master.script"); ?>
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("search/script/xclone.master.script"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>

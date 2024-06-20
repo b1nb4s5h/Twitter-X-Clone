@@ -4,7 +4,7 @@
       <h1>List of users</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Users</li>
           <li class="breadcrumb-item active">List of users</li>
         </ol>
@@ -35,16 +35,16 @@
                 </thead>
                 <tbody>
                 <?php
-                    $sql = "SELECT id, fullname, username, admin_status, account_status, joined FROM vipub_users";
+                    $sql = "SELECT id, fullname, username, admin_status, account_status, joined FROM xclone_users";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) { ?>
 
                     <tr>
-                        <th scope="row"><a href="<?php echo vipub_link("admin_panel/edit_user?edit=".$row["id"]); ?>"><?php echo $row["id"]; ?></a></th>
-                        <td><?php echo vipub_croptxt($row["fullname"], 0, 15); ?></td>
-                        <td><a target="_blank" href="<?php echo vipub_link("@".$row["username"]); ?>" class="text-primary">@<?php echo $row["username"]; ?></a></td>
+                        <th scope="row"><a href="<?php echo xclone_link("admin_panel/edit_user?edit=".$row["id"]); ?>"><?php echo $row["id"]; ?></a></th>
+                        <td><?php echo xclone_croptxt($row["fullname"], 0, 15); ?></td>
+                        <td><a target="_blank" href="<?php echo xclone_link("@".$row["username"]); ?>" class="text-primary">@<?php echo $row["username"]; ?></a></td>
                         <td><?php if($row["admin_status"]=="0"): ?>
                             <span class="badge bg-warning">Not admin</span>
                         <?php else: ?>
@@ -59,7 +59,7 @@
                             <?php endif; ?>
                         </td>
                         <td><?php echo date("d.m.Y", strtotime($row["joined"])); ?></td>
-                        <td><a href="<?php echo vipub_link("admin_panel/edit_user?edit=".$row["id"]); ?>" class="text-primary">Edit</a></td>
+                        <td><a href="<?php echo xclone_link("admin_panel/edit_user?edit=".$row["id"]); ?>" class="text-primary">Edit</a></td>
                     </tr>
                     
                     <?php } } ?>

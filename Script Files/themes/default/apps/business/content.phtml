@@ -1,6 +1,6 @@
-<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); $settings = xclone_site_settings(); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         <div class="site-header-box">
             <h5>
             <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
@@ -17,10 +17,10 @@
                         <span>Cüzdanınıza bakiye ekleyerek, işlemlerinizi daha hızlı hale getirin.</span>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("business/balance_transfer"); ?>">
+                <a href="<?php echo xclone_link("business/balance_transfer"); ?>">
                     <div class="settings-page-menu">
                         <h5>Bir kullanıcıya bakiye gönderin</h5>
-                        <span>Cüzdanınızda yer alan bakiyeniz kadar başka bir Vipub kullanıcısına bakiye transfer edin.</span>
+                        <span>Cüzdanınızda yer alan bakiyeniz kadar başka bir Xclone kullanıcısına bakiye transfer edin.</span>
                     </div>
                 </a>
             </div>
@@ -28,19 +28,19 @@
                 <div class="settings-page-title">
                     <h5>Reklam kampanyası başlatın</h5>
                 </div>
-                <a href="<?php echo vipub_link("business/reach"); ?>">
+                <a href="<?php echo xclone_link("business/reach"); ?>">
                     <div class="settings-page-menu">
                         <h5>Ulaşmak</h5>
                         <span>Reklamımı daha fazla kişinin görmesini sağlayın.</span>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("business/followers"); ?>">
+                <a href="<?php echo xclone_link("business/followers"); ?>">
                     <div class="settings-page-menu">
                         <h5>Takipçi</h5>
                         <span>Daha fazla takipçi edinin.</span>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("business/website_traffic"); ?>">
+                <a href="<?php echo xclone_link("business/website_traffic"); ?>">
                     <div class="settings-page-menu">
                         <h5>Web sitesi trafiği</h5>
                         <span>Web siteme daha fazla ziyaretçi çekin.</span>
@@ -50,5 +50,5 @@
         </div>
     </div>
 </div>
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
-<?php vipub_template("business/script/app.master.script"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("business/script/app.master.script"); ?>

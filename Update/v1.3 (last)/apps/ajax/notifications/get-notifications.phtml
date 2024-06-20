@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: /welcome");
@@ -11,17 +11,17 @@ if(isset($_POST['userId'])) {
   $myUser = mysqli_real_escape_string($conn, $_SESSION['user_id']);
   
   // Bildirimleri okundu olarak işaretle
-  $updateSql = "UPDATE vipub_notifs SET is_read = 1 WHERE user_id = '$userId'";
+  $updateSql = "UPDATE xclone_notifs SET is_read = 1 WHERE user_id = '$userId'";
   mysqli_query($conn, $updateSql);
   
   $sql = "SELECT n.*, u.*
-          FROM vipub_notifs AS n 
-          INNER JOIN vipub_users AS u ON n.sender_id = u.id
+          FROM xclone_notifs AS n 
+          INNER JOIN xclone_users AS u ON n.sender_id = u.id
           WHERE n.user_id = '" . mysqli_real_escape_string($conn, $userId) . "'
           ORDER BY n.notifs_date DESC";
   $result = mysqli_query($conn, $sql);
 
-  $mySql = "SELECT username FROM vipub_users WHERE id = '" . mysqli_real_escape_string($conn, $myUser) . "'";
+  $mySql = "SELECT username FROM xclone_users WHERE id = '" . mysqli_real_escape_string($conn, $myUser) . "'";
   $userResult = mysqli_query($conn, $mySql);
   
   if(mysqli_num_rows($result) > 0) {
@@ -34,7 +34,7 @@ if(isset($_POST['userId'])) {
       $username = htmlspecialchars($row['username']);
       $verified = $row['verified'];
 
-      while($vipub_user = mysqli_fetch_assoc($userResult)) {
+      while($xclone_user = mysqli_fetch_assoc($userResult)) {
         require("../../../themes/default/apps/notifications/include/notifs.phtml");
       }
       mysqli_data_seek($userResult, 0);

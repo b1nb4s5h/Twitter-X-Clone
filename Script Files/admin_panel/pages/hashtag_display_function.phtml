@@ -1,11 +1,11 @@
-<?php $settings = vipub_site_settings(); ?>
+<?php $settings = xclone_site_settings(); ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>Configure your hashtag listing settings</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Hashtags</li>
           <li class="breadcrumb-item active">Hashtag display settings</li>
         </ol>
@@ -85,7 +85,7 @@
 
                     <div class="row mt-4">
                         <div class="col-sm-50">
-                            <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                            <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                                 <button type="submit" class="btn btn-success" name="saveHashtagList">
                                     Save
                                 </button>
@@ -106,7 +106,7 @@
 <?php
 if(isset($_POST['saveHashtagList'])) {
     $hashtag_display = mysqli_real_escape_string($conn, $_POST['hashtag_display']);
-    $sql = "UPDATE vipub_settings SET hashtag_display='$hashtag_display' WHERE id=1";
+    $sql = "UPDATE xclone_settings SET hashtag_display='$hashtag_display' WHERE id=1";
     if(mysqli_query($conn, $sql)) {
         ?>
         <script>

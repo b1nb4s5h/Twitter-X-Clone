@@ -1,16 +1,16 @@
 <?php
-require_once("../../core/vipub_web_core.phtml");
+require_once("../../core/xclone_web_core.phtml");
 
 $search = mysqli_real_escape_string($conn, $_POST['search']);
 
-$sql_users = "SELECT * FROM vipub_users WHERE account_status = 0 AND (fullname LIKE '%" . $search . "%' OR username LIKE '%" . $search . "%') AND id <> " . mysqli_real_escape_string($conn, $_SESSION["user_id"]);
+$sql_users = "SELECT * FROM xclone_users WHERE account_status = 0 AND (fullname LIKE '%" . $search . "%' OR username LIKE '%" . $search . "%') AND id <> " . mysqli_real_escape_string($conn, $_SESSION["user_id"]);
 $result_users = mysqli_query($conn, $sql_users);
 
-$sql_hashtags = "SELECT * FROM vipub_hashtag WHERE htag LIKE '%" . $search . "%'";
+$sql_hashtags = "SELECT * FROM xclone_hashtag WHERE htag LIKE '%" . $search . "%'";
 $result_hashtags = mysqli_query($conn, $sql_hashtags);
 
 if (mysqli_num_rows($result_users) > 0 || mysqli_num_rows($result_hashtags) > 0) {
-  echo "<div class='vipub-livesearch-box'>";
+  echo "<div class='xclone-livesearch-box'>";
   
   while($row = mysqli_fetch_assoc($result_users)) {
     echo '<div class="livesearch-userbox">';
@@ -32,7 +32,7 @@ if (mysqli_num_rows($result_users) > 0 || mysqli_num_rows($result_hashtags) > 0)
 
 } else {
     echo '<div class="livesearch-error">';
-    echo '<h6>'.vipub_translate("rsbr_search_text_3").'</h6>';
+    echo '<h6>'.xclone_translate("rsbr_search_text_3").'</h6>';
     echo "</div>";
 }
 

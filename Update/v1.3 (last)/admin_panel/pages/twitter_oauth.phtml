@@ -1,11 +1,11 @@
-<?php $vipub_oauth = vipub_oauth_settings(); ?>
+<?php $xclone_oauth = xclone_oauth_settings(); ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>Site email settings </h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Email</li>
           <li class="breadcrumb-item active">Site email settings</li>
         </ol>
@@ -62,8 +62,8 @@
                                 <label for="inputText" class="col-sm-5 col-form-label">Twitter API Key</label>
                                 <div class="col-sm-15">
                                 <input type="text" class="form-control" name="twitter_api_key" 
-                                placeholder="<?php echo empty($vipub_oauth["twitter_api_key"]) ? 'Your Twitter API Key' : ''; ?>"
-                                value="<?php echo isset($vipub_oauth["twitter_api_key"]) ? $vipub_oauth["twitter_api_key"] : ''; ?>">
+                                placeholder="<?php echo empty($xclone_oauth["twitter_api_key"]) ? 'Your Twitter API Key' : ''; ?>"
+                                value="<?php echo isset($xclone_oauth["twitter_api_key"]) ? $xclone_oauth["twitter_api_key"] : ''; ?>">
                                 </div>
                             </div>
                                 
@@ -71,8 +71,8 @@
                                 <label for="inputText" class="col-sm-12 col-form-label">Twitter API Key Secret</label>
                                 <div class="col-sm-15">
                                     <input type="text" class="form-control" name="twitter_api_key_secret" 
-                                    placeholder="<?php echo empty($vipub_oauth["twitter_api_key_secret"]) ? 'Your Twitter API Key Secret' : ''; ?>"
-                                    value="<?php echo isset($vipub_oauth["twitter_api_key_secret"]) ? $vipub_oauth["twitter_api_key_secret"] : ''; ?>">
+                                    placeholder="<?php echo empty($xclone_oauth["twitter_api_key_secret"]) ? 'Your Twitter API Key Secret' : ''; ?>"
+                                    value="<?php echo isset($xclone_oauth["twitter_api_key_secret"]) ? $xclone_oauth["twitter_api_key_secret"] : ''; ?>">
                                 </div>
                             </div>
 
@@ -80,9 +80,9 @@
                                 <label for="inputText" class="col-sm-5 col-form-label">Twitter Callback URL</label>
                                 <div class="col-sm-15">
                                     <input type="text" class="form-control" name="twitter_callback_url" 
-                                    placeholder="<?php echo vipub_link("oauth/twitter/callback"); ?>" value="<?php echo vipub_link("oauth/twitter/callback"); ?>">
+                                    placeholder="<?php echo xclone_link("oauth/twitter/callback"); ?>" value="<?php echo xclone_link("oauth/twitter/callback"); ?>">
                                     <small style="font-size: 12px; position: relative; padding: 5px 15px; background: #000; border-radius: 6px; color: #fff; text-align:center;">
-                                    Your Twitter for Callback URL: <strong><?php echo vipub_link("oauth/twitter/callback"); ?></strong></small>
+                                    Your Twitter for Callback URL: <strong><?php echo xclone_link("oauth/twitter/callback"); ?></strong></small>
                                 </div>
                             </div>
 
@@ -92,10 +92,10 @@
                                 
                                 <select class="form-select" name="twitter_login_status">
                                     
-                                    <option value="0" <?php if($vipub_oauth["twitter_login_status"]=="0"): ?>selected<?php endif; ?>>
+                                    <option value="0" <?php if($xclone_oauth["twitter_login_status"]=="0"): ?>selected<?php endif; ?>>
                                             Twitter oAuth Enabled
                                     </option>
-                                    <option value="1" <?php if($vipub_oauth["twitter_login_status"]=="1"): ?>selected<?php endif; ?>>
+                                    <option value="1" <?php if($xclone_oauth["twitter_login_status"]=="1"): ?>selected<?php endif; ?>>
                                             Twitter oAuth Disabled
                                     </option>
                                 </select>
@@ -105,7 +105,7 @@
 
                             <div class="row mt-2">
                               <div class="col-sm-50">
-                              <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                              <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                                   <button type="submit" style="width: 100% !important;" class="btn btn-success" name="saveTwitterOauth">Save settings</button>
                                   <?php else: ?>
                                   <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -135,7 +135,7 @@ if(isset($_POST['saveTwitterOauth'])) {
     $twitter_callback_url = mysqli_real_escape_string($conn, $_POST['twitter_callback_url']);
     $twitter_login_status = mysqli_real_escape_string($conn, $_POST['twitter_login_status']);
 
-    $sql = "UPDATE vipub_oauth_settings SET twitter_api_key='$twitter_api_key', twitter_api_key_secret='$twitter_api_key_secret', twitter_callback_url='$twitter_callback_url', twitter_login_status='$twitter_login_status' WHERE oauth_name='Twitter'";
+    $sql = "UPDATE xclone_oauth_settings SET twitter_api_key='$twitter_api_key', twitter_api_key_secret='$twitter_api_key_secret', twitter_callback_url='$twitter_callback_url', twitter_login_status='$twitter_login_status' WHERE oauth_name='Twitter'";
 
     if(mysqli_query($conn, $sql)) {
         ?>

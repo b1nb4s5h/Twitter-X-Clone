@@ -1,17 +1,17 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"])) {
-  vipub_redirect("/welcome/login");
+  xclone_redirect("/welcome/login");
   exit;
 }
 
 // Güncellenecek değerleri alın
 $user_id = $_SESSION["user_id"];
 $verified_category = $_POST["verified_category"];
-$sql = "UPDATE vipub_users SET verified = '2', verified_category = '0' WHERE id = '$user_id'";
+$sql = "UPDATE xclone_users SET verified = '2', verified_category = '0' WHERE id = '$user_id'";
 
-$intertVerified = "INSERT INTO vipub_verified (verified_uid, verified_category) VALUES ('$user_id', '$verified_category')";
+$intertVerified = "INSERT INTO xclone_verified (verified_uid, verified_category) VALUES ('$user_id', '$verified_category')";
 
 if ($conn->query($intertVerified) === TRUE) {
     echo "Yeni veri başarıyla eklendi.";

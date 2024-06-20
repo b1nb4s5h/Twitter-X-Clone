@@ -60,7 +60,7 @@
         border: 1px solid #1da1f2;
         background: #000;
     }
-    .main-vipub-screenline > .site-header-box h5{
+    .main-xclone-screenline > .site-header-box h5{
         font-size: 20px;
         font-weight: 700;
         line-height: 24px;
@@ -70,7 +70,7 @@
         align-items: center;
         display: flex;
     }
-    .main-vipub-screenline > .site-header-box h5 svg{
+    .main-xclone-screenline > .site-header-box h5 svg{
         width: 24px;
         height: 24px;
         color: #a8a8a8;
@@ -78,7 +78,7 @@
         margin-right: 10px;
         cursor: pointer;
     }
-    .main-vipub-screenline > .site-header-box h5 .uname-top-profile{
+    .main-xclone-screenline > .site-header-box h5 .uname-top-profile{
         width: 22px;
         height: 22px;
         color: #1C9BEF;
@@ -86,7 +86,7 @@
         margin-left: 2px;
         cursor: pointer;
     }
-    .main-vipub-screenline > .site-header-box h5 svg:hover{
+    .main-xclone-screenline > .site-header-box h5 svg:hover{
         transition-duration: 0.2s;
         color: #1da1f2;
         fill: #1da1f2;
@@ -443,7 +443,7 @@
         opacity: 0.6;
     }
     
-    .vipub-message-container{
+    .xclone-message-container{
         padding: 15px; 
     }
     
@@ -1386,17 +1386,17 @@
     padding-top: 15px;
     padding-bottom: 15px;
 }
-.vipub-embed-for-instagram-post{
+.xclone-embed-for-instagram-post{
     min-height: 650px;
 }
-.vipub-embed-for-tiktok-video{
+.xclone-embed-for-tiktok-video{
     min-height: 500px;
 }
-.vipub-embed-for-youtube-video{
+.xclone-embed-for-youtube-video{
     padding:0 !important;
     height: 275px;
 }
-.vipub-for-tweet-embedding-post{
+.xclone-for-tweet-embedding-post{
     margin-top: -18px;
 }
 .video-feed-control-btn{
@@ -2044,7 +2044,7 @@
     width: 100%;
     padding: 10px;
 }
-.vipub-emoji-picker{
+.xclone-emoji-picker{
     position: absolute;
     bottom: 0px;
     background: #000;
@@ -2060,33 +2060,33 @@
     overflow-x: scroll;
     overflow-y: none;
 }
-.vipub-emoji-picker button{
+.xclone-emoji-picker button{
     margin-right: 10px;
     border: none;
     outline: none;
     background: transparent;
     margin-bottom: 20px;
 }
-.vipub-emoji-picker button:hover{
+.xclone-emoji-picker button:hover{
     opacity: 0.6;
 }
-.select-vipub-emojies{
+.select-xclone-emojies{
     display:flex;
     flex-direction: column;
 }
-.select-vipub-emojies span{
+.select-xclone-emojies span{
     font-size: 13px;
     font-weight: 600;
     line-height: 14px;
     color: #a8a8a8;
     margin-bottom: 20px;
 }
-.select-vipub-emojies > .emojies-group-vipub{
+.select-xclone-emojies > .emojies-group-xclone{
     display: flex;
     align-items:center;
     flex-wrap: wrap;
 }
-.select-vipub-emojies > .emojies-group-vipub button{
+.select-xclone-emojies > .emojies-group-xclone button{
     font-size: 30px;
     flex-wrap: wrap;
 }
@@ -2129,7 +2129,7 @@
     color: #f5f5f5;
     font-size: 20px;
 }
-.vipub-emoji-picker small{
+.xclone-emoji-picker small{
     position: fixed;
     padding: 7px;
     border-radius: 50%;
@@ -2139,15 +2139,15 @@
     margin-top: -31px;
     margin-left: 170px;
 }
-.vipub-emoji-picker small:hover{
+.xclone-emoji-picker small:hover{
     transition-duration: 0.2s;
     opacity: 0.7;
 }
-.vipub-emoji-picker small i{
+.xclone-emoji-picker small i{
     color: #f5f5f5;
     font-size: 20px;
 }
-.vipub-user-message-container{
+.xclone-user-message-container{
     position: relative;
     width: 100%;
     height: 91vh;
@@ -2292,7 +2292,7 @@
 }
 
 
-.vipubbox-overlay {
+.xclonebox-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -2306,7 +2306,7 @@
     backdrop-filter: blur(3px);
 }
 
-.vipubbox-content img {
+.xclonebox-content img {
     max-width: 100%;
     max-height: 550px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.222);
@@ -2314,17 +2314,17 @@
     border-radius: 5px;
     object-fit: contain;
 }
-.vipubbox-overlay span{
+.xclonebox-overlay span{
     position: absolute;
     right: 20px;
     top: 15px;
 }
-.vipubbox-overlay span i{
+.xclonebox-overlay span i{
     font-size: 20px;
     color: #f5f5f5;
     cursor: pointer;
 }
-.vipubbox-image-content-post-info-buttons{
+.xclonebox-image-content-post-info-buttons{
     display: none;
 }
 .notifications-page-maxheight{
@@ -2335,7 +2335,7 @@
 .notifications-page-maxheight::-webkit-scrollbar{
     display: none;
 }
-.vipubbox-overlay-reply {
+.xclonebox-overlay-reply {
     position: fixed;
     top: 0;
     left: 0;
@@ -2348,12 +2348,12 @@
     z-index: 9999;
     background: rgba(35, 35, 35, 0.814);
 }
-.vipubbox-overlay-reply span{
+.xclonebox-overlay-reply span{
     position: relative;
     z-index: 9999;
     top: -15px;
 }
-.vipubbox-overlay-reply span i{
+.xclonebox-overlay-reply span i{
     font-size: 15px;
     color: #f5f5f5;
     cursor: pointer;
@@ -2361,7 +2361,7 @@
     background: #000;
     border-radius: 50%;
 }
-.vipubbox-overlay-reply span i:hover{
+.xclonebox-overlay-reply span i:hover{
     opacity: 0.8;
 }
 
@@ -2957,7 +2957,7 @@
     .preimum-account-selection-info > .card button[disabled]{
         opacity: 0.7 !important;
     }
-    .vipub-verified-subscription-info-text{
+    .xclone-verified-subscription-info-text{
         position: relative;
         font-size: 13px;
         line-height: 16px;
@@ -3220,7 +3220,7 @@
         position: relative;
         margin-bottom: 90px;
     }
-    .vipubSM_alert {
+    .xcloneSM_alert {
         position: fixed;
         top: 0px;
         left: 0px;
@@ -3232,17 +3232,17 @@
         width: 100%;
         display:none;
       }
-      .vipubSM_content{
+      .xcloneSM_content{
         display: flex;
         align-items: center;
         justify-items: center;
       }
-      .vipubSM_icon {
+      .xcloneSM_icon {
         display: inline-block;
         margin-right: 20px;
         font-size: 20px;
       }
-      .vipubSM_text {
+      .xcloneSM_text {
         display: inline-block;
       }
 }

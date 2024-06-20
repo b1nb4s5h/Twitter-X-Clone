@@ -1,8 +1,8 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-$smtp_settings = vipub_smtp();
+$smtp_settings = xclone_smtp();
 
 if (!isset($_SESSION["user_id"])) {
   header("Location: /welcome");
@@ -13,7 +13,7 @@ if ($receiver_id == $_SESSION["user_id"]) {
   header("Location: /messages");
   exit;
 }
-$settings = vipub_site_settings();
+$settings = xclone_site_settings();
 $message = trim($_POST['message']);
 $message = htmlspecialchars_decode(strip_tags(trim($_POST['message'])), ENT_QUOTES);
 
@@ -23,16 +23,16 @@ if ($sender_id == $receiver_id) {
     die(header('Location: /messages'));
 }
 
-$query = "INSERT INTO vipub_messages (sender_id, receiver_id, message) VALUES (?, ?, ?)";
+$query = "INSERT INTO xclone_messages (sender_id, receiver_id, message) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($query);
 $stmt->bind_param('iis', $sender_id, $receiver_id, $message);
 $stmt->execute();
 
-$email_send_notifs = "SELECT * FROM vipub_users WHERE id = '$receiver_id'";
+$email_send_notifs = "SELECT * FROM xclone_users WHERE id = '$receiver_id'";
 $send_user_email_notifications = mysqli_query($conn, $email_send_notifs);
 $receiver_user = mysqli_fetch_assoc($send_user_email_notifications);
 
-$email_send_notifs2 = "SELECT * FROM vipub_users WHERE id = '$sender_id'";
+$email_send_notifs2 = "SELECT * FROM xclone_users WHERE id = '$sender_id'";
 $send_user_email_notifications2 = mysqli_query($conn, $email_send_notifs2);
 $sender_user = mysqli_fetch_assoc($send_user_email_notifications2);
 
@@ -56,7 +56,7 @@ if($settings["email_notifications"]=="Active"){
       $mail->addAddress($receiver_user["email"], $receiver_user["fullname"]);
       $mail->isHTML(true);
       $mail->CharSet = 'UTF-8'; 
-      $mail->Subject = vipub_translate("email_message_notifications_6");
+      $mail->Subject = xclone_translate("email_message_notifications_6");
       $mail->Body = $body;
       $mail->send();
     } 

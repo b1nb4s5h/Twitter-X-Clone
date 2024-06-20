@@ -2,7 +2,7 @@
 if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
     $ids = $_GET["edit"];
 
-    $sql = "SELECT * FROM vipub_pages WHERE page_id ='$ids'
+    $sql = "SELECT * FROM xclone_pages WHERE page_id ='$ids'
     ORDER BY page_date DESC";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -14,7 +14,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
       <h1>Edit page</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Pages</li>
           <li class="breadcrumb-item active">Edit page</li>
         </ol>
@@ -42,7 +42,7 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
 
                   <form action="" method="POST">
                     <div class="row mb-3">
-                        <a class="text-center mb-4" style="font-weight: 700; color: #0f1419;" href="<?php echo vipub_link("pages/".$row["page_title_seo"]); ?>" target="_blank">
+                        <a class="text-center mb-4" style="font-weight: 700; color: #0f1419;" href="<?php echo xclone_link("pages/".$row["page_title_seo"]); ?>" target="_blank">
                             Click to view this page.
                           </a>
                         <label for="page_content" class="col-md-4 col-lg-3 col-form-label">Page title</label>
@@ -62,13 +62,13 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
 
                         <label for="page_content" class="col-md-4 col-lg-3 col-form-label">Page content</label>
                         <div class="col-md-8 col-lg-9">
-                          <textarea class="tinymce-editor" id="page_content" name="page_content"><?php echo convertVipubText($row["page_content"]); ?></textarea>
+                          <textarea class="tinymce-editor" id="page_content" name="page_content"><?php echo convertxcloneText($row["page_content"]); ?></textarea>
                         </div>
                     </div>
 
                   
                     <div class="text-center" style="margin-top:40px; position: relative;">
-                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                    <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                       <button type="submit" style="width: 100%;" class="btn btn-primary mb-3" name="savePageContent">Save Changes</button>
                       <button type="submit" style="width: 100%;" class="btn btn-danger" name="deletePage" onclick="return confirm('Are you sure you really want to delete the page?')">Delete page</button>
                       <?php else: ?>
@@ -100,11 +100,11 @@ echo "Invalid page ID";
 if(isset($_POST["savePageContent"])) {
     $id = $_GET["edit"];
     $page_title = htmlspecialchars($_POST["page_title"]);
-    $page_title_seo = htmlspecialchars(vipub_seolink($_POST["page_title_seo"]));
+    $page_title_seo = htmlspecialchars(xclone_seolink($_POST["page_title_seo"]));
     $page_name = htmlspecialchars($_POST["page_name"]);
     $page_content = $_POST["page_content"];
     
-    $stmt = $conn->prepare("UPDATE vipub_pages SET page_title=?, page_title_seo=?, page_name=?, page_content=? WHERE page_id=?");
+    $stmt = $conn->prepare("UPDATE xclone_pages SET page_title=?, page_title_seo=?, page_name=?, page_content=? WHERE page_id=?");
     $stmt->bind_param("ssssi", $page_title, $page_title_seo, $page_name, $page_content, $id);
     $stmt->execute();
     
@@ -133,7 +133,7 @@ if(isset($_POST["savePageContent"])) {
 if(isset($_POST["deletePage"])) {
     $id = $_GET["edit"];
     
-    $stmt = $conn->prepare("DELETE FROM vipub_pages WHERE page_id=?");
+    $stmt = $conn->prepare("DELETE FROM xclone_pages WHERE page_id=?");
     $stmt->bind_param("i",  $id);
     $stmt->execute();
     

@@ -1,6 +1,6 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
-<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); $settings = vipub_site_settings(); $premium = vipub_premium_package(); 
-$premium_user = vipub_premium_active_user($conn, $uname);
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = xcloneConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = xclone_get_my_profile($conn, $uname); $settings = xclone_site_settings(); $premium = xclone_premium_package(); 
+$premium_user = xclone_premium_active_user($conn, $uname);
 
 $starting_date = $premium_user["starting_date"];
 $end_date = $premium_user["end_date"];
@@ -21,13 +21,13 @@ $monthEndDateSubs = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($todayDa
 
 ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
     
         <div class="account-settings-page-for-users-page">
             <div class="settings-page-top-title">
                 <h5>
                     <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-                    <?php echo vipub_translate("vipub_verified_page"); ?>
+                    <?php echo xclone_translate("xclone_verified_page"); ?>
                 </h5>
             </div>
 
@@ -37,8 +37,8 @@ $monthEndDateSubs = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($todayDa
                     <?php if($row["premium_account"]=="1"): ?>
                         
                         <div class="user-balance-current">
-                            <h5><?php echo vipub_translate("cancel_for_vipub_subscription_top_title"); ?></h5>
-                            <span><?php echo vipub_translate("cancel_for_vipub_subscription_top_title_bottom_info"); ?></span>
+                            <h5><?php echo xclone_translate("cancel_for_xclone_subscription_top_title"); ?></h5>
+                            <span><?php echo xclone_translate("cancel_for_xclone_subscription_top_title_bottom_info"); ?></span>
                         </div>
                         <form id="cancel-or-verified-subscription-buy-month">
                             <div class="preimum-account-selection-info">
@@ -50,11 +50,11 @@ $monthEndDateSubs = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($todayDa
                                     <?php if ($is_expired): ?>
                                         
                                         <button type="submit" class="refresh-for-money-subscription">
-                                            <?php echo vipub_translate("refresh_for_vipub_subscription_btn"); ?>
+                                            <?php echo xclone_translate("refresh_for_xclone_subscription_btn"); ?>
                                         </button>
                                     <?php else: ?>
                                         <button type="submit" class="cancel-verified-subscription">
-                                            <?php echo vipub_translate("cancel_for_vipub_subscription"); ?>
+                                            <?php echo xclone_translate("cancel_for_xclone_subscription"); ?>
                                         </button>
                                     <?php endif; ?>
                                 </div>
@@ -62,19 +62,19 @@ $monthEndDateSubs = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($todayDa
                         </form>
                     <?php else: ?>
                         <div class="user-balance-current">
-                            <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_8"); ?></h5>
+                            <h5><?php echo xclone_translate("xclone_user_balance_extra_money_info_8"); ?></h5>
                             <h4><?php echo number_format($row["user_wallet"], 2) ?> $</h4>
                         </div>
                         
                         <div class="user-balance-current">
-                            <h5><?php echo vipub_translate("vipub_verified_new_subscription_info_title"); ?></h5>
-                            <span><?php echo vipub_translate("vipub_verified_page_general_info"); ?></span>
+                            <h5><?php echo xclone_translate("xclone_verified_new_subscription_info_title"); ?></h5>
+                            <span><?php echo xclone_translate("xclone_verified_page_general_info"); ?></span>
                         </div>
                         <form id="new-verified-subscription-buy-month">
                             <div class="preimum-account-selection-info">
                                 
                                 <div class="card">
-                                    <h6><?php echo vipub_translate("vipub_verified_text"); ?></h6>
+                                    <h6><?php echo xclone_translate("xclone_verified_text"); ?></h6>
                                     <h5><?php echo $premium["package_name"]; ?></h5>
                                     <h4><?php echo number_format($premium["package_price"], 2) ?> $ <small style="font-size: 12px;">/ month</small></h4>
 
@@ -84,19 +84,19 @@ $monthEndDateSubs = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($todayDa
                                     
 
                                     <?php if($row["user_wallet"] > $premium["package_price"]): ?>
-                                    <button type="submit" class="new-verified-subscription"><?php echo vipub_translate("vipub_verified_subscription_btn_text"); ?></button>
+                                    <button type="submit" class="new-verified-subscription"><?php echo xclone_translate("xclone_verified_subscription_btn_text"); ?></button>
                                     <?php else: ?>
-                                        <button disabled style="cursor: default;"><?php echo vipub_translate("vipub_verified_subscription_btn_text"); ?></button>
+                                        <button disabled style="cursor: default;"><?php echo xclone_translate("xclone_verified_subscription_btn_text"); ?></button>
                                     <?php endif; ?>
                                 </div>
                             </div>
                         </form>
                     
-                        <div class="vipub-verified-subscription-info-text">
+                        <div class="xclone-verified-subscription-info-text">
                             <?php if($row["user_wallet"] > $premium["package_price"]): ?>
-                                <?php echo vipub_translate("vipub_verified_subscription_balance_success_info"); ?>
+                                <?php echo xclone_translate("xclone_verified_subscription_balance_success_info"); ?>
                             <?php else: ?>
-                                <?php echo vipub_translate("vipub_verified_subscription_balance_error_info"); ?>
+                                <?php echo xclone_translate("xclone_verified_subscription_balance_error_info"); ?>
                             <?php endif; ?>
                         </div>
 
@@ -115,7 +115,7 @@ $monthEndDateSubs = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($todayDa
                                             if (response === "success") {
                                                 new Noty({
                                                     type: "success",
-                                                    text: "Vipub Verified aboneliğine katıldığınız için teşekkür ederiz.",
+                                                    text: "Xclone Verified aboneliğine katıldığınız için teşekkür ederiz.",
                                                     timeout: 2000,
                                                     callbacks: {
                                                         onClose: function() {

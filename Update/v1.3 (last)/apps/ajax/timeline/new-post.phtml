@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 $user_id = $_SESSION["user_id"];
 $content_post = $_POST['content_post'];
 $content_post = htmlspecialchars_decode(strip_tags(trim($_POST['content_post'])), ENT_QUOTES);
@@ -7,7 +7,7 @@ $content_gif = isset($_POST['gif_image']) ? $_POST['gif_image'] : NULL;
 if (empty($content_gif)) {
     $content_gif = NULL;
 }
-$p_data_lang = vipub_user_acceptLanguage();
+$p_data_lang = xclone_user_acceptLanguage();
 $post_globale_check = htmlspecialchars_decode(strip_tags(trim($_POST['post_globale_check'])), ENT_QUOTES);
 
 $file_name = $_FILES['add_image']['name'];
@@ -80,7 +80,7 @@ if (isset($_FILES['add_video'])) {
     $post_type = "post";
 }
 
-$stmt = $conn->prepare("INSERT INTO vipub_posts (user_id, content_post, content_image, content_video, content_gif, post_lang, post_type, reply_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO xclone_posts (user_id, content_post, content_image, content_video, content_gif, post_lang, post_type, reply_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 $stmt->bind_param("isssssss", $user_id, $content_post, $media_path, $video_path, $content_gif, $p_data_lang, $post_type, $post_globale_check);
 
 if ($stmt->execute()) {
@@ -92,7 +92,7 @@ if ($stmt->execute()) {
 
     if (!empty($matches[1])) {
         foreach ($matches[1] as $mention) {
-            $user_stmt = $conn->prepare("SELECT id FROM vipub_users WHERE username = ?");
+            $user_stmt = $conn->prepare("SELECT id FROM xclone_users WHERE username = ?");
             $user_stmt->bind_param("s", $mention);
             $user_stmt->execute();
             $user_result = $user_stmt->get_result();
@@ -102,7 +102,7 @@ if ($stmt->execute()) {
                 $mentioned_user_id = $user_row['id'];
 
                 if ($mentioned_user_id != $user_id) {
-                    $notif_stmt = $conn->prepare("INSERT INTO vipub_notifs (user_id, sender_id, post_id, type) VALUES (?, ?, ?, 'mention')");
+                    $notif_stmt = $conn->prepare("INSERT INTO xclone_notifs (user_id, sender_id, post_id, type) VALUES (?, ?, ?, 'mention')");
                     $notif_stmt->bind_param("iii", $mentioned_user_id, $user_id, $last_id);
                     $notif_stmt->execute();
                 }

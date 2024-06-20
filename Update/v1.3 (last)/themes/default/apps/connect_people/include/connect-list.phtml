@@ -1,18 +1,18 @@
 <div class="connection-random-users">
-   <a href="<?php echo vipub_link("@".$connect_people["username"]); ?>">
-        <img src="<?php echo vipub_link($connect_people["avatar"]); ?>">
+   <a href="<?php echo xclone_link("@".$connect_people["username"]); ?>">
+        <img src="<?php echo xclone_link($connect_people["avatar"]); ?>">
         <span><?php echo $connect_people["username"]; ?>
         <?php if($connect_people["verified"]=="1"): ?>
-            <?php echo vipub_userBlue(); ?>
+            <?php echo xclone_userBlue(); ?>
         <?php endif; ?>
         <h5><?php echo $connect_people["fullname"]; ?>
         <small>
         <?php if($connect_people["user_bio"]==NULL): ?>
             <?php echo $connect_people["followers"]; ?> 
-            <?php echo vipub_translate("connect_people_for_following_info_small"); ?>
+            <?php echo xclone_translate("connect_people_for_following_info_small"); ?>
         <?php else: ?>
-            <?php echo vipub_croptxt($connect_people["user_bio"], 0, 55); ?>  · 
-            <?php echo $connect_people["followers"]; ?> <?php echo vipub_translate("connect_people_for_following_info_small"); ?>
+            <?php echo xclone_croptxt($connect_people["user_bio"], 0, 55); ?>  · 
+            <?php echo $connect_people["followers"]; ?> <?php echo xclone_translate("connect_people_for_following_info_small"); ?>
         <?php endif; ?>
         </small>
         </h5> 
@@ -20,18 +20,18 @@
     </a>
 
     
-    <form class="vipubUser-follow" data-user-id="<?php echo $connect_people["id"]; ?>">
+    <form class="xcloneUser-follow" data-user-id="<?php echo $connect_people["id"]; ?>">
         <input type="hidden" name="user_id" value="<?php echo $connect_people["id"]; ?>">
-        <button class="follow-value"><?php echo vipub_translate("follow"); ?></button>
+        <button class="follow-value"><?php echo xclone_translate("follow"); ?></button>
     </form>
 </div>
 <script>
     $(document).ready(function() {
         // Takip butonuna tıklama işlemi
-        $('.vipubUser-follow').on('click', '.follow-value', function(e) {
+        $('.xcloneUser-follow').on('click', '.follow-value', function(e) {
             e.preventDefault();
 
-            var form = $(this).closest('.vipubUser-follow'); // Butona ait formu seç
+            var form = $(this).closest('.xcloneUser-follow'); // Butona ait formu seç
             var user_id = form.find('input[name="user_id"]').val(); // Kullanıcının ID'sini al
             var button = form.find('.follow-value'); // Butonu seç
 
@@ -52,13 +52,13 @@
                     follow_status: follow_status
                 },
                 success: function(data) {
-                    if (follow_status == '<?php echo vipub_translate("follow"); ?>') {
-                        button.text('<?php echo vipub_translate("unfollow"); ?>');
+                    if (follow_status == '<?php echo xclone_translate("follow"); ?>') {
+                        button.text('<?php echo xclone_translate("unfollow"); ?>');
                     } else {
-                        button.text('<?php echo vipub_translate("follow"); ?>');
+                        button.text('<?php echo xclone_translate("follow"); ?>');
                         new Noty({
                             type: 'error',
-                            text: "<?php echo vipub_translate("unfollow_user"); ?>",
+                            text: "<?php echo xclone_translate("unfollow_user"); ?>",
                             timeout: 2000
                         }).show();
                     }
@@ -74,7 +74,7 @@
         checkFollowStatus();
     });
     function checkFollowStatus() {
-        $('.vipubUser-follow').each(function() {
+        $('.xcloneUser-follow').each(function() {
             var form = $(this);
             var user_id = form.find('input[name="user_id"]').val();
 
@@ -85,13 +85,13 @@
                     user_id: user_id
                 },
                 success: function(data) {
-                    if (follow_status == '<?php echo vipub_translate("follow"); ?>') {
-                        button.text('<?php echo vipub_translate("unfollow"); ?>');
+                    if (follow_status == '<?php echo xclone_translate("follow"); ?>') {
+                        button.text('<?php echo xclone_translate("unfollow"); ?>');
                     } else {
-                        button.text('<?php echo vipub_translate("follow"); ?>');
+                        button.text('<?php echo xclone_translate("follow"); ?>');
                         new Noty({
                             type: 'error',
-                            text: "<?php echo vipub_translate("unfollow_user"); ?>",
+                            text: "<?php echo xclone_translate("unfollow_user"); ?>",
                             timeout: 2000
                         }).show();
                     }

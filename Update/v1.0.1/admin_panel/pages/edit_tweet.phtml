@@ -3,8 +3,8 @@ if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
     $ids = $_GET["edit"];
 
     $sql = "SELECT p.*, u.* 
-    FROM vipub_posts p 
-    JOIN vipub_users u ON p.user_id = u.id 
+    FROM xclone_posts p 
+    JOIN xclone_users u ON p.user_id = u.id 
     WHERE p_id ='$ids'
     ORDER BY p.post_joined DESC";
 $result = $conn->query($sql);
@@ -19,7 +19,7 @@ $result = $conn->query($sql);
       <h1>Tweet owner and tweet content</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Tweet</li>
           <li class="breadcrumb-item active">Edit tweet</li>
         </ol>
@@ -33,8 +33,8 @@ $result = $conn->query($sql);
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="<?php echo vipub_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
-              <h2><?php echo vipub_croptxt($row["fullname"], 0, 30); ?></h2>
+              <img src="<?php echo xclone_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
+              <h2><?php echo xclone_croptxt($row["fullname"], 0, 30); ?></h2>
               <h3>@<?php echo $row["username"]; ?></h3>
             </div>
           </div>
@@ -67,7 +67,7 @@ $result = $conn->query($sql);
                     <?php if($row["content_image"]=="NULL"): ?>
                       <?php else: ?>
                       <div class="tweet-content-image" style="position: relative; margin-top: 25px;">
-                        <img style="width: 550px; border:1px solid #d9d9d9; border-radius: 10px;" src="<?php echo vipub_link($row["content_image"]); ?>" alt="Tweet content image">
+                        <img style="width: 550px; border:1px solid #d9d9d9; border-radius: 10px;" src="<?php echo xclone_link($row["content_image"]); ?>" alt="Tweet content image">
                       </div>
                       <?php endif; ?>
                     </div>
@@ -82,7 +82,7 @@ $result = $conn->query($sql);
                         <?php if($row["content_image"]=="NULL"): ?>
                       <?php else: ?>
                       <div class="tweet-content-image" style="position: relative; margin-top: 25px;">
-                        <img style="width: 550px; border:1px solid #d9d9d9; border-radius: 10px;" src="<?php echo vipub_link($row["content_image"]); ?>" alt="Tweet content image">
+                        <img style="width: 550px; border:1px solid #d9d9d9; border-radius: 10px;" src="<?php echo xclone_link($row["content_image"]); ?>" alt="Tweet content image">
                       </div>
                       <?php endif; ?>
                         </div>
@@ -91,7 +91,7 @@ $result = $conn->query($sql);
                     
 
                     <div class="text-center" style="margin-top:40px; position: relative;">
-                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                    <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                       <button type="submit" style="width: 100%;" class="btn btn-primary" name="saveTweet">Save Changes</button>
                       <?php else: ?>
                             <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -123,7 +123,7 @@ if(isset($_POST["saveTweet"])) {
     $id = $_GET["edit"];
     $content_post = htmlspecialchars($_POST["content_post"]);
     
-    $stmt = $conn->prepare("UPDATE vipub_posts SET content_post=? WHERE p_id=?");
+    $stmt = $conn->prepare("UPDATE xclone_posts SET content_post=? WHERE p_id=?");
     $stmt->bind_param("si", $content_post, $id);
     $stmt->execute();
     

@@ -1,16 +1,16 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once("../../../../core/vipub_web_core.phtml");
-$conn = vipubConnectDatabase();
-$vipub_oauth = vipub_oauth_settings();
+require_once("../../../../core/xclone_web_core.phtml");
+$conn = xcloneConnectDatabase();
+$xclone_oauth = xclone_oauth_settings();
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 
-$consumer_key = $vipub_oauth["twitter_api_key"];
-$consumer_secret = $vipub_oauth["twitter_api_key_secret"];
+$consumer_key = $xclone_oauth["twitter_api_key"];
+$consumer_secret = $xclone_oauth["twitter_api_key_secret"];
 
-if($vipub_oauth["twitter_login_status"]=="0"){
+if($xclone_oauth["twitter_login_status"]=="0"){
     if(!isset($_SESSION["user_id"])){
         $twitterOAuth = new TwitterOAuth($consumer_key, $consumer_secret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
 
@@ -44,7 +44,7 @@ if($vipub_oauth["twitter_login_status"]=="0"){
             if (strlen($newTwitterRegisterUsername) > 15) {
                 $newTwitterRegisterUsername = substr($newTwitterRegisterUsername, 0, 15);
             }
-            $sql_check_username = "SELECT COUNT(*) FROM vipub_users WHERE username = ?";
+            $sql_check_username = "SELECT COUNT(*) FROM xclone_users WHERE username = ?";
             $stmt_check_username = $conn->prepare($sql_check_username);
             $stmt_check_username->bind_param("s", $newTwitterRegisterUsername);
             $stmt_check_username->execute();
@@ -57,7 +57,7 @@ if($vipub_oauth["twitter_login_status"]=="0"){
             $newTwitterRegisterEmail = "twitteroauth_email@" . rand(5435, 1231252135123) . ".com";
     
             // E-postayı veritabanından kontrol edin
-            $sql_check_email = "SELECT COUNT(*) FROM vipub_users WHERE email = ?";
+            $sql_check_email = "SELECT COUNT(*) FROM xclone_users WHERE email = ?";
             $stmt_check_email = $conn->prepare($sql_check_email);
             $stmt_check_email->bind_param("s", $newTwitterRegisterEmail);
             $stmt_check_email->execute();
@@ -70,7 +70,7 @@ if($vipub_oauth["twitter_login_status"]=="0"){
         $password = mysqli_real_escape_string($conn, sha1($randomPassword));
     
         // Kullanıcı bilgilerini veritabanına ekleme
-        $sql = "INSERT INTO vipub_users (fullname, username, password, email, oauth)
+        $sql = "INSERT INTO xclone_users (fullname, username, password, email, oauth)
                 VALUES (?, ?, ?, ?, ?)";
     
         $stmt = $conn->prepare($sql);

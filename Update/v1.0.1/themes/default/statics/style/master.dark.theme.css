@@ -1,11 +1,11 @@
 @import url("welcome.css");
-@font-face { font-family: vipubFont; src: url('https://abs.twimg.com/fonts/chirp-regular-web.woff2') format('woff2'); font-weight: 400; font-style: 'normal'; font-display: 'swap' } 
-@font-face { font-family: vipubFont; src: url('https://abs.twimg.com/fonts/chirp-heavy-web.woff2') format('woff2'); font-weight: 800; font-style: 'normal'; font-display: 'swap' }
+@font-face { font-family: xcloneFont; src: url('https://abs.twimg.com/fonts/chirp-regular-web.woff2') format('woff2'); font-weight: 400; font-style: 'normal'; font-display: 'swap' } 
+@font-face { font-family: xcloneFont; src: url('https://abs.twimg.com/fonts/chirp-heavy-web.woff2') format('woff2'); font-weight: 800; font-style: 'normal'; font-display: 'swap' }
 *{
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
-    font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+    font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
     box-sizing: border-box;
 }
 
@@ -17,7 +17,7 @@ body{
     font-weight: 400;
     line-height: 20px;
     color: #e7e9ea;
-    font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+    font-family: xcloneFont, Arial, Helvetica, sans-serif !important;
     background: #000 !important;
 }
 
@@ -188,7 +188,7 @@ a:hover{
         transition-duration: 0.2s;
         background: #181818;
     }
-    .main-vipub-screenline{
+    .main-xclone-screenline{
         position: relative;
         border-left: 1px solid #2F3336;
         border-right: 1px solid #2F3336;
@@ -222,7 +222,7 @@ a:hover{
         border: 1px solid #1da1f2;
         background: #000;
     }
-    .main-vipub-screenline > .site-header-box h5{
+    .main-xclone-screenline > .site-header-box h5{
         font-size: 20px;
         font-weight: 700;
         line-height: 24px;
@@ -232,7 +232,7 @@ a:hover{
         align-items: center;
         display: flex;
     }
-    .main-vipub-screenline > .site-header-box h5 svg{
+    .main-xclone-screenline > .site-header-box h5 svg{
         width: 24px;
         height: 24px;
         color: #71767b;
@@ -240,7 +240,7 @@ a:hover{
         margin-right: 10px;
         cursor: pointer;
     }
-    .main-vipub-screenline > .site-header-box h5 .uname-top-profile{
+    .main-xclone-screenline > .site-header-box h5 .uname-top-profile{
         width: 22px;
         height: 22px;
         color: #e7e9ea;
@@ -248,7 +248,7 @@ a:hover{
         margin-left: 2px;
         cursor: pointer;
     }
-    .main-vipub-screenline > .site-header-box h5 svg:hover{
+    .main-xclone-screenline > .site-header-box h5 svg:hover{
         transition-duration: 0.2s;
         color: #1da1f2;
         fill: #1da1f2;
@@ -276,7 +276,7 @@ a:hover{
         font-weight: 700;
         line-height: 20px;
     }
-    .main-vipub-screenline > .share-to-post-homepage{
+    .main-xclone-screenline > .share-to-post-homepage{
         position: relative;
         width: 100%;
         padding: 10px;
@@ -543,12 +543,12 @@ a:hover{
         border: 1px solid #188CD8 !important;
         background: #000;
     }
-    .vipub-livesearch-box{
+    .xclone-livesearch-box{
         width: 315px;
         border-radius: 7px;
         box-shadow: 0px 0px 5px 0px rgba(208, 208, 208, 0.745) !important;
     }
-    .vipub-livesearch-box > .livesearch-userbox h6{
+    .xclone-livesearch-box > .livesearch-userbox h6{
         font-size: 20px;
         font-weight: 700;
         line-height: 20px;
@@ -558,7 +558,7 @@ a:hover{
         margin-left: 15px;
         position: relative;
     }
-    .vipub-livesearch-box > .livesearch-userbox a h3{
+    .xclone-livesearch-box > .livesearch-userbox a h3{
         font-size: 17px;
         font-weight: 700;
         line-height: 20px;
@@ -570,40 +570,40 @@ a:hover{
         display: flex;
         align-items: center;
     }
-    .vipub-livesearch-box > .livesearch-userbox a h3:hover{
+    .xclone-livesearch-box > .livesearch-userbox a h3:hover{
         text-decoration: underline !important;
     }
-    .vipub-livesearch-box > .livesearch-userbox a{
+    .xclone-livesearch-box > .livesearch-userbox a{
         text-decoration: none !important;
     }
-    .vipub-livesearch-box > .livesearch-userbox:hover{
+    .xclone-livesearch-box > .livesearch-userbox:hover{
         transition-duration: 0.2s;
         background: #181818 !important;
     }
-    .vipub-livesearch-box > .livesearch-userbox a h3 svg{
+    .xclone-livesearch-box > .livesearch-userbox a h3 svg{
         width: 25px;
         height: 25px;
         color: #e7e9ea;
         fill: #e7e9ea;
         margin-right: 15px;
     }
-    .vipub-livesearch-box > .livesearch-userbox > .checksearch-livebox{
+    .xclone-livesearch-box > .livesearch-userbox > .checksearch-livebox{
         position: relative;
         display: flex;
         align-items: center;
         padding: 10px;
     }
-    .vipub-livesearch-box > .livesearch-userbox > .checksearch-livebox:hover{
+    .xclone-livesearch-box > .livesearch-userbox > .checksearch-livebox:hover{
         transition-duration: 0.2s;
         background: #181818;
     }
-    .vipub-livesearch-box > .livesearch-userbox > .checksearch-livebox img{
+    .xclone-livesearch-box > .livesearch-userbox > .checksearch-livebox img{
         width: 45px;
         height: 45px;
         border-radius: 50%;
         margin-right: 10px;
     }
-    .vipub-livesearch-box > .livesearch-userbox > .checksearch-livebox h5{
+    .xclone-livesearch-box > .livesearch-userbox > .checksearch-livebox h5{
         font-size: 15px;
         font-weight: 700;
         line-height: 20px;
@@ -613,7 +613,7 @@ a:hover{
         top: 0px;
         margin-right: 6px;
     }
-    .vipub-livesearch-box > .livesearch-userbox > .checksearch-livebox span{
+    .xclone-livesearch-box > .livesearch-userbox > .checksearch-livebox span{
         font-size: 15px;
         font-weight: 400;
         line-height: 20px;
@@ -726,7 +726,7 @@ a:hover{
         top: 15px;
         margin-left: 1.3px;
     }
-    .htag-list-look > .htag-list-target vipub{
+    .htag-list-look > .htag-list-target xclone{
         font-size: 13px;
         line-height: 16px;
         font-weight: 400;
@@ -1361,7 +1361,7 @@ a:hover{
         user-select: none;
     }
     
-    .vipub-user-message-container{
+    .xclone-user-message-container{
         position: relative;
         width: 100%;
         height: 500px;
@@ -1373,11 +1373,11 @@ a:hover{
         width: 100%;
         padding: 15px;
     }
-    .vipub-message-container{
+    .xclone-message-container{
         border-bottom: 1px solid #2F3336;
         padding: 15px; 
     }
-    .vipub-message-container:hover{
+    .xclone-message-container:hover{
         transition-duration: 0.2s;
         background: #188bd81a;
     }
@@ -1908,7 +1908,7 @@ a:hover{
     .left-sidebar{
         display: none;
     }
-    .main-vipub-screenline{
+    .main-xclone-screenline{
         position: relative;
         min-height: 100vh;
         margin-bottom: 70px;
@@ -1942,7 +1942,7 @@ a:hover{
         border: 1px solid #1da1f2;
         background: #000;
     }
-    .main-vipub-screenline > .site-header-box h5{
+    .main-xclone-screenline > .site-header-box h5{
         font-size: 20px;
         font-weight: 700;
         line-height: 24px;
@@ -1952,7 +1952,7 @@ a:hover{
         align-items: center;
         display: flex;
     }
-    .main-vipub-screenline > .site-header-box h5 svg{
+    .main-xclone-screenline > .site-header-box h5 svg{
         width: 24px;
         height: 24px;
         color: #e7e9ea;
@@ -1960,7 +1960,7 @@ a:hover{
         margin-right: 10px;
         cursor: pointer;
     }
-    .main-vipub-screenline > .site-header-box h5 .uname-top-profile{
+    .main-xclone-screenline > .site-header-box h5 .uname-top-profile{
         width: 21px;
         height: 21px;
         color: #e7e9ea;
@@ -1968,7 +1968,7 @@ a:hover{
         margin-left: 5px;
         cursor: pointer;
     }
-    .main-vipub-screenline > .site-header-box h5 svg:hover{
+    .main-xclone-screenline > .site-header-box h5 svg:hover{
         transition-duration: 0.2s;
         color: #1da1f2;
         fill: #1da1f2;
@@ -1996,7 +1996,7 @@ a:hover{
         font-weight: 700;
         line-height: 20px;
     }
-    .main-vipub-screenline > .share-to-post-homepage{
+    .main-xclone-screenline > .share-to-post-homepage{
         position: relative;
         width: 100%;
         padding: 10px;
@@ -2232,7 +2232,7 @@ a:hover{
     .right-sidebar{
         display: none;
     }
-    .vipub-livesearch-box{
+    .xclone-livesearch-box{
         display: none;
     }
     .dropdown ul {
@@ -2854,7 +2854,7 @@ a:hover{
         border-radius: 3px;
         user-select: none;
     }
-    .vipub-user-message-container{
+    .xclone-user-message-container{
         position: relative;
         width: 100%;
         height: 80vh;
@@ -2872,11 +2872,11 @@ a:hover{
     #message-form{
         position: relative;
     }
-    .vipub-message-container{
+    .xclone-message-container{
         border-bottom: 1px solid #2F3336;
         padding: 15px; 
     }
-    .vipub-message-container:hover{
+    .xclone-message-container:hover{
         transition-duration: 0.2s;
         background: #181818;
     }

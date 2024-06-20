@@ -1,19 +1,19 @@
-<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
-<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); $settings = xclone_site_settings(); ?>
+<?php $conn = xcloneConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = xclone_get_my_profile($conn, $uname); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
     
         <div class="account-settings-page-for-users-page">
             <div class="settings-page-top-title">
-                <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg><?php echo vipub_translate("account_settings"); ?></h5>
+                <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg><?php echo xclone_translate("account_settings"); ?></h5>
             </div>
 
             <div class="settings-page-content-full next-settings-page-container-none-border">
 
                 <div class="settings-edit-profile-right-zone next-settings-page-container">
                     <div class="edit-profile-right-zone-title">
-                        <h5><?php echo vipub_translate("account_settings_menu_46"); ?></h5>
-                        <small><?php echo vipub_translate("user_website_view_language_select_info"); ?></small>
+                        <h5><?php echo xclone_translate("account_settings_menu_46"); ?></h5>
+                        <small><?php echo xclone_translate("user_website_view_language_select_info"); ?></small>
                     </div>
 
                     <div class="user-profile-edit-form-content-full">
@@ -21,20 +21,20 @@
                         <form id="user-disp-language">
                             <div class="edit-input-profile">
                                 <select id="language-select">
-                                    <option select><?php echo vipub_translate("language_name"); ?></option>
-                                    <option value="turkish"><?php echo vipub_translate("language_name_1"); ?></option>
-                                    <option value="english"><?php echo vipub_translate("language_name_2"); ?></option>
-                                    <option value="espanol"><?php echo vipub_translate("language_name_3"); ?></option>
-                                    <option value="german"><?php echo vipub_translate("language_name_4"); ?></option>
-                                    <option value="russian"><?php echo vipub_translate("language_name_5"); ?></option>
-                                    <option value="portuguese"><?php echo vipub_translate("language_name_6"); ?></option>
-                                    <option value="french"><?php echo vipub_translate("language_name_7"); ?></option>
-                                    <option value="chinese"><?php echo vipub_translate("language_name_8"); ?></option>
-                                    <option value="hindi"><?php echo vipub_translate("language_name_9"); ?></option>
-                                    <option value="japanese"><?php echo vipub_translate("language_name_10"); ?></option>
-                                    <option value="bengali"><?php echo vipub_translate("language_name_11"); ?></option>
+                                    <option select><?php echo xclone_translate("language_name"); ?></option>
+                                    <option value="turkish"><?php echo xclone_translate("language_name_1"); ?></option>
+                                    <option value="english"><?php echo xclone_translate("language_name_2"); ?></option>
+                                    <option value="espanol"><?php echo xclone_translate("language_name_3"); ?></option>
+                                    <option value="german"><?php echo xclone_translate("language_name_4"); ?></option>
+                                    <option value="russian"><?php echo xclone_translate("language_name_5"); ?></option>
+                                    <option value="portuguese"><?php echo xclone_translate("language_name_6"); ?></option>
+                                    <option value="french"><?php echo xclone_translate("language_name_7"); ?></option>
+                                    <option value="chinese"><?php echo xclone_translate("language_name_8"); ?></option>
+                                    <option value="hindi"><?php echo xclone_translate("language_name_9"); ?></option>
+                                    <option value="japanese"><?php echo xclone_translate("language_name_10"); ?></option>
+                                    <option value="bengali"><?php echo xclone_translate("language_name_11"); ?></option>
                                 </select>
-                                <span id="email-notifications-info-text-small"><?php echo vipub_translate("user_website_view_language_select"); ?></span>
+                                <span id="email-notifications-info-text-small"><?php echo xclone_translate("user_website_view_language_select"); ?></span>
                             </div>
                         </form>
                     </div>

@@ -1,21 +1,21 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 if (!isset($_SESSION["user_id"])) {
-  vipub_redirect("/welcome/login");
+  xclone_redirect("/welcome/login");
   exit;
 }
 
 $username = mysqli_real_escape_string($conn, $_POST["username"]);
 $user_id = mysqli_real_escape_string($conn, $_SESSION["user_id"]);
 
-$sql = "SELECT id FROM vipub_users WHERE username='$username' AND id != $user_id";
+$sql = "SELECT id FROM xclone_users WHERE username='$username' AND id != $user_id";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
     echo 'Kullanıcı adı zaten kullanılıyor.';
 } else {
-    $sql = "UPDATE vipub_users SET username='$username' WHERE id=$user_id";
+    $sql = "UPDATE xclone_users SET username='$username' WHERE id=$user_id";
     if (mysqli_query($conn, $sql)) {
         echo $username;
     } else {

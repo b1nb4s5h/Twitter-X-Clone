@@ -6,19 +6,19 @@ ini_set('display_errors', 1);
 # @ Author_url 2: http://codecanyon.net/user/robertdayzen                   @
 # @ Author E-mail: robertdayzen@gmail.com                                   @
 # @*************************************************************************@
-# @ Vipub - The Ultimate Modern PHP Social Media Sharing Platform           @
-# @ Copyright (c) 2022 - 2023 Vipub. All rights reserved.                   @
+# @ Xclone - The Ultimate Modern PHP Social Media Sharing Platform           @
+# @ Copyright (c) 2022 - 2023 Xclone. All rights reserved.                   @
 # @*************************************************************************@
-require_once("../../../../core/vipub_web_core.phtml");
-$vipub_oauth = vipub_oauth_settings();
+require_once("../../../../core/xclone_web_core.phtml");
+$xclone_oauth = xclone_oauth_settings();
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 
-if($vipub_oauth["twitter_login_status"]=="0"){
+if($xclone_oauth["twitter_login_status"]=="0"){
     if(!isset($_SESSION["user_id"])){
-        $consumer_key = $vipub_oauth["twitter_api_key"];
-        $consumer_secret = $vipub_oauth["twitter_api_key_secret"];
-        $callback_url = $vipub_oauth["twitter_callback_url"]; 
+        $consumer_key = $xclone_oauth["twitter_api_key"];
+        $consumer_secret = $xclone_oauth["twitter_api_key_secret"];
+        $callback_url = $xclone_oauth["twitter_callback_url"]; 
     
         $twitterOAuth = new TwitterOAuth($consumer_key, $consumer_secret);
     

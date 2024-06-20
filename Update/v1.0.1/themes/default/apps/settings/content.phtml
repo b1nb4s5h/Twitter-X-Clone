@@ -1,111 +1,111 @@
-<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
-<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); $settings = xclone_site_settings(); ?>
+<?php $conn = xcloneConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = xclone_get_my_profile($conn, $uname); ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         <div class="site-header-box">
             <h5>
             <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
-            <?php echo vipub_translate("account_settings"); ?></h5>
+            <?php echo xclone_translate("account_settings"); ?></h5>
         </div>
         <div class="account-settings-page">
             <div class="settings-page-container">
                 <div class="settings-page-title">
-                    <h5><?php echo vipub_translate("account_information"); ?></h5>
+                    <h5><?php echo xclone_translate("account_information"); ?></h5>
                 </div>
-                <a href="<?php echo vipub_link("settings/fullname"); ?>">
+                <a href="<?php echo xclone_link("settings/fullname"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_1"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_1"); ?></h5>
                         <span><?php echo $row["fullname"]; ?></span>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/username"); ?>">
+                <a href="<?php echo xclone_link("settings/username"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_2"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_2"); ?></h5>
                         <span>@<?php echo $row["username"]; ?></span>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/email"); ?>">
+                <a href="<?php echo xclone_link("settings/email"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_3"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_3"); ?></h5>
                         <span><?php echo $row["email"]; ?></span>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/bio"); ?>">
+                <a href="<?php echo xclone_link("settings/bio"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_4"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_4"); ?></h5>
                         <?php if($row["user_bio"]==NULL):?>
-                        <span><?php echo vipub_translate("account_settings_menu_5"); ?></span>
+                        <span><?php echo xclone_translate("account_settings_menu_5"); ?></span>
                         <?php else: ?>
                         <span><?php echo $row["user_bio"]; ?></span>
                         <?php endif; ?>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/location"); ?>">
+                <a href="<?php echo xclone_link("settings/location"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_6"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_6"); ?></h5>
                         <?php if($row["user_bio"]==NULL):?>
-                        <span><?php echo vipub_translate("account_settings_menu_7"); ?></span>
+                        <span><?php echo xclone_translate("account_settings_menu_7"); ?></span>
                         <?php else: ?>
                         <span><?php echo $row["user_location"]; ?></span>
                         <?php endif; ?>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/website"); ?>">
+                <a href="<?php echo xclone_link("settings/website"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_8"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_8"); ?></h5>
                         <?php if($row["user_website"]==NULL):?>
-                        <span><?php echo vipub_translate("account_settings_menu_9"); ?></span>
+                        <span><?php echo xclone_translate("account_settings_menu_9"); ?></span>
                         <?php else: ?>
                         <span><?php echo $row["user_website"]; ?></span>
                         <?php endif; ?>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/password"); ?>">
+                <a href="<?php echo xclone_link("settings/password"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_10"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_10"); ?></h5>
                         <span>***********</span>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/language"); ?>">
+                <a href="<?php echo xclone_link("settings/language"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_46"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_46"); ?></h5>
                     </div>
                 </a>
             </div>
             <div class="settings-page-container">
                 <div class="settings-page-title">
-                    <h5><?php echo vipub_translate("account_settings_menu_11"); ?></h5>
+                    <h5><?php echo xclone_translate("account_settings_menu_11"); ?></h5>
                 </div>
-                <a href="<?php echo vipub_link("settings/avatar"); ?>">
+                <a href="<?php echo xclone_link("settings/avatar"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_12"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_12"); ?></h5>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/cover"); ?>">
+                <a href="<?php echo xclone_link("settings/cover"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_13"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_13"); ?></h5>
                     </div>
                 </a>
-                <a href="<?php echo vipub_link("settings/display"); ?>">
+                <a href="<?php echo xclone_link("settings/display"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_14"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_14"); ?></h5>
                     </div>
                 </a>
             </div>
             <?php if($settings["user_sent_verified"]=="Active"): ?>
             <div class="settings-page-container">
                 <div class="settings-page-title">
-                    <h5><?php echo vipub_translate("account_settings_menu_15"); ?></h5>
+                    <h5><?php echo xclone_translate("account_settings_menu_15"); ?></h5>
                 </div>
-                <a href="<?php echo vipub_link("settings/send_verified"); ?>">
+                <a href="<?php echo xclone_link("settings/send_verified"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_16"); ?></h5>
+                        <h5><?php echo xclone_translate("account_settings_menu_16"); ?></h5>
                         <?php if($row["verified"]=="0"): ?>
-                        <span><?php echo vipub_translate("account_settings_menu_17"); ?></span>
+                        <span><?php echo xclone_translate("account_settings_menu_17"); ?></span>
                         <?php elseif($row["verified"]=="1"): ?>
-                        <span><?php echo vipub_translate("account_settings_menu_18"); ?></span>
+                        <span><?php echo xclone_translate("account_settings_menu_18"); ?></span>
                         <?php elseif($row["verified"]=="2"): ?>
-                        <span><?php echo vipub_translate("account_settings_menu_19"); ?></span>
+                        <span><?php echo xclone_translate("account_settings_menu_19"); ?></span>
                         <?php endif; ?>
                     </div>
                 </a>
@@ -114,24 +114,24 @@
             <?php if($settings["email_notifications"]=="Active"): ?>
             <div class="settings-page-container">
                 <div class="settings-page-title">
-                    <h5><?php echo vipub_translate("settings_page_email_notifs_1"); ?></h5>
+                    <h5><?php echo xclone_translate("settings_page_email_notifs_1"); ?></h5>
                 </div>
-                <a href="<?php echo vipub_link("settings/email_notifications"); ?>">
+                <a href="<?php echo xclone_link("settings/email_notifications"); ?>">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("settings_page_email_notifs_2"); ?></h5>
-                        <span><?php echo vipub_translate("settings_page_email_notifs_3"); ?></span>
+                        <h5><?php echo xclone_translate("settings_page_email_notifs_2"); ?></h5>
+                        <span><?php echo xclone_translate("settings_page_email_notifs_3"); ?></span>
                     </div>
                 </a>
             </div>
             <?php endif; ?>  
             <div class="settings-page-container">
                 <div class="settings-page-title">
-                    <h5><?php echo vipub_translate("account_settings_menu_20"); ?></h5>
+                    <h5><?php echo xclone_translate("account_settings_menu_20"); ?></h5>
                 </div>
                 <a href="#">
                     <div class="settings-page-menu">
-                        <h5><?php echo vipub_translate("account_settings_menu_21"); ?></h5>
-                        <span><?php echo vipub_translate("account_settings_menu_22"); ?></span>
+                        <h5><?php echo xclone_translate("account_settings_menu_21"); ?></h5>
+                        <span><?php echo xclone_translate("account_settings_menu_22"); ?></span>
                     </div>
                 </a>
             </div>                
@@ -139,4 +139,4 @@
         </div>
     </div>
 </div>
-<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php xclone_template("main/sidebar/right-sidebar"); ?>

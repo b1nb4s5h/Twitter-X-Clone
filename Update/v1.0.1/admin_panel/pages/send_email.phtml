@@ -1,20 +1,20 @@
 <?php
-$smtp_settings = vipub_smtp();
+$smtp_settings = xclone_smtp();
 if (isset($_GET["email"]) && is_numeric($_GET["email"])) {
     $user_id = $_GET["email"];
-    $sql = "SELECT * FROM vipub_users WHERE id=$user_id";
+    $sql = "SELECT * FROM xclone_users WHERE id=$user_id";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc(); ?>
-<?php $settings = vipub_site_settings(); ?>
+<?php $settings = xclone_site_settings(); ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
       <h1>General Configuration</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">User</li>
           <li class="breadcrumb-item active">Send private email</li>
         </ol>
@@ -88,7 +88,7 @@ if (isset($_GET["email"]) && is_numeric($_GET["email"])) {
 
                             <div class="row mt-2">
                               <div class="col-sm-50">
-                              <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                              <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                                   <button type="submit" style="width: 100% !important;" class="btn btn-primary" name="sendUserEmail">Send email</button>
                                   <?php else: ?>
                                     <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -144,7 +144,7 @@ if(isset($_POST['sendUserEmail'])) {
       $mail->CharSet = 'UTF-8'; 
       $mail->Subject = $subject;
       $mail->Body    = '
-          <div class="vipub-content-email">
+          <div class="xclone-content-email">
             <div class="container">
                 <div class="email-top-logo" style="position: relative; margin-bottom: 12px;">
                     <p>'.$email_body.'</p>

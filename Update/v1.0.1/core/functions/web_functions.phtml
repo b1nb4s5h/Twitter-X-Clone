@@ -1,5 +1,5 @@
 <?php
-function vipub_site_url($path = '/') {
+function xclone_site_url($path = '/') {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
     $base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
     $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $base_url . '/';
@@ -9,7 +9,7 @@ function vipub_site_url($path = '/') {
     return $url;
 }
 
-function vipub_link($path) {
+function xclone_link($path) {
     $base_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}/";
     $url = $base_url . ltrim($path, '/');
     return $url;
@@ -21,7 +21,7 @@ function not_empty($value) {
       return false;
     }
 }  
-function vipub_general_template($file_path) {
+function xclone_general_template($file_path) {
     $root_path = "/var/www/html"; // sunucu kök dizini
     $full_path = $root_path . '/' . $file_path;
     
@@ -32,7 +32,7 @@ function vipub_general_template($file_path) {
     }
 }
 
-function vipub_template($file_path) {
+function xclone_template($file_path) {
     $root_path = $_SERVER['DOCUMENT_ROOT'];
     $extensions = [".php", ".phtml", ".js"];
     
@@ -46,7 +46,7 @@ function vipub_template($file_path) {
     header("Location: /404"); exit();
 }
 
-function vipub_admin_template($file_path) {
+function xclone_admin_template($file_path) {
     $root_path = $_SERVER['DOCUMENT_ROOT'];
     $extensions = [".php", ".phtml", ".js"];
     
@@ -60,7 +60,7 @@ function vipub_admin_template($file_path) {
     die("Böyle bir dosya bulunmamaktadır.");
 }
 
-function vipub_apps_native($file_path) {
+function xclone_apps_native($file_path) {
     $root_path = $_SERVER['DOCUMENT_ROOT'];
     $extensions = [".php", ".phtml", ".js"];
     
@@ -74,44 +74,44 @@ function vipub_apps_native($file_path) {
     die("Böyle bir dosya bulunmamaktadır.");
 }
 
-function vipub_template_master($path = '/') {
+function xclone_template_master($path = '/') {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
     $base_url = rtrim('/themes/default/statics/', '/\\');
     $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $base_url . '/' . ltrim($path, '/');
     return $url;
 }
-function vipub_translate($key) {
-    global $vipubTranslate;
-    return $vipubTranslate[$key] ?? $key;
+function xclone_translate($key) {
+    global $xcloneTranslate;
+    return $xcloneTranslate[$key] ?? $key;
 }  
   
-function vipub_siteDisplay() {
+function xclone_siteDisplay() {
     $app = isset($_GET['app']) ? $_GET['app'] : 'home';
     switch ($app) {
         case 'login':
             if(!isset($_SESSION["user_id"])){
-                vipub_template("auth/login");
+                xclone_template("auth/login");
             } else {
                 header("Location: /404");
             }
             break;
         case 'register':
             if(!isset($_SESSION["user_id"])){
-                vipub_template("auth/register");
+                xclone_template("auth/register");
             } else {
                 header("Location: /404");
             }
             break;
         case 'refresh_password':
             if(!isset($_SESSION["user_id"])){
-                vipub_template("auth/refresh_password");
+                xclone_template("auth/refresh_password");
             } else {
                 header("Location: /404");
             }
             break;
         case 'new_password':
             if(!isset($_SESSION["user_id"])){
-                vipub_template("auth/new_password");
+                xclone_template("auth/new_password");
             } else {
                 header("Location: /404");
             }
@@ -120,22 +120,22 @@ function vipub_siteDisplay() {
             if(!isset($_SESSION["user_id"])){
                 header("Location: /welcome/login");
             } else {
-                vipub_template("home/content");
+                xclone_template("home/content");
             }
             
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'connect_people':
             if(!isset($_SESSION["user_id"])){
                 header("Location: /welcome/login");
             }
-            vipub_template("connect_people/content");
+            xclone_template("connect_people/content");
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'settings':
@@ -144,19 +144,19 @@ function vipub_siteDisplay() {
             }
             if (isset($_GET["sapp"])) {
                 $sapp = $_GET["sapp"];
-                echo '<title>'.vipub_translate("settings_title").'</title>';
-                vipub_template("settings/pages/".$sapp);
+                echo '<title>'.xclone_translate("settings_title").'</title>';
+                xclone_template("settings/pages/".$sapp);
                 
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                    vipub_template("main/sidebar/mobile_menu");
+                    xclone_template("main/sidebar/mobile_menu");
                 }
             } else {
-                vipub_template("settings/content");
+                xclone_template("settings/content");
 
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                    vipub_template("main/sidebar/mobile_menu");
+                    xclone_template("main/sidebar/mobile_menu");
                 }
             }
             break;
@@ -167,28 +167,28 @@ function vipub_siteDisplay() {
             }
             if (isset($_GET["sapp"])) {
                 $sapp = $_GET["sapp"];
-                echo '<title>'.vipub_translate("settings_title").'</title>';
-                vipub_template("business/pages/".$sapp);
+                echo '<title>'.xclone_translate("settings_title").'</title>';
+                xclone_template("business/pages/".$sapp);
                 
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                    vipub_template("main/sidebar/mobile_menu");
+                    xclone_template("main/sidebar/mobile_menu");
                 }
             } else {
-                vipub_template("business/content");
+                xclone_template("business/content");
 
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                    vipub_template("main/sidebar/mobile_menu");
+                    xclone_template("main/sidebar/mobile_menu");
                 }
             }
             break;
 
         case 'profile':
             if (isset($_GET["uname"])) {
-                $conn = vipubConnectDatabase();
+                $conn = xcloneConnectDatabase();
                 $username = $_GET["uname"];
-                $user_query = "SELECT fullname, username, account_status FROM vipub_users WHERE username = '$username'";
+                $user_query = "SELECT fullname, username, account_status FROM xclone_users WHERE username = '$username'";
                 $user_result = mysqli_query($conn, $user_query);
                 
                 if (mysqli_num_rows($user_result) > 0) {
@@ -197,20 +197,20 @@ function vipub_siteDisplay() {
                     $username = $user_row["username"];
                     
                     if ($user_row["account_status"] == 0) {
-                        vipub_template("profile/content");
+                        xclone_template("profile/content");
                     } else if ($user_row["account_status"] == 1) {
-                        vipub_template("profile/include/banned-profile");
+                        xclone_template("profile/include/banned-profile");
                     }
 
                     $user_agent = $_SERVER['HTTP_USER_AGENT'];
                     if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                        vipub_template("main/sidebar/mobile_menu");
+                        xclone_template("main/sidebar/mobile_menu");
                     }
                 } else {
-                    vipub_template("profile/include/no-profile");
+                    xclone_template("profile/include/no-profile");
                     $user_agent = $_SERVER['HTTP_USER_AGENT'];
                     if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                        vipub_template("main/sidebar/mobile_menu");
+                        xclone_template("main/sidebar/mobile_menu");
                     }
                 }
             } else {
@@ -218,7 +218,7 @@ function vipub_siteDisplay() {
 
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                    vipub_template("main/sidebar/mobile_menu");
+                    xclone_template("main/sidebar/mobile_menu");
                 }
             }
             break;
@@ -226,11 +226,11 @@ function vipub_siteDisplay() {
             if(!isset($_SESSION["user_id"])){
                 header("Location: /404");
             }
-            echo '<title>'.vipub_translate("notifications_title").'</title>';
-            vipub_template("notifications/content");
+            echo '<title>'.xclone_translate("notifications_title").'</title>';
+            xclone_template("notifications/content");
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'messages':
@@ -238,108 +238,108 @@ function vipub_siteDisplay() {
                 header("Location: /404");
             }
             if (isset($_GET["row"])) {
-                $conn = vipubConnectDatabase();
+                $conn = xcloneConnectDatabase();
                 $user_id = htmlspecialchars(trim($_GET["row"]));
-                $row = vipub_get_message_user($conn, $user_id);
+                $row = xclone_get_message_user($conn, $user_id);
                 if ($row !== null && !empty($row)) {
-                    echo '<title>'.$row["fullname"].' '.vipub_translate("profile_title").'</title>';
-                    vipub_template("messages/include/send-chat");
+                    echo '<title>'.$row["fullname"].' '.xclone_translate("profile_title").'</title>';
+                    xclone_template("messages/include/send-chat");
                 } else {
-                    vipub_template("profile/include/no-profile");
+                    xclone_template("profile/include/no-profile");
                 }
             }
             else {
-                echo '<title>'.vipub_translate("messages_title").'</title>';
-                vipub_template("messages/content");
+                echo '<title>'.xclone_translate("messages_title").'</title>';
+                xclone_template("messages/content");
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                    vipub_template("main/sidebar/mobile_menu");
+                    xclone_template("main/sidebar/mobile_menu");
                 }
             }
             break;
         case 'status':
-            vipub_template("status/content");
+            xclone_template("status/content");
 
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case '404':
-            vipub_template("404/content");
+            xclone_template("404/content");
 
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'search':
-            vipub_template("search/content");
+            xclone_template("search/content");
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'likes':
-            vipub_template("timeline/include/like-list");
+            xclone_template("timeline/include/like-list");
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'explore':
-            vipub_template("search/explore-content");
+            xclone_template("search/explore-content");
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'pages':
-            vipub_template("pages/content");
+            xclone_template("pages/content");
 
             if(isset($_SESSION["user_id"])){
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                    vipub_template("main/sidebar/mobile_menu");
+                    xclone_template("main/sidebar/mobile_menu");
                 }
             }
             break;
         case 'following':
             if (isset($_GET["username"])) {
-                vipub_template("profile/pages/following");
+                xclone_template("profile/pages/following");
             }
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'followers':
             if (isset($_GET["username"])) {
-                vipub_template("profile/pages/followers");
+                xclone_template("profile/pages/followers");
             }
 
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         case 'media':
             if (isset($_GET["username"])) {
-                vipub_template("profile/pages/media");
+                xclone_template("profile/pages/media");
             }
 
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
             if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
-                vipub_template("main/sidebar/mobile_menu");
+                xclone_template("main/sidebar/mobile_menu");
             }
             break;
         default:
-            vipub_template("auth/login");
+            xclone_template("auth/login");
             break;
     }
 }
 
-function vipub_directFiles($filepath) {
+function xclone_directFiles($filepath) {
     $ext = pathinfo($filepath, PATHINFO_EXTENSION);
     if($ext !== 'php' && $ext !== 'phtml') {
         $filepath .= '.php';
@@ -347,7 +347,7 @@ function vipub_directFiles($filepath) {
     require_once($_SERVER['DOCUMENT_ROOT'].'/'.$filepath);
 }
 
-function convertVipubText($text) 
+function convertxcloneText($text) 
 { 
     // 1. URL'leri bağlantılara dönüştürmek için kullanılır.
     $text = preg_replace("/(^|[\n ])([\w]*?)([\w]*?:\/\/[\w]+[^ \,\"\n\r\t<]*)/is",
@@ -372,18 +372,18 @@ function convertVipubText($text)
 }
 
 
-function vipub_ajax_query($url) {
+function xclone_ajax_query($url) {
     switch($url) {
-      case "vipub/native_api/rsbr-search":
+      case "xclone/native_api/rsbr-search":
         return "/apps/ajax/rsbr-search.php";
         break;
-    case "vipub/native_api/userlogin":
+    case "xclone/native_api/userlogin":
         return "/apps/ajax/login.php";
         break;
-    case "vipub/native_api/usersignup":
+    case "xclone/native_api/usersignup":
         return "/apps/ajax/register.php";
         break;
-    case "vipub/native_api/rsbr-htags":
+    case "xclone/native_api/rsbr-htags":
         return "/apps/ajax/rsbr-htags.php";
         break;
       default:
@@ -392,9 +392,9 @@ function vipub_ajax_query($url) {
     }
   }
 
-function vipub_get_user_profile($conn, $uname) {
+function xclone_get_user_profile($conn, $uname) {
     $username = trim($uname);
-    $sql = "SELECT * FROM vipub_users WHERE username='".$uname."'";
+    $sql = "SELECT * FROM xclone_users WHERE username='".$uname."'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0){
         while ($profile = mysqli_fetch_assoc($result)) {
@@ -409,7 +409,7 @@ function vipub_get_user_profile($conn, $uname) {
     }
 }
 
-function vipub_redirect($url) {
+function xclone_redirect($url) {
     if (!headers_sent()) {
         header("Location: " . $url);
         exit;
@@ -423,12 +423,12 @@ function vipub_redirect($url) {
         exit;
     }
 }
-function vipubConnectDatabase() {
-    global $vipub, $vipub_db_host, $vipub_db_user, $vipub_db_pass, $vipub_db_name;
-    $conn = new mysqli($vipub_db_host, $vipub_db_user, $vipub_db_pass, $vipub_db_name);
+function xcloneConnectDatabase() {
+    global $xclone, $xclone_db_host, $xclone_db_user, $xclone_db_pass, $xclone_db_name;
+    $conn = new mysqli($xclone_db_host, $xclone_db_user, $xclone_db_pass, $xclone_db_name);
     if (mysqli_connect_errno()) {
-        array_push($vipub["vipub_db_errors"], mysqli_connect_error());
-        if (not_empty($vipub["vipub_db_errors"])) {
+        array_push($xclone["xclone_db_errors"], mysqli_connect_error());
+        if (not_empty($xclone["xclone_db_errors"])) {
             echo "Error Database.";
             die();
         }
@@ -436,10 +436,10 @@ function vipubConnectDatabase() {
     return $conn;
 }
 
-function vipub_date($date) {
+function xclone_date($date) {
     return date("M Y", strtotime($date));
 }
-function vipub_save_media($file) {
+function xclone_save_media($file) {
     $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/upload/';
     $fileName = uniqid() . '_' . $file['name'];
     $targetFile = $uploadDir . $fileName;
@@ -450,7 +450,7 @@ function vipub_save_media($file) {
         return false;
     }
 }
-function vipub_back_page() {
+function xclone_back_page() {
     if (isset($_SERVER['HTTP_REFERER'])) {
         $back_page = $_SERVER['HTTP_REFERER'];
     } else {
@@ -458,7 +458,7 @@ function vipub_back_page() {
     }
     return $back_page;
 }
-function vipub_count($count) {
+function xclone_count($count) {
     if ($count < 1000) {
         return $count;
     } else if ($count < 1000000) {
@@ -469,53 +469,53 @@ function vipub_count($count) {
         return round($count / 1000000000, 1) . 'B';
     }
 }
-function vipub_site_settings() {
+function xclone_site_settings() {
     global $conn;
-    $site_general_settings = mysqli_query($conn, "SELECT * FROM vipub_settings");
+    $site_general_settings = mysqli_query($conn, "SELECT * FROM xclone_settings");
     $settings = mysqli_fetch_array($site_general_settings);
     return $settings;
 }
-function vipub_smtp() {
+function xclone_smtp() {
     global $conn;
-    $site_smtp_settings = mysqli_query($conn, "SELECT * FROM vipub_smtp");
+    $site_smtp_settings = mysqli_query($conn, "SELECT * FROM xclone_smtp");
     $smtp_settings = mysqli_fetch_array($site_smtp_settings);
     return $smtp_settings;
 }
-function vipub_dynamicTitle() {
+function xclone_dynamicTitle() {
     $app = isset($_GET['app']) ? $_GET['app'] : 'home';
     $title = '';
     switch ($app) {
         case 'home':
-            $title = vipub_translate("homepage_title");
+            $title = xclone_translate("homepage_title");
             break;
         case 'notifications':
-            $title = vipub_translate("notifications_title");
+            $title = xclone_translate("notifications_title");
             break;
         case 'messages':
-            $title = vipub_translate("messages_title");
+            $title = xclone_translate("messages_title");
             break;
         case 'search':
-            $title = vipub_translate("search_title");
+            $title = xclone_translate("search_title");
             break;
         case 'likes':
-            $title = vipub_translate("status_page_post_like_reply_repost_2").vipub_translate("profile_title");
+            $title = xclone_translate("status_page_post_like_reply_repost_2").xclone_translate("profile_title");
             break;
         case 'explore':
-            $title = "(".$_GET["q"].") ". vipub_translate("search_title");
+            $title = "(".$_GET["q"].") ". xclone_translate("search_title");
             break;
         case 'settings':
-            $title = vipub_translate("settings_title");
+            $title = xclone_translate("settings_title");
             break;
         case 'following':
-            $title = vipub_translate("following_followers_title_1");
+            $title = xclone_translate("following_followers_title_1");
             break;
         case 'followers':
-            $title = vipub_translate("following_followers_title_2");
+            $title = xclone_translate("following_followers_title_2");
             break;
         case 'pages':
-            $conn = vipubConnectDatabase();
+            $conn = xcloneConnectDatabase();
             $page_title_seo = htmlspecialchars(trim($_GET["page_title_seo"]));
-            $stmt = $conn->prepare("SELECT page_title, page_title_seo FROM vipub_pages WHERE page_title_seo = ?");
+            $stmt = $conn->prepare("SELECT page_title, page_title_seo FROM xclone_pages WHERE page_title_seo = ?");
             $stmt->bind_param("s", $page_title_seo);
             $stmt->execute();
             $get_page = $stmt->get_result();
@@ -527,11 +527,11 @@ function vipub_dynamicTitle() {
                 return "404 Page";
             }
         
-            $title = $page_title . vipub_translate("profile_title");
+            $title = $page_title . xclone_translate("profile_title");
             break;
         case 'status':
-            $conn = vipubConnectDatabase();
-            $stmt = $conn->prepare("SELECT id, fullname FROM vipub_users WHERE username = ?");
+            $conn = xcloneConnectDatabase();
+            $stmt = $conn->prepare("SELECT id, fullname FROM xclone_users WHERE username = ?");
             $stmt->bind_param("s", $_GET["uname"]);
             $stmt->execute();
             $user_result = $stmt->get_result();
@@ -544,7 +544,7 @@ function vipub_dynamicTitle() {
                 return "404 Page";
             }
         
-            $stmt = $conn->prepare("SELECT content_post FROM vipub_posts WHERE p_id = ? AND user_id = ?");
+            $stmt = $conn->prepare("SELECT content_post FROM xclone_posts WHERE p_id = ? AND user_id = ?");
             $stmt->bind_param("ii", $_GET["status_id"], $user_id);
             $stmt->execute();
             $status_result = $stmt->get_result();
@@ -556,69 +556,69 @@ function vipub_dynamicTitle() {
                 return "404 Page";
             }
         
-            $title = $full_name . " " . vipub_translate("on_vipub_status_title") . ' "' . $content_post . '"';
+            $title = $full_name . " " . xclone_translate("on_xclone_status_title") . ' "' . $content_post . '"';
             break;            
         case '404':
-            $title = vipub_translate("404_page_title");
+            $title = xclone_translate("404_page_title");
             break;
         case 'profile':
             if (isset($_GET["uname"])) {
-                $conn = vipubConnectDatabase();
+                $conn = xcloneConnectDatabase();
                 $username = $_GET["uname"];
-                $user_query = "SELECT fullname, username FROM vipub_users WHERE username = '$username'";
+                $user_query = "SELECT fullname, username FROM xclone_users WHERE username = '$username'";
                 $user_result = mysqli_query($conn, $user_query);
                 if (mysqli_num_rows($user_result) > 0) {
                     $user_row = mysqli_fetch_assoc($user_result);
                     $fullname = $user_row["fullname"];
                     $username = $user_row["username"];
-                    $title = $fullname . (" (@".$username.")") . vipub_translate("profile_title");
+                    $title = $fullname . (" (@".$username.")") . xclone_translate("profile_title");
                 }
             }
             break;
         case 'media':
             if (isset($_GET["profuname"])) {
-                $conn = vipubConnectDatabase();
+                $conn = xcloneConnectDatabase();
                 $username = $_GET["profuname"];
-                $user_query = "SELECT fullname, username FROM vipub_users WHERE username = '$username'";
+                $user_query = "SELECT fullname, username FROM xclone_users WHERE username = '$username'";
                 $user_result = mysqli_query($conn, $user_query);
                 if (mysqli_num_rows($user_result) > 0) {
                     $user_row = mysqli_fetch_assoc($user_result);
                     $fullname = $user_row["fullname"];
                     $username = $user_row["username"];
-                    $title = $fullname . (" (@".$username.")") . " " . vipub_translate("user_profile_media_timeline_title") . vipub_translate("profile_title");
+                    $title = $fullname . (" (@".$username.")") . " " . xclone_translate("user_profile_media_timeline_title") . xclone_translate("profile_title");
                 }
             }
             break;
         case 'login':
-            $title = vipub_translate("welcome_page_text_1").vipub_translate("profile_title");
+            $title = xclone_translate("welcome_page_text_1").xclone_translate("profile_title");
             break;
         case 'register':
-            $title = vipub_translate("welcome_page_text_8").vipub_translate("profile_title");
+            $title = xclone_translate("welcome_page_text_8").xclone_translate("profile_title");
             break;
         case 'refresh_password':
-            $title = vipub_translate("refresh_password_title").vipub_translate("profile_title");
+            $title = xclone_translate("refresh_password_title").xclone_translate("profile_title");
             break;
         case 'new_password':
-            $title = vipub_translate("new_password_title").vipub_translate("profile_title");
+            $title = xclone_translate("new_password_title").xclone_translate("profile_title");
             break;
         case 'connect_people':
-            $title = vipub_translate("who_to_follow_title").vipub_translate("profile_title");
+            $title = xclone_translate("who_to_follow_title").xclone_translate("profile_title");
             break;
         default:
-            $title = vipub_translate("404_page_title");
+            $title = xclone_translate("404_page_title");
             break;
     }
     return "<title>$title</title>";
 }
-function vipub_croptxt($text, $start, $length) {
+function xclone_croptxt($text, $start, $length) {
     if (strlen($text) > $length) {
         return substr($text, $start, $length) . "...";
     } else {
         return $text;
     }
 }
-function vipub_site_settings2($conn) {
-    $sql = "SELECT * FROM vipub_settings";
+function xclone_site_settings2($conn) {
+    $sql = "SELECT * FROM xclone_settings";
     $result = mysqli_query($conn, $sql);
     $settings = array();
 
@@ -638,13 +638,13 @@ if (mysqli_num_rows($result) > 0) {
 mysqli_close($conn);
 return $settings;
 }
-function vipub_dont_profile_name() {
+function xclone_dont_profile_name() {
     $url = $_SERVER['REQUEST_URI'];
     $url = explode('/', $url);
     $nouser = array_pop($url);
     return $nouser;
 }
-function vipub_seolink($text){
+function xclone_seolink($text){
 	$find = array("/Ğ/","/Ü/","/Ş/","/İ/","/Ö/","/Ç/","/ğ/","/ü/","/ş/","/ı/","/ö/","/ç/");
 	$degis = array("G","U","S","I","O","C","g","u","s","i","o","c");
 	$text = preg_replace("/[^0-9a-zA-ZÄzÜŞİÖÇğüşıöç]/"," ",$text);
@@ -657,9 +657,9 @@ function vipub_seolink($text){
 	$text = preg_replace("/-$/","",$text);
 	return $text;
 }
-function vipub_wallet_balance($balance) {
+function xclone_wallet_balance($balance) {
     return number_format($balance, 2, ',', '.');
 }
-function vipub_user_acceptLanguage() {
+function xclone_user_acceptLanguage() {
     echo substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 }

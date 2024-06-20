@@ -1,10 +1,10 @@
-<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php xclone_template("main/sidebar/left-sidebar"); ?>
 <?php 
-$conn = vipubConnectDatabase(); $page_title_seo = htmlspecialchars(trim($_GET["page_title_seo"])); 
-$row = vipub_get_pages($conn, $page_title_seo);
+$conn = xcloneConnectDatabase(); $page_title_seo = htmlspecialchars(trim($_GET["page_title_seo"])); 
+$row = xclone_get_pages($conn, $page_title_seo);
 if ($row == "404") { echo "<meta http-equiv='refresh' content='0;url=/404'>"; exit(); } ?>
 <div class="col-md-6">
-    <div class="main-vipub-screenline">
+    <div class="main-xclone-screenline">
         <div class="margin-bottom-connection-people"></div>
         <div class="connection-people-conn">
             <h6>
@@ -21,7 +21,7 @@ if ($row == "404") { echo "<meta http-equiv='refresh' content='0;url=/404'>"; ex
             </div>
                     
             <div class="suggested-page-bottom-footer">
-                <?php echo vipub_rightsidebar_footer(); ?>
+                <?php echo xclone_rightsidebar_footer(); ?>
             </div>
         </div>
     </div>

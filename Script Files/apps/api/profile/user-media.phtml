@@ -3,10 +3,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['usermedia'])) {
     $username = $_GET['usermedia'];
     $posts = array();
 
-    $userMediaAPI = vipub_get_profile($conn, $username);
+    $userMediaAPI = xclone_get_profile($conn, $username);
     $userMediaTimeline = $userMediaAPI["username"];
 
-    $sql = "SELECT p.p_id, p.user_id, u.username, u.fullname, u.avatar, p.content_post, p.content_image, p.content_video, p.content_gif FROM vipub_posts p LEFT JOIN vipub_users u ON p.user_id = u.id WHERE (p.user_id = ? OR u.username = ?) AND (p.post_type = 'post_image' OR p.post_type = 'post_video' OR content_gif IS NOT NULL) ORDER BY p.post_joined DESC";
+    $sql = "SELECT p.p_id, p.user_id, u.username, u.fullname, u.avatar, p.content_post, p.content_image, p.content_video, p.content_gif FROM xclone_posts p LEFT JOIN xclone_users u ON p.user_id = u.id WHERE (p.user_id = ? OR u.username = ?) AND (p.post_type = 'post_image' OR p.post_type = 'post_video' OR content_gif IS NOT NULL) ORDER BY p.post_joined DESC";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "ss", $username, $userMediaTimeline);
 

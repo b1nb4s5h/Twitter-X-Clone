@@ -4,7 +4,7 @@
       <h1>Edit page</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item"><a href="<?php echo xclone_link("admin_panel/"); ?>">Home</a></li>
           <li class="breadcrumb-item">Pages</li>
           <li class="breadcrumb-item active">Edit page</li>
         </ol>
@@ -55,7 +55,7 @@
 
                   
                     <div class="text-center" style="margin-top:40px; position: relative;">
-                      <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                      <?php if($xclone["admin"]["admin_status"]=="1"): ?>
                       <button type="submit" style="width: 100%;" class="btn btn-primary" name="addNewPage">Add page</button>
                       <?php else: ?>
                       <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
@@ -76,11 +76,11 @@
 if(isset($_POST["addNewPage"])) {
     $id = $_GET["edit"];
     $page_title = htmlspecialchars($_POST["page_title"]);
-    $page_title_seo = htmlspecialchars(vipub_seolink($_POST["page_title_seo"]));
+    $page_title_seo = htmlspecialchars(xclone_seolink($_POST["page_title_seo"]));
     $page_name = htmlspecialchars($_POST["page_name"]);
     $page_content = $_POST["page_content"];
     
-    $stmt = $conn->prepare("INSERT INTO vipub_pages (page_title, page_title_seo, page_name, page_content) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO xclone_pages (page_title, page_title_seo, page_name, page_content) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $page_title, $page_title_seo, $page_name, $page_content);
     $stmt->execute();
     

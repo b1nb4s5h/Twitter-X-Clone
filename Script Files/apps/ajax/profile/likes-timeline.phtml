@@ -1,15 +1,15 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 if (isset($_GET['uname'])) {
     $username = $_GET['uname'];
     
     // SQL sorgusu
-   $sql = "SELECT p.*, u.*, l.* FROM vipub_posts p 
-            LEFT JOIN vipub_users u ON p.user_id = u.id 
-            LEFT JOIN vipub_likes l ON p.p_id = l.post_id 
+   $sql = "SELECT p.*, u.*, l.* FROM xclone_posts p 
+            LEFT JOIN xclone_users u ON p.user_id = u.id 
+            LEFT JOIN xclone_likes l ON p.p_id = l.post_id 
             WHERE l.user_id = ? 
             AND (p.post_type = 'post' OR p.post_type = 'post_video') 
-            AND l.user_id = (SELECT id FROM vipub_users WHERE id = ?)
+            AND l.user_id = (SELECT id FROM xclone_users WHERE id = ?)
             ORDER BY l.l_id DESC";
     
     $stmt = $conn->prepare($sql);
@@ -29,7 +29,7 @@ if (isset($_GET['uname'])) {
                 require("../../../themes/default/apps/timeline/content.phtml");
             }
         } else {
-            vipub_template("profile/include/no-post");
+            xclone_template("profile/include/no-post");
         }
     } else {
         echo "SQL Conn OR (Database Table) error: " . $stmt->error;

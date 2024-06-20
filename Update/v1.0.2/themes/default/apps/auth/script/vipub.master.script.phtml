@@ -26,16 +26,16 @@ $(function() {
         var password = $('#password').val().trim();
 
         if (!fullname) {
-            toastr.info('<?php echo vipub_translate("welcome_page_register_1"); ?>');
+            toastr.info('<?php echo xclone_translate("welcome_page_register_1"); ?>');
             return;
         }
 
         if (username.length < 3 || username.length > 15) {
-            toastr.info('<?php echo vipub_translate("welcome_page_register_2"); ?>');
+            toastr.info('<?php echo xclone_translate("welcome_page_register_2"); ?>');
             return;
         }
 
-        $('#register-form button[type="submit"]').html('<?php echo vipub_translate("welcome_page_register_7"); ?>').prop('disabled', true);
+        $('#register-form button[type="submit"]').html('<?php echo xclone_translate("welcome_page_register_7"); ?>').prop('disabled', true);
 
         setTimeout(function() {
         $.ajax({
@@ -45,7 +45,7 @@ $(function() {
             success: function(response) {
             if (response == 'success') {
                 new Noty({
-                text: "<?php echo vipub_translate('welcome_page_register_3'); ?>",
+                text: "<?php echo xclone_translate('welcome_page_register_3'); ?>",
                 timeout: 2000,
                 type: 'success'
                 }).show();
@@ -55,13 +55,13 @@ $(function() {
             } else {
                 if (response == 'email_exists') {
                 new Noty({
-                    text: "<?php echo vipub_translate('welcome_page_register_4'); ?>",
+                    text: "<?php echo xclone_translate('welcome_page_register_4'); ?>",
                     timeout: 2000,
                     type: 'error'
                 }).show();
                 } else if (response == 'username_exists') {
                 new Noty({
-                    text: "<?php echo vipub_translate('welcome_page_register_5'); ?>",
+                    text: "<?php echo xclone_translate('welcome_page_register_5'); ?>",
                     timeout: 2000,
                     type: 'error'
                 }).show();
@@ -72,7 +72,7 @@ $(function() {
                     type: 'error'
                 }).show();
                 }
-                $('#register-form button[type="submit"]').html("<?php echo vipub_translate('welcome_page_register_6'); ?>").prop('disabled', false);
+                $('#register-form button[type="submit"]').html("<?php echo xclone_translate('welcome_page_register_6'); ?>").prop('disabled', false);
             }
             },
             error: function(xhr, status, error) {
@@ -111,7 +111,7 @@ $(document).ready(function() {
         var username = $('#username').val();
         var password = $('#password').val();
         if (username !== '' && password !== '') {
-            $('#login-button').html('<?php echo vipub_translate("welcome_page_login_6"); ?>').attr('disabled', true);
+            $('#login-button').html('<?php echo xclone_translate("welcome_page_login_6"); ?>').attr('disabled', true);
             setTimeout(function() {
                 $.ajax({
                     url: '/apps/ajax/auth/login.phtml',
@@ -121,12 +121,12 @@ $(document).ready(function() {
                         password: password
                     },
                     success: function(data) {
-                        $('#login-button').html('<?php echo vipub_translate("welcome_page_text_6"); ?>').attr('disabled', false);
+                        $('#login-button').html('<?php echo xclone_translate("welcome_page_text_6"); ?>').attr('disabled', false);
                         console.log(data);
                         if (data === 'success') {
                             new Noty({
                                 type: 'success',
-                                text: '<?php echo vipub_translate("welcome_page_login_1"); ?>',
+                                text: '<?php echo xclone_translate("welcome_page_login_1"); ?>',
                                 timeout: 2000, // 2 saniye
                                 callbacks: {
                                     afterClose: function() {
@@ -137,34 +137,34 @@ $(document).ready(function() {
                         } else if (data === 'banned') {
                             new Noty({
                                 type: 'warning',
-                                text: '<?php echo vipub_translate("welcome_page_login_2"); ?>',
+                                text: '<?php echo xclone_translate("welcome_page_login_2"); ?>',
                                 timeout: 2000 // 2 saniye
                             }).show();
                         } else if (data === 'error') {
                             new Noty({
                                 type: 'error',
-                                text: '<?php echo vipub_translate("welcome_page_login_3"); ?>',
+                                text: '<?php echo xclone_translate("welcome_page_login_3"); ?>',
                                 timeout: 2000 // 2 saniye
                             }).show();
                         } else if (data === 'username_error') {
                             new Noty({
                                 type: 'error',
-                                text: '<?php echo vipub_translate("welcome_page_login_4"); ?>',
+                                text: '<?php echo xclone_translate("welcome_page_login_4"); ?>',
                                 timeout: 2000 // 2 saniye
                             }).show();
                         } else {
                             new Noty({
                                 type: 'error',
-                                text: '<?php echo vipub_translate("welcome_page_login_5"); ?>',
+                                text: '<?php echo xclone_translate("welcome_page_login_5"); ?>',
                                 timeout: 2000 // 2 saniye
                             }).show();
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        $('#login-button').html('<?php echo vipub_translate("welcome_page_text_6"); ?>').attr('disabled', false);
+                        $('#login-button').html('<?php echo xclone_translate("welcome_page_text_6"); ?>').attr('disabled', false);
                         new Noty({
                             type: 'error',
-                            text: '<?php echo vipub_translate("welcome_page_login_5"); ?>'
+                            text: '<?php echo xclone_translate("welcome_page_login_5"); ?>'
                         }).show();
                         console.log(textStatus + ': ' + errorThrown);
                     }
@@ -172,7 +172,7 @@ $(document).ready(function() {
             }, 2000);
         } else {
             $('#login-button').attr('disabled', true);
-            toastr.warning('<?php echo vipub_translate("welcome_page_login_7"); ?>');
+            toastr.warning('<?php echo xclone_translate("welcome_page_login_7"); ?>');
         }
     });
 });

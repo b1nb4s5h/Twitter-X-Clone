@@ -1,5 +1,5 @@
 <?php
-require_once("../../../core/vipub_web_core.phtml");
+require_once("../../../core/xclone_web_core.phtml");
 
 
 if (isset($_GET["q"])) {
@@ -7,8 +7,8 @@ if (isset($_GET["q"])) {
 
   if (!empty($search)) {
     $sql = "SELECT p.*, u.* 
-            FROM vipub_posts p 
-            JOIN vipub_users u ON p.user_id = u.id 
+            FROM xclone_posts p 
+            JOIN xclone_users u ON p.user_id = u.id 
             WHERE u.account_status = '0'
             ORDER BY p.post_joined DESC";
 
@@ -28,13 +28,13 @@ if (isset($_GET["q"])) {
         require("../../../themes/default/apps/timeline/content.phtml");
       }
     } else {
-      vipub_template("timeline/include/no-post");
+      xclone_template("timeline/include/no-post");
     }
   }
 } else {
   $sql = "SELECT p.*, u.* 
-          FROM vipub_posts p 
-          JOIN vipub_users u ON p.user_id = u.id 
+          FROM xclone_posts p 
+          JOIN xclone_users u ON p.user_id = u.id 
           WHERE p.post_type = 'post'
           AND u.account_status = '0'
           ORDER BY p.post_joined DESC";
@@ -55,7 +55,7 @@ if (isset($_GET["q"])) {
       require("../../../themes/default/apps/timeline/content.phtml");
     }
   } else {
-    vipub_template("timeline/include/no-post");
+    xclone_template("timeline/include/no-post");
   }
 }
 
