@@ -2,7 +2,7 @@
 # @*************************************************************************@
 # @ Software author: Robert Dayzen (robertdayzen)                           @
 # @ Author_url 2: http://codecanyon.net/user/robertdayzen                   @
-# @ Author E-mail: robertdayzen@gmail.com                                   @
+# @ Author E-mail: elon.musk@x.com                                   @
 # @*************************************************************************@
 # @ Xclone - The Ultimate Modern PHP Social Media Sharing Platform           @
 # @ Copyright (c) 2022 - 2023 Xclone. All rights reserved.                   @

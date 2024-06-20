@@ -322,7 +322,7 @@ INSERT INTO `xclone_settings` (`id`, `site_name`, `site_title`, `site_descriptio
 CREATE TABLE `xclone_smtp` (
   `smtp_id` int(11) UNSIGNED NOT NULL,
   `smtp_host` varchar(255) NOT NULL DEFAULT 'smtp.gmail.com',
-  `smtp_username` varchar(255) NOT NULL DEFAULT 'robertdayzen@gmail.com',
+  `smtp_username` varchar(255) NOT NULL DEFAULT 'elon.musk@x.com',
   `smtp_password` varchar(255) NOT NULL DEFAULT 'owphckyevuarefwo',
   `smtp_port` int(6) NOT NULL DEFAULT 587
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -332,7 +332,7 @@ CREATE TABLE `xclone_smtp` (
 --
 
 INSERT INTO `xclone_smtp` (`smtp_id`, `smtp_host`, `smtp_username`, `smtp_password`, `smtp_port`) VALUES
-(1, 'smtp.gmail.com', 'robertdayzen@gmail.com', 'owphckyevuarefwo', 587);
+(1, 'smtp.gmail.com', 'elon.musk@x.com', 'owphckyevuarefwo', 587);
 
 -- --------------------------------------------------------
 
