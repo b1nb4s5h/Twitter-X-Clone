@@ -1,0 +1,15 @@
+<div id="profile-likes-timeline"></div>
+<script>
+    $(document).ready(function() {
+        function fetchPosts() {
+                $.ajax({
+                    url: '/apps/ajax/profile/likes-timeline.phtml?uname=<?php echo $row["id"]; ?>',
+                    type: 'GET',
+                    success: function(data) {
+                        $('#profile-likes-timeline').html(data);
+                    }
+                });
+            }
+            fetchPosts();
+    });
+</script>

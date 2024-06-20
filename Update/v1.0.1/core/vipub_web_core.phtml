@@ -1,0 +1,96 @@
+<?php
+# @*************************************************************************@
+# @ Software author: Robert Dayzen (robertdayzen)                           @
+# @ Author_url 2: http://codecanyon.net/user/robertdayzen                   @
+# @ Author E-mail: robertdayzen@gmail.com                                   @
+# @*************************************************************************@
+# @ Vipub - The Ultimate Modern PHP Social Media Sharing Platform           @
+# @ Copyright (c) 2022 - 2023 Vipub. All rights reserved.                   @
+# @*************************************************************************@
+
+session_start();
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once("dbconnect.phtml");
+require_once("functions/site_footers.phtml");
+require_once("functions/web_functions.phtml");
+require_once("functions/user_functions.phtml");
+require_once("vendor/autoload.php");
+
+date_default_timezone_set('Europe/Istanbul');
+
+$vipub["vipub_db_errors"] = array();
+$vipub_db_host     = (isset($vipub_db_host) ? $vipub_db_host : "");
+$vipub_db_user     = (isset($vipub_db_user) ? $vipub_db_user : "");
+$vipub_db_pass     = (isset($vipub_db_pass) ? $vipub_db_pass : "");
+$vipub_db_name     = (isset($vipub_db_name) ? $vipub_db_name : "");
+$site_url        = (isset($site_url)    ? $site_url    : "");
+$conn          = new mysqli($vipub_db_host, $vipub_db_user, $vipub_db_pass, $vipub_db_name);
+
+if (mysqli_connect_errno()) {
+    array_push($vipub["vipub_db_errors"], mysqli_connect_error());
+
+    if (not_empty($vipub["vipub_db_errors"])) {
+        echo "Error Database.";
+        die();
+    }
+}
+
+$vipub["config"]        = array();
+$vipub["db_connection"] = $conn;
+$query                  = $conn->query("SET NAMES utf8");
+$set_charset            = $conn->set_charset('utf8mb4');
+$set_charset            = $conn->query("SET collation_connection = utf8mb4_unicode_ci");
+$vipub["settings"]["version"] = "v1.0.1";
+$settings = vipub_site_settings();
+
+$lang = 'english';
+  if(isset($_GET['lang'])) {
+    $lang = $_GET['lang'];
+    $_SESSION['lang'] = $lang;
+  }
+  else if(isset($_SESSION['lang'])) {
+    $lang = $_SESSION['lang'];
+  }
+  else if(isset($_COOKIE['lang'])) {
+    $lang = $_COOKIE['lang']; 
+  }
+  $lang_file = 'english';
+
+  switch ($lang) {
+    case 'english':
+      $lang_file = 'english';
+      $lang_title = "English";
+      break;
+      
+    case 'turkish':
+      $lang_file = 'turkish';
+      $lang_title = "Turkish";
+      break;
+
+    case 'german':
+      $lang_file = 'german';
+      $lang_title = "German";
+      break;
+
+    case 'espanol':
+      $lang_file = 'espanol';
+      $lang_title = "espanol";
+      break;
+
+    case 'russian':
+      $lang_file = 'russian';
+      $lang_title = "Russian";
+      break;
+
+    default:
+      $lang_file = 'english';
+      $lang_title = "English";
+  }
+
+  require_once 'languages/'.$lang_file.".phtml";
+  setcookie('lang', $lang, time() + (86400 * 365), '/');
+

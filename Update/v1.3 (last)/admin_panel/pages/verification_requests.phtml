@@ -1,0 +1,79 @@
+<?php $settings = vipub_site_settings(); $smtp_settings = vipub_smtp(); ?>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Verification Requests</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Verified</li>
+          <li class="breadcrumb-item active">All Verification Requests</li>
+        </ol>
+      </nav>
+    </div>
+    
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><strong>All Verification Requests</strong></h5>
+              <p>
+                This page lists a list of your users who have requested <strong>new verification</strong>.
+                </p>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Screen name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Application date</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $sql = "SELECT v.*, u.id, u.fullname, u.username
+                    FROM vipub_verified v 
+                    JOIN vipub_users u ON v.verified_uid = u.id
+                    ORDER BY v.verified_date DESC";
+                    $result = $conn->query($sql);
+                    
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) { ?>
+
+                    <tr>
+                        <th scope="row"><?php echo $row["verified_id"]; ?></th>
+                        <td>
+                            <?php echo vipub_croptxt($row["fullname"], 0, 13); ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo vipub_link("@".$row["username"]); ?>" target="_blank">
+                               @<?php echo vipub_croptxt($row["username"], 0, 15); ?>
+                            </a>
+                        </td>
+                        <td>
+                        <?php echo $row["verified_category"]; ?>
+                        </td>
+                        <td>
+                            <?php echo date("d.m.Y", strtotime($row["verified_date"])); ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo vipub_link("admin_panel/user_verification_requests?edit=".$row["id"]."&category=".$row["verified_category"]); ?>" target="_blank">
+                               Edit
+                            </a>
+                        </td>
+                    </tr>
+                    <?php } } ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</main>

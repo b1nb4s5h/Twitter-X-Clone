@@ -1,0 +1,19 @@
+<div class="htag-list-look">
+    <div class="htag-list-target">
+        <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+            <img src="<?php echo vipub_link($row["avatar"]); ?>">
+        </a>
+        <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+            <h6><?php echo vipub_croptxt($row["username"], 0, 15); ?>
+                <?php if($row["verified"]=="1"): ?>
+                    <?php echo vipub_userBlue(); ?>
+                <?php endif; ?>
+            </h6>
+            <vipub><strong><?php echo $row["followers"]; ?></strong> <?php echo vipub_translate("connect_people_for_following_info_small"); ?></vipub>
+        </a>
+
+        <button data-vipub-url="<?php echo vipub_link("@".$row["username"]); ?>">
+            <?php echo vipub_translate("profile"); ?>
+        </button>
+    </div>
+</div>

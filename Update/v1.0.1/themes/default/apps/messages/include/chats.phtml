@@ -1,0 +1,48 @@
+<?php
+$conn = vipubConnectDatabase();
+$user_id = htmlspecialchars(trim($_GET["row"]));
+$row = vipub_get_message_user($conn, $user_id);
+?>
+<div class="message-chat-user-info-title">
+    <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <img src="<?php echo vipub_link($row["avatar"]); ?>">
+    </a>
+    <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <h5><?php echo $row["fullname"]; ?>
+        <?php if($row["verified"]=="1"): ?>
+            <?php echo vipub_userBlue(); ?>
+        <?php endif; ?>
+    </h5>
+    </a>
+    <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <span>@<?php echo $row["username"]; ?></span>
+    </a>
+</div>
+
+
+<?php while ($row = mysqli_fetch_assoc($result)): ?>
+    <div class="vipub-message-container" <?php if($row["sender_id"]==$_SESSION["user_id"]): ?> style="background:#F4F9FD;"<?php endif; ?>>
+        <div class="message-user-info">
+            <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+                <img src="<?php echo vipub_link($row["avatar"]); ?>">
+            </a>
+            <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+                <h5><?php echo $row["fullname"]; ?>
+                    <span>
+                        · 
+                        <small>
+                        <?php echo date("d", strtotime($row["created_at"])); ?>
+                        <?php echo vipub_translate('month_'.strtolower(date('M', strtotime($row["created_at"])))) . " " . date("Y h:i", strtotime($row["created_at"])); ?>
+                        </small>
+                    </span>
+                </h5>
+            </a>
+            <div class="chat-info-vipub">
+                <div class="send-account-info">
+                    <p><?php echo convertVipubText($row["message"]); ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endwhile; ?>
+<style> body{ overflow: hidden; } </style>

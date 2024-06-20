@@ -1,0 +1,305 @@
+<?php $settings = vipub_site_settings(); 
+error_reporting(E_ALL); ?>
+<main id="main" class="main">
+    <div class="pagetitle mb-4 mt-2">
+      <h1>Change Logos and Favicon</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Settings</li>
+          <li class="breadcrumb-item active">Logos and Favicon</li>
+        </ol>
+      </nav>
+    </div>
+    <form action="" method="post" enctype="multipart/form-data">
+        <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title" style="color:#0f1419; font-size: 15px;">Default <strong>(White) Logo</strong></h5>
+                    <div class="row mb-3" style="padding: 15px; background: #F5F8FD; border-radius: 7px;">
+                        <div class="col-4 text-center">
+                            <div>
+                                <img style="width: 80px; height: 80px;" src="<?php echo vipub_link($settings["site_white_logo"]); ?>">
+                            </div>
+                        </div>
+
+                        <div class="col-8 mt-4">
+                            <div style="position: relative;">
+                                <input type="file" name="site_white_logo" id="site_white_logo" value="<?php echo $settings["site_white_logo"]; ?>" style="position: absolute; top: 0; left: 0; opacity: 0; height: 100%; width: 100%;" onchange="siteDefaultLogo(this)" accept=".jpg,.jpeg,.png">
+                                <label for="site_white_logo" style="display: block; background-color: #fff; color: #000; padding: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #ccc; font-size: 14px;">Choose your new default logo</label>
+                                <span id="file-name" style="display: none; font-size: 14px; margin-left: 5px;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        function siteDefaultLogo(input) {
+                            var fileName = input.files[0].name;
+                            document.getElementById("file-name").innerHTML = fileName;
+                            document.getElementById("file-name").style.display = "inline";
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title" style="color:#0f1419; font-size: 15px;">Site <strong>(Favicon)</strong></h5>
+                        <div class="row mb-3" style="padding: 15px; background: #F5F8FD; border-radius: 7px;">
+                            <div class="col-4 text-center">
+                                <div>
+                                    <img style="width: 80px; height: 80px;" src="<?php echo vipub_link($settings["site_favicon"]); ?>">
+                                </div>
+                            </div>
+
+                            <div class="col-8 mt-4">
+                                <div style="position: relative;">
+                                    <input type="file" name="site_favicon" id="site_favicon" value="<?php echo $settings["site_favicon"]; ?>" style="position: absolute; top: 0; left: 0; opacity: 0; height: 100%; width: 100%;" onchange="siteDarkLogo(this)" accept=".jpg,.jpeg,.png">
+                                    <label for="site_favicon" style="display: block; background-color: #fff; color: #000; padding: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #ccc; font-size: 14px;">Choose your new Favicon</label>
+                                    <span id="site-favicon-name" style="display: none; font-size: 14px; margin-left: 5px;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                        function siteDarkLogo(input) {
+                            var fileName = input.files[0].name;
+                            document.getElementById("site-favicon-name").innerHTML = fileName;
+                            document.getElementById("site-favicon-name").style.display = "inline";
+                        }
+                        </script>
+                </div>
+            </div>
+        </div>
+
+            <div class="col-lg-6">
+
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title" style="color:#0f1419; font-size: 15px;">Site <strong>(Dark) Logo</strong></h5>
+
+                <div class="row mb-3" style="padding: 15px; background: #0f1419; border-radius: 7px; color: #fff;">
+                    <div class="col-4 text-center">
+                        <div>
+                            <img style="width: 80px; height: 80px;" src="<?php echo vipub_link($settings["site_dark_logo"]); ?>">
+                        </div>
+                    </div>
+
+                    <div class="col-8 mt-4">
+                        <div style="position: relative;">
+                            <input type="file" name="site_dark_logo" id="site_dark_logo" value="<?php echo $settings["site_dark_logo"]; ?>" style="position: absolute; top: 0; left: 0; opacity: 0; height: 100%; width: 100%;" onchange="updateFileName(this)" accept=".jpg,.jpeg,.png">
+                            <label for="site_dark_logo" style="display: block; background-color: #fff; color: #000; padding: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #ccc; font-size: 14px;">Choose your new dark logo</label>
+                            <span id="site-dark-logo-name" style="display: none; font-size: 14px; margin-left: 5px;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                function updateFileName(input) {
+                    var fileName = input.files[0].name;
+                    document.getElementById("site-dark-logo-name").innerHTML = fileName;
+                    document.getElementById("site-dark-logo-name").style.display = "inline";
+                }
+                </script>
+                </div>
+            </div>
+
+            <div class="card" style="border-radius: 3px; font-size: 15px; padding: 15px;">
+                <div class="card-body">
+                    <div class="row mt-4">
+                    You can change the logos and favicon of your site, which you will show to your users by default (White) and dark themes, via this area.
+                    <br><br>
+                    <small style="padding: 0; margin:0px;"><strong>Remember</strong> that your new logo and favicon items that you will choose and upload will be viewable by all users after clicking the button.</small>
+                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                        <button type="submit" style="position: relative; top: 15px; width: 100% !important; border-radius: 50px; font-weight: 700 !important; font-size:14px;" class="btn btn-success" 
+                        name="saveLogoFavicon">
+                        Save Logo & Favicon
+                        </button>
+                        <?php else: ?>
+                            <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+    </form>
+</main>
+<script>
+    $(document).ready(function() {
+        if (!$('#site_white_logo').val() && !$('#site_dark_logo').val() && !$('#site_favicon').val()) {
+            $('button[name="saveLogoFavicon"]').attr('disabled', true);
+        }
+    });
+    $('input[type="file"]').on('change', function() {
+        if ($('#site_white_logo').val() || $('#site_dark_logo').val() || $('#site_favicon').val()) {
+            $('button[name="saveLogoFavicon"]').removeAttr('disabled');
+        } else {
+            $('button[name="saveLogoFavicon"]').attr('disabled', true);
+        }
+    });
+</script>
+<?php
+if(isset($_POST['saveLogoFavicon'])) {
+    $file_name = $_FILES['site_white_logo']['name'];
+    $file_tmp = $_FILES['site_white_logo']['tmp_name'];
+    $file_size = $_FILES['site_white_logo']['size'];
+    $file_type = $_FILES['site_white_logo']['type'];
+    $file_parts = explode('.', $file_name);
+    $file_ext = strtolower(end($file_parts));
+
+    $allowed = array('jpg', 'jpeg', 'png', 'gif');
+
+    if(!in_array($file_ext, $allowed)) {
+        $site_white_logo = "NULL";
+    } else {
+        if($file_size > 15728640) {
+            $site_white_logo = "NULL";
+        } else {
+            $upload_dir = '../upload/logo/';
+
+            if(!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+
+            $new_file_name = time() . '_' . uniqid() . '.' . $file_ext;
+
+            if(move_uploaded_file($file_tmp, $upload_dir . $new_file_name)) {
+                $site_white_logo = $upload_dir . $new_file_name;
+
+                // Site ayarları güncelleme
+                $sql = "UPDATE vipub_settings SET site_white_logo = '$site_white_logo' WHERE id = 1";
+                if(mysqli_query($conn, $sql)) {
+                    ?>
+                    <script>
+                    new Noty({
+                        type: 'success',
+                        text: 'Your Default (White) Logo has been changed.',
+                        timeout: 1500,
+                        progressBar: true,
+                        callbacks: {
+                            afterClose: function() {
+                                window.location.href = "/admin_panel/logo_and_favicon_settings";
+                            }
+                        }
+                    }).show();
+                    </script>
+                    <?php
+                } else {
+                    echo "Error " . mysqli_error($conn);
+                }
+            } else {
+                $site_white_logo = "NULL";
+            }
+        }
+    }
+
+    $file_name = $_FILES['site_dark_logo']['name'];
+    $file_tmp = $_FILES['site_dark_logo']['tmp_name'];
+    $file_size = $_FILES['site_dark_logo']['size'];
+    $file_type = $_FILES['site_dark_logo']['type'];
+    $file_dark_parts = explode('.', $file_name);
+    $file_new_dark = strtolower(end($file_dark_parts));
+
+    $allowed = array('jpg', 'jpeg', 'png', 'gif');
+
+    if(!in_array($file_new_dark, $allowed)) {
+        $site_dark_logo = "NULL";
+    } else {
+        if($file_size > 15728640) {
+            $site_dark_logo = "NULL";
+        } else {
+            $upload_dir = '../upload/logo/';
+
+            if(!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+
+            $new_file_name = time() . '_' . uniqid() . '.' . $file_new_dark;
+
+            if(move_uploaded_file($file_tmp, $upload_dir . $new_file_name)) {
+                $site_dark_logo = $upload_dir . $new_file_name;
+
+                // Site ayarları güncelleme
+                $sql = "UPDATE vipub_settings SET site_dark_logo = '$site_dark_logo' WHERE id = 1";
+                if(mysqli_query($conn, $sql)) {
+                    ?>
+                    <script>
+                    new Noty({
+                        type: 'success',
+                        text: 'Your Dark Logo has been changed.',
+                        timeout: 1500,
+                        progressBar: true,
+                        callbacks: {
+                            afterClose: function() {
+                                window.location.href = "/admin_panel/logo_and_favicon_settings";
+                            }
+                        }
+                    }).show();
+                    </script>
+                    <?php
+                } else {
+                    echo "Error " . mysqli_error($conn);
+                }
+            } else {
+                $site_dark_logo = "NULL";
+            }
+        }
+    }
+    $file_name = $_FILES['site_favicon']['name'];
+    $file_tmp = $_FILES['site_favicon']['tmp_name'];
+    $file_size = $_FILES['site_favicon']['size'];
+    $file_type = $_FILES['site_favicon']['type'];
+    $file_favicon_parts = explode('.', $file_name);
+    $file_new_favicon = strtolower(end($file_favicon_parts));
+
+    $allowed = array('jpg', 'jpeg', 'png', 'gif');
+
+    if(!in_array($file_new_favicon, $allowed)) {
+        $site_favicon = "NULL";
+    } else {
+        if($file_size > 15728640) {
+            $site_favicon = "NULL";
+        } else {
+            $upload_dir = '../upload/logo/';
+
+            if(!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+
+            $new_file_name = time() . '_' . uniqid() . '.' . $file_new_favicon;
+
+            if(move_uploaded_file($file_tmp, $upload_dir . $new_file_name)) {
+                $site_favicon = $upload_dir . $new_file_name;
+
+                // Site ayarları güncelleme
+                $sql = "UPDATE vipub_settings SET site_favicon = '$site_favicon' WHERE id = 1";
+                if(mysqli_query($conn, $sql)) {
+                    ?>
+                    <script>
+                    new Noty({
+                        type: 'success',
+                        text: 'Your Favicon has been changed.',
+                        timeout: 1500,
+                        progressBar: true,
+                        callbacks: {
+                            afterClose: function() {
+                                window.location.href = "/admin_panel/logo_and_favicon_settings";
+                            }
+                        }
+                    }).show();
+                    </script>
+                    <?php
+                } else {
+                    echo "Error " . mysqli_error($conn);
+                }
+            } else {
+                $site_favicon = "NULL";
+            }
+        }
+    }
+    mysqli_close($conn);
+}
+?>

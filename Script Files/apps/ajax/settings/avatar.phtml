@@ -1,0 +1,66 @@
+<?php
+
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  vipub_redirect("/welcome/login");
+  exit;
+}
+if(isset($_POST['action']) && $_POST['action'] === 'change-avatar') {
+  $file_name = $_FILES['avatar']['name'];
+  $file_tmp = $_FILES['avatar']['tmp_name'];
+  $file_size = $_FILES['avatar']['size'];
+  $file_type = $_FILES['avatar']['type'];
+  $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+  $allowed = array('jpg', 'jpeg', 'png', 'gif');
+
+  if(!in_array($file_ext, $allowed)) {
+    http_response_code(400);
+    echo 'Sadece JPG, JPEG, PNG ve GIF dosyalarına izin verilir.';
+    exit();
+  }
+
+  if($file_size > 1048576) {
+    http_response_code(400);
+    echo 'Dosya boyutu 1 MB\'dan küçük olmalıdır.';
+    exit();
+  }
+
+  $upload_dir = '../../../upload/profile/';
+
+  if(!is_dir($upload_dir)) {
+    mkdir($upload_dir, 0755, true);
+  }
+
+  $new_file_name = time() . '_' . uniqid() . '.' . $file_ext;
+
+  $new_file_name = preg_replace("/[^\w\-\.]/", '', $new_file_name);
+  $new_file_name = substr($new_file_name, 0, 255);
+
+  if(move_uploaded_file($file_tmp, $upload_dir . $new_file_name)) {
+    $user_id = $_SESSION["user_id"];
+    $avatar_path = $upload_dir . $new_file_name;
+
+    $stmt = $conn->prepare("UPDATE vipub_users SET avatar = ? WHERE id = ?");
+    $stmt->bind_param("si", $avatar_path, $user_id);
+
+    if(!$stmt->execute()) {
+      http_response_code(500);
+      echo 'Veritabanında güncelleme yapılırken hata oluştu: ' . $conn->error;
+      exit();
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    http_response_code(200);
+    echo $avatar_path;
+  } else {
+    http_response_code(500);
+    echo 'Dosya yükleme hatası.';
+  }
+} else {
+  http_response_code(400);
+  echo 'Geçersiz istek.';
+}

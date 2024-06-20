@@ -1,0 +1,28 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (isset($_POST['post_id'])) {
+    $post_id = mysqli_real_escape_string($conn, $_POST['post_id']);
+    $sql = "SELECT COUNT(*) as reply FROM vipub_posts WHERE p_id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $post_id);
+    
+    if (mysqli_stmt_execute($stmt)) {
+      $result = mysqli_stmt_get_result($stmt);
+    
+      if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        echo $row['reply'];
+      } else {
+        echo '0';
+      }
+    } else {
+      echo '0';
+    }
+    
+    mysqli_stmt_close($stmt);
+  } else {
+    echo '0';
+  }
+  
+  mysqli_close($conn);

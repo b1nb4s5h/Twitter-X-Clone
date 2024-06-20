@@ -1,0 +1,198 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); $settings = vipub_site_settings();?>
+
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+    
+        <div class="account-settings-page-for-users-page">
+            <div class="settings-page-top-title">
+                <h5>
+                    <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                    <?php echo vipub_translate("left_sidebar_business_page_wallet"); ?>
+                </h5>
+            </div>
+
+            <div class="settings-page-content-full next-settings-page-container-none-border">
+                <div class="settings-edit-profile-right-zone next-settings-page-container">
+                <?php if (isset($_GET["transfer"]) && $_GET["transfer"] == "banktransfer"): ?>
+                    <div class="user-balance-current">
+                        <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_12"); ?></h5>
+                        <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_13"); ?></span>
+                    </div>
+
+                    <div class="its-website-bank-transfer-for-bank-info">
+                        <div class="balance-bank-transfer-user-info">
+                            <span>
+                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_14"); ?></h5>
+                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_15"); ?></span>
+                            </span>
+                        </div>
+                        
+                        <div class="balance-bank-transfer-user-info">
+                            <span>
+                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_16"); ?></h5>
+                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_17"); ?></span>
+                            </span>
+                        </div>
+
+                        <div class="balance-bank-transfer-user-info">
+                            <span>
+                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_18"); ?></h5>
+                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_19"); ?></span>
+                            </span>
+                        </div>
+
+                        <div class="balance-bank-transfer-user-info">
+                            <span>
+                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_20"); ?></h5>
+                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_21"); ?></span>
+                            </span>
+                        </div>
+
+                        <div class="balance-bank-transfer-user-info">
+                            <span>
+                                <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_22"); ?></h5>
+                                <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_23"); ?></span>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="next-extra-user-account-balance-start">
+                        <div class="wallet-next-balance-money">
+                            <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_24"); ?></h5>
+                        </div>
+                        
+                        <div class="wallet-balance-money-value">
+                            <span>
+                                <?php echo vipub_translate("vipub_user_balance_extra_money_info_25"); ?>
+                            </span>
+                        </div>
+
+                        <div class="your-balance-info-screen">
+                            <div class="wallet-balance-number-money">
+                                <form id="updateBalanceBank" enctype="multipart/form-data">
+
+                                    <select type="number" name="user_wallet" id="user_wallet" required>
+                                        <option disabled selected value=""><?php echo vipub_translate("vipub_user_balance_extra_money_info_26"); ?></option>
+                                        <option value="25">25 $</option>
+                                        <option value="50">50 $</option>
+                                        <option value="100">100 $</option>
+                                        <option value="150">150 $</option>
+                                        <option value="200">200 $</option>
+                                        <option value="250">250 $</option>
+                                        <option value="300">300 $</option>
+                                        <option value="350">350 $</option>
+                                        <option value="400">400 $</option>
+                                        <option value="450">450 $</option>
+                                        <option value="500">500 $</option>
+                                        <option value="600">600 $</option>
+                                        <option value="700">700 $</option>
+                                        <option value="800">800 $</option>
+                                        <option value="900">900 $</option>
+                                        <option value="1000">1,000 $</option>
+                                        <option value="1500">1,500 $</option>
+                                        <option value="2000">2,000 $</option>
+                                        <option value="2500">2,500 $</option>
+                                        <option value="3000">3,000 $</option>
+                                        <option value="3500">3,500 $</option>
+                                        <option value="4000">4,000 $</option>
+                                        <option value="4500">4,500 $</option>
+                                        <option value="5000">5,000 $</option>
+                                    </select>
+
+                                    <div class="receipt-image-bank-balance-container">
+                                        <label for="receipt_image">Please upload Receipt image</label>
+                                        <input type="file" name="receipt_image" id="receipt_image" required>
+                                    </div>
+
+
+                                    <div class="update-transfer-selection">
+                                        <button type="submit" class="updateBalanceBank"><?php echo vipub_translate("vipub_user_balance_extra_money_info_11"); ?></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="user-balance-current">
+                        <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_8"); ?></h5>
+                        <h4><?php echo number_format($row["user_wallet"], 2) ?> $</h4>
+                        <span><?php echo vipub_translate("vipub_user_balance_extra_money_info_9"); ?></span>
+                    </div>
+                    <div class="preimum-account-selection-info">
+                        <h5 style="text-align: center;"><?php echo vipub_translate("vipub_user_balance_extra_money_info_10"); ?></h5>
+                        <hr />
+                        <?php vipub_transferHistory_balance($row["id"]); ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php if (isset($_GET["transfer"]) && $_GET["transfer"] == "banktransfer"): ?>
+    <script>
+    $(document).ready(function() {
+        var lastSubmissionTime = 0;
+        var minTimeBetweenSubmissions = 5 * 60 * 1000;
+
+        $("#updateBalanceBank").submit(function(e) {
+            e.preventDefault();
+
+            var currentTime = Date.now();
+            if (currentTime - lastSubmissionTime < minTimeBetweenSubmissions) {
+                new Noty({
+                    type: "error",
+                    text: "<?php echo vipub_translate("vipub_user_balance_extra_money_info_28"); ?>",
+                    timeout: 2000
+                }).show();
+                return;
+            }
+
+            lastSubmissionTime = currentTime;
+
+            var user_wallet = $("#user_wallet").val();
+            var user_id = "<?php echo $_SESSION['user_id']; ?>";
+
+            var formData = new FormData();
+
+            formData.append("user_id", user_id);
+            formData.append("added_balance", user_wallet);
+            formData.append("receipt_image", $("#receipt_image")[0].files[0]); 
+
+            formData.append("type", "bank");
+            formData.append("status", 2);
+
+            $.ajax({
+                url: "/apps/ajax/balance/bank.transfer.phtml",
+                type: "POST",
+                data: formData,
+
+                cache: false,
+                contentType: false,
+                processData: false,
+
+                success: function(response) {
+                    new Noty({
+                        type: "success",
+                        text: "<?php echo vipub_translate("vipub_user_balance_extra_money_info_27"); ?>",
+                        timeout: 2000
+                    }).show();
+
+                    $("#user_wallet").val("");
+                    $("#receipt_image").val("");
+                },
+                error: function(xhr, status, error) {
+                    new Noty({
+                        type: "error",
+                        text: "<?php echo vipub_translate("vipub_user_balance_extra_money_info_28"); ?>",
+                        timeout: 2000
+                    }).show();
+                }
+            });
+        });
+    });
+</script>
+<?php endif; ?>

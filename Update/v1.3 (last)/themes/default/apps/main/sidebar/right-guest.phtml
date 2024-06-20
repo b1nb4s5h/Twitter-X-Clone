@@ -1,0 +1,34 @@
+<div class="col-md-3">
+    <div class="right-sidebar">
+        <div class="search-container">
+            <i class="bi bi-search"></i>
+            <input disabled type="text" placeholder="<?php echo vipub_translate("search_vipub"); ?>">
+            <div class="search-results"></div>
+        </div>
+        <div class="main-right-sidebar-fluid">
+            <div class="sidebar-card-boxing">
+                <div class="right-sidebar-title-content">
+                    <h5><?php echo vipub_translate("trending_hot_title"); ?></h5>
+                </div>
+                <div id="rsbr-htag-algoritmic"></div>
+            </div>
+
+            <div class="sidebar-card-boxing">
+                <div class="right-sidebar-title-content">
+                    <h5>
+                        <?php echo vipub_translate("who_to_follow_title"); ?>
+                        <span data-vipub-url="<?php echo vipub_link("connect_people"); ?>">
+                            <?php echo vipub_translate("right_sidebar_title_flex_right_span"); ?>
+                        </span>
+                    </h5>
+                    
+                </div>
+                <div id="rsbr-tofollow-algoritmic"></div>
+            </div>
+
+            <div class="sidebar-footer-content">
+                <?php vipub_rightsidebar_footer(); ?>
+            </div>
+        </div>
+    </div>
+</div>

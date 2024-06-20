@@ -1,0 +1,74 @@
+<div class="modal fade" id="depositOptizon" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="color: #0f1419 !important;">Para yatırma seçeneği</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-4">
+                <a  href="<?php echo vipub_link("business/balance?transfer=banktransfer"); ?>">
+                    <img id="your-balance-transfer" src="<?php echo vipub_link("themes/default/statics/images/transfer/bank-transfer.png"); ?>" alt="Bank Transfer" class="img-fluid">
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a  href="#" id="balanceTransferPayPalVPBSM">
+                    <img id="your-balance-transfer" src="<?php echo vipub_link("themes/default/statics/images/transfer/paypal-transfer.png"); ?>" alt="Paypal Transfer" class="img-fluid">
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a  href="#" id="balanceTransferStripeVPBSM">
+                    <img id="your-balance-transfer" src="<?php echo vipub_link("themes/default/statics/images/transfer/stripe-transfer.png"); ?>" alt="Bank Transfer" class="img-fluid">
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  $('#balanceTransferPayPalVPBSM').on('click', function(e) {
+    e.preventDefault();
+    
+    new Noty({
+      type: 'error',
+      text: "You cannot replenish your wallet balance using PayPal at this time",
+      timeout: 2000,
+      progressBar: true
+    }).show();
+  });
+});
+</script>
+
+<script>
+$(document).ready(function() {
+  $('#balanceTransferStripeVPBSM').on('click', function(e) {
+    e.preventDefault();
+    
+    new Noty({
+      type: 'error',
+      text: "You cannot replenish your wallet balance using Stripe at this time",
+      timeout: 2000,
+      progressBar: true
+    }).show();
+  });
+});
+</script>
+
+<style>
+    .modal-title{
+        font-weight: 700;
+        font-size: 16px;
+    }
+    #your-balance-transfer{
+        padding: 5px 7px;
+        border: 1px solid #E4EAEE;
+        border-radius: 6px;
+    }
+    #your-balance-transfer:hover{
+        transition-duration: 0.2s;
+        border: 1px solid #1da1f2;
+    }
+</style>

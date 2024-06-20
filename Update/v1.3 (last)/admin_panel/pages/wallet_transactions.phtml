@@ -1,0 +1,111 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Wallet transactions list</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">User wallet</li>
+          <li class="breadcrumb-item active">Active and pending wallet transactions</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><?php echo $settings["site_name"]; ?> <strong>wallet transactions list</strong></h5>
+                <p>In the listing below, the transactions made by users registered on your site regarding their current wallet balances are listed.</p>
+
+                <p>In case a new wallet balance is added, you can check the status of users through this field and activate the added wallet balance or delete it if it is an invalid request.</p>
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Screen name</th>
+                    <th scope="col">Current balance</th>
+                    <th scope="col">Added balance</th>
+                    <th scope="col">Payment type</th>
+                    <th scope="col">Receipt</th>
+                    <th scope="col">Payment status</th>
+                    <th scope="col">Edit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $sql = "SELECT p.*, u.* 
+                    FROM vipub_add_balance p 
+                    JOIN vipub_users u ON p.user_id = u.id
+                    ORDER BY p.added_date DESC";
+        
+                    $stmt = mysqli_prepare($conn, $sql);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+                    
+                    if ($result) {
+                    // Gönderileri göster
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) { 
+                ?>
+                    <tr>
+                        <th scope="row"><?php echo $row["b_id"]; ?></th>
+                        <td style="align-items: center; justify-items: center; display:flex;">
+                            <img src="<?php echo vipub_link($row["avatar"]); ?>" style="width: 25px; height: 25px; border-radius: 50%; margin-right: 10px;">
+                            <?php echo vipub_croptxt($row["fullname"], 0, 13); ?></td>
+                        <td>
+                            <span class="badge bg-success" style="user-select:none;"><?php echo number_format($row["user_wallet"], 2) ?> $</span>
+                        <td style="font-weight: 800; color: green;">
+                            <span class="badge bg-success" style="user-select:none;"><?php echo number_format($row["added_balance"], 2) ?> $</span>
+                        </td>
+                        <td>
+                            <?php if($row["type"]=="bank"): ?>
+                            <span class="badge bg-success" style="user-select:none;">Bank transfer</span>
+                            <?php elseif($row["type"]=="paypal"): ?>
+                                <span class="badge bg-primary">PayPal transfer</span>
+                            <?php elseif($row["type"]=="stripe"): ?>
+                                <span class="badge bg-danger">Stripe transfer</span>
+                            <?php endif; ?>
+                        </td>
+
+                        <td>
+                           <a href="<?php echo vipub_link($row["receipt_image"]); ?>" data-lightbox="receipt<?php echo $row["b_id"]; ?>">
+                            <span>View Receipt</span>
+                           </a>
+                        </td>
+
+                        <td>
+                            <?php if($row["status"]=="1"): ?>
+                            <span class="badge bg-primary" style="user-select:none;">Balance processed</span>
+                            <?php elseif($row["status"]=="2"): ?>
+                                <span class="badge bg-danger">Review receipt</span>
+                            <?php endif; ?>
+                        </td>
+
+                        <td>
+                          <?php if($row["status"]=="2"): ?>
+                           <a href="<?php echo vipub_link("admin_panel/wallet_transactions_edit?edit=".$row["b_id"]); ?>">
+                            <span class="badge bg-danger">Edit status</span>
+                           </a>
+                           <?php elseif($row["status"]=="1"): ?>
+                            <span class="badge bg-primary">Cannot be edited</span>
+                           <?php endif; ?>
+                        </td>
+                    </tr>
+                    
+                    <?php } } } ?>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>

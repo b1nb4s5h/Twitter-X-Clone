@@ -1,0 +1,28 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  header("Location: /welcome/login");
+  exit;
+}
+
+$receiver_id = $_GET['row'];
+$sender_id = $_SESSION["user_id"];
+
+if ($receiver_id == $_SESSION["user_id"]) {
+  header("Location: /messages");
+  exit;
+}
+
+$updateSql = "UPDATE vipub_messages SET notifs_status = 1 WHERE receiver_id = '$sender_id'";
+
+    mysqli_query($conn, $updateSql);
+
+$result = mysqli_query($conn, "SELECT vipub_messages.*, vipub_users.* FROM vipub_messages JOIN vipub_users ON vipub_messages.sender_id = vipub_users.id WHERE (vipub_messages.receiver_id IN ('$receiver_id', '$sender_id') AND vipub_messages.sender_id IN ('$receiver_id', '$sender_id')) ORDER BY vipub_messages.created_at ASC");
+
+// Mesajları gösteren HTML dosyasını çağırın
+if (mysqli_num_rows($result) > 0) {
+  require_once('../../../themes/default/apps/messages/include/chats.phtml');
+} else {
+  require_once('../../../themes/default/apps/messages/pages/no-message.phtml');
+}

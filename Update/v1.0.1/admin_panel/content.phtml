@@ -1,0 +1,75 @@
+<?php 
+require_once("../core/vipub_web_core.phtml");
+$conn = vipubConnectDatabase();
+$vipub["admin"] = vipub_my_user_info();
+if(!isset($_SESSION["user_id"])){
+    header("Location: /404");
+} elseif($vipub["admin"]["admin_status"]=="0"){
+    header("Location: /404");
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Vipub - Admin Panel</title>
+    <meta name="image" content="<?php echo vipub_template_master("images/favicon.png"); ?>"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="<?php echo vipub_template_master("images/favicon.png"); ?>" type="image/png">
+    <link rel="icon" sizes="192x192" href="<?php echo vipub_template_master("images/favicon.png"); ?>"> 
+    <link rel="icon" sizes="128x128" href="<?php echo vipub_template_master("images/favicon.png"); ?>"> 
+    <script src="http://localhost/themes/default/statics/js/jquery-3.6.0.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js "></script> 
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css " rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="<?php echo vipub_link("admin_panel/assets/vendor/bootstrap/css/bootstrap.min.css"); ?>" rel="stylesheet">
+    <link href="<?php echo vipub_link("admin_panel/assets/vendor/bootstrap-icons/bootstrap-icons.css"); ?>" rel="stylesheet">
+    <link href="<?php echo vipub_link("admin_panel/assets/vendor/boxicons/css/boxicons.min.css"); ?>" rel="stylesheet">
+    <link href="<?php echo vipub_link("admin_panel/assets/vendor/quill/quill.snow.css"); ?>" rel="stylesheet">
+    <link href="<?php echo vipub_link("admin_panel/assets/vendor/quill/quill.bubble.css"); ?>" rel="stylesheet">
+    <link href="<?php echo vipub_link("admin_panel/assets/vendor/remixicon/remixicon.css"); ?>" rel="stylesheet">
+    <link href="<?php echo vipub_link("admin_panel/assets/vendor/simple-datatables/style.css"); ?>" rel="stylesheet">
+    <link href="<?php echo vipub_link("admin_panel/assets/css/style.css"); ?>" rel="stylesheet">
+    </head>
+<body>
+    <?php require_once("main/header/top-header.phtml"); ?>
+    <?php require_once("main/header/left-sidebar.phtml"); ?>
+
+        <?php
+            $page = isset($_GET['page']) ? $_GET['page'] : 'homepage';
+            $filepath = "pages/{$page}.phtml";
+            
+            if (file_exists($filepath)) {
+                include $filepath;
+            } else {
+                echo "Sayfa bulunamadı!";
+            }
+        ?>
+
+        <footer id="footer" class="footer">
+            <div class="copyright">
+            &copy; Copyright <strong><span>Vipub - PHP Advanced Twitter Social Network Analog</span></strong>.
+            </div>
+            <div class="credits">
+            Check it out on CodeCanyon: <a target="_blank" href="https://codecanyon.net/item/tesilow-ultimate-login-register-template-for-wowonder/35826861">| View Vipub</a>
+            </div>
+        </footer>
+
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+        <script src="<?php echo vipub_link("admin_panel/assets/vendor/apexcharts/apexcharts.min.js"); ?>"></script>
+        <script src="<?php echo vipub_link("admin_panel/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"); ?>"></script>
+        <script src="<?php echo vipub_link("admin_panel/assets/vendor/chart.js/chart.umd.js"); ?>"></script>
+        <script src="<?php echo vipub_link("admin_panel/assets/vendor/echarts/echarts.min.js"); ?>"></script>
+        <script src="<?php echo vipub_link("admin_panel/assets/vendor/quill/quill.min.js"); ?>"></script>
+        <script src="<?php echo vipub_link("admin_panel/assets/vendor/simple-datatables/simple-datatables.js"); ?>"></script>
+        <script src="<?php echo vipub_link("admin_panel/assets/vendor/tinymce/tinymce.min.js"); ?>"></script>
+        <script src="<?php echo vipub_link("admin_panel/assets/js/main.js"); ?>"></script>
+    </body>
+</html>

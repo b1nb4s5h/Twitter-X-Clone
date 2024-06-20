@@ -1,0 +1,21 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once("../../../core/vipub_web_core.phtml");
+
+if(!isset($_SESSION["user_id"])){
+    header("Location: /welcome/login");
+}
+
+$uname = htmlspecialchars(trim($_GET["username"]));
+$sql = "SELECT u.fullname, u.username, u.avatar, u.user_bio, u.verified, u.account_status, u.id, u.followers, f.user_id FROM vipub_users u JOIN vipub_follow f ON u.id = f.user_id WHERE u.account_status = 0 AND f.follower_id = '$uname'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    while ($following = mysqli_fetch_assoc($result)) {
+        require("../../../themes/default/apps/profile/pages/include/following-list.phtml");
+    }
+} else {
+    require("../../../themes/default/apps/profile/pages/include/no-following.phtml");
+}
+
+mysqli_close($conn);

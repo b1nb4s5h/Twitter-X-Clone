@@ -1,0 +1,134 @@
+<?php $settings = vipub_site_settings(); ?>
+<script>
+    $(document).ready(function() {
+        var maxLength = <?php echo $settings["post_maxlength"]; ?>;
+        var color = "#1C9BEF";
+        $('#vipub-counter').text(maxLength + ' <?php echo vipub_translate("textarea_charracter_count"); ?>').css('color', color).hide();
+
+        $('#content_post').on('input', function() {
+            var length = $(this).val().length;
+            var remaining = maxLength - length;
+            $('#vipub-counter').text(remaining + ' <?php echo vipub_translate("textarea_charracter_count"); ?>');
+            if (length > 0) {
+                $('#vipub-counter').show();
+                if (remaining < maxLength * 0.075) {
+                    color = "#F4212D";
+                } else if (remaining < maxLength * 0.355) {
+                    color = "#FFA500";
+                } else {
+                    color = "#1C9BEF";
+                }
+                $('#vipub-counter').css('color', color);
+                
+                if (remaining <= 0) {
+                    $('#share-ew-post').attr('disabled', true);
+                } else {
+                    $('#share-ew-post').removeAttr('disabled');
+                }
+            } else {
+                $('#vipub-counter').hide();
+                $('#share-ew-post').attr('disabled', true);
+            }
+        });
+
+    $('#content_post').on('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+
+
+    $('#vipub-new-post').on('submit', function(e) {
+        e.preventDefault();
+        var content_post = $('#content_post').val();
+        var has_media = false;
+        var has_video = false;
+
+
+        
+        var fileInput = $('#media')[0];
+        if (fileInput.files.length > 0) {
+            has_media = true;
+        }
+
+        var fileInputu = $('#add_video_input')[0];
+        if (fileInputu.files.length > 0) {
+            has_video = true;
+        }
+        
+        if (!has_media && content_post.trim() == '') {
+            new Noty({
+                type: 'error',
+                text: '<?php echo vipub_translate("sucess_post_share_2"); ?>',
+                timeout: 1500,
+                progressBar: true
+            }).show();
+            return;
+        } 
+        else if (!has_video && content_post.trim() == '') {
+            new Noty({
+                type: 'error',
+                text: '<?php echo vipub_translate("sucess_post_share_2"); ?>',
+                timeout: 1500,
+                progressBar: true
+            }).show();
+            return;
+        }
+        
+        $('#share-ew-post').attr('disabled', true);
+
+        new Noty({
+            type: 'success',
+            text: '<?php echo vipub_translate("sucess_post_share"); ?>',
+            timeout: 1500,
+            progressBar: true
+        }).show();
+        
+        setTimeout(function() {
+            var formData = new FormData($('#vipub-new-post')[0]);
+            formData.append('add_image', $('#media')[0].files[0]);
+            formData.append('add_video', $('#add_video_input')[0].files[0]);
+            $.ajax({
+                url: '/apps/ajax/timeline/new-post.phtml',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    fetchPosts();
+                    $('#vipub-new-post')[0].reset();
+                    $('#content_post').css('height', 'auto');
+                    $('#vipub-counter').text(maxLength + ' karakter');
+                    $('#share-ew-post').removeAttr('disabled');
+                }
+            });
+        }, 2000);
+    });
+
+    function fetchPosts() {
+        $.ajax({
+            url: '/apps/ajax/timeline/timeline-list.phtml',
+            type: 'GET',
+            success: function(data) {
+                $('#feed-timeline').html(data);
+            }
+        });
+    }
+
+    // setInterval(fetchPosts, <?php echo $settings["timeline_time_interval"]; ?>);
+
+    fetchPosts();
+})
+</script>
+
+<script>
+    new VipubEmojiSelect({
+        trigger: [
+            {
+                selector: '.vipubSelect-emoji',
+                insertInto: '.vipubEmojiContent'
+            }
+        ],
+        closeButton: true,
+    });
+</script>
+

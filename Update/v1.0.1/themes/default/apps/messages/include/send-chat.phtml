@@ -1,0 +1,127 @@
+<?php $settings = vipub_site_settings(); vipub_template("main/sidebar/left-sidebar"); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        
+        <div class="site-header-box">
+            <h5 data-vipub-url="<?php echo vipub_link("messages"); ?>">
+            <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+            <?php echo vipub_translate("messages"); ?></h5>
+        </div>
+        
+        <div class="vipub-user-message-container">
+            <div id="chat-container">
+                <div id="message-container"></div>
+            </div>
+        </div>
+
+        <div class="chat-container-new-message">
+            <form id="message-form">
+                <textarea id="message-input" placeholder="<?php echo vipub_translate("text_your_message"); ?>"></textarea>
+                <button type="submit">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M2.504 21.866l.526-2.108C3.04 19.719 4 15.823 4 12s-.96-7.719-.97-7.757l-.527-2.109L22.236 12 2.504 21.866zM5.981 13c-.072 1.962-.34 3.833-.583 5.183L17.764 12 5.398 5.818c.242 1.349.51 3.221.583 5.183H10v2H5.981z"></path></g></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<style>body{overflow:hidden;}</style>
+
+
+<script>
+  var lastSubmitTime = 0;
+
+function sendMessage(message, receiver_id) {
+
+  var submitBtn = $('button[type="submit"]');
+  submitBtn.prop('disabled', true);
+
+  if (!message.trim()) {
+    new Noty({
+      type: 'error',
+      text: '<?php echo vipub_translate("trim_no_message_1"); ?>',
+      timeout: 1500
+    }).show();
+    submitBtn.prop('disabled', false);
+    return;
+  }
+
+  var now = new Date().getTime();
+  var elapsedTime = now - lastSubmitTime;
+  if (elapsedTime < 300) {
+    new Noty({
+      type: 'error',
+      text: 'Please wait a moment before submitting again.',
+      timeout: 200
+    }).show();
+    submitBtn.prop('disabled', false);
+    return;
+  }
+
+  lastSubmitTime = now;
+
+  $.ajax({
+    url: '/apps/ajax/messages/send-message.phtml',
+    type: 'POST',
+    data: { message: message, receiver_id: receiver_id },
+    success: function(response) {
+      $('#message-input').val('');
+
+      toastr.success("<?php echo vipub_translate('trim_no_message_2'); ?>", "", { timeOut: 1000 });
+      submitBtn.prop('disabled', false);
+    },
+    error: function() {
+      alert('<?php echo vipub_translate("trim_no_message_3"); ?>');
+      submitBtn.prop('disabled', false);
+    }
+  });
+}
+
+  function checkMessages(receiver_id) {
+  $.ajax({
+    url: '/apps/ajax/messages/check-messages.phtml?row=<?php echo $_GET['row']; ?>',
+    type: 'GET',
+    data: { receiver_id: receiver_id },
+    dataType: 'html',
+    success: function(response) {
+      var container = $('.vipub-user-message-container');
+      var scrollHeightBefore = container.prop('scrollHeight');
+      container.html(response);
+
+      var scrollHeightAfter = container.prop('scrollHeight');
+      var isScrolledToBottom = container.scrollTop() + container.outerHeight() >= scrollHeightBefore - 20;
+
+      if (isScrolledToBottom) {
+        container.scrollTop(scrollHeightAfter);
+      }
+    },
+    error: function() {
+      alert('Your messages list has not been loaded yet.');
+    }
+  });
+}
+
+  $(document).ready(function() {
+    var receiver_id = <?php echo $_GET['row']; ?>;
+
+    if (receiver_id == <?php echo $_SESSION['user_id']; ?>) {
+    } else {
+      checkMessages(receiver_id);
+      setInterval(function() {
+        checkMessages(receiver_id);
+      }, <?php echo $settings["chat_time_interval"]; ?>);
+    }
+  });
+
+  $('#message-form').submit(function(event) {
+    event.preventDefault();
+
+    var message = $('#message-input').val();
+    var receiver_id = <?php echo $_GET['row']; ?>;
+    if (receiver_id == <?php echo $_SESSION['user_id']; ?>) {
+      window.location.href = '<?php echo vipub_link("messages"); ?>';
+    } else {
+      sendMessage(message, receiver_id);
+    }
+  });
+</script>
+<?php vipub_template("main/sidebar/right-sidebar"); ?>

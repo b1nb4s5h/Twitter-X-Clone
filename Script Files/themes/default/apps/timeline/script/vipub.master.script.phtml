@@ -1,0 +1,165 @@
+<?php $settings = vipub_site_settings(); ?>
+<script>
+$(document).ready(function() {
+    // Maksimum metin uzunluğunu ayarlar
+    var maxLength = <?php echo $settings["post_maxlength"]; ?>;
+    // Karakter sayacı için varsayılan renk
+    var color = "#1C9BEF";
+    // Karakter sayacını gizler
+    $('#vipub-counter').text(maxLength + ' / <?php echo $settings["post_maxlength"]; ?>').css('color', color).hide();
+
+    // Metin girişi değiştiğinde çalışacak fonksiyon
+    $('#content_post').on('input', function() {
+        // Metin uzunluğunu alır
+        var length = $(this).val().length;
+        // Kalan karakter sayısını hesaplar
+        var remaining = maxLength - length;
+        // Karakter sayacını günceller
+        $('#vipub-counter').text(remaining + ' / <?php echo $settings["post_maxlength"]; ?>');
+        
+        // Metin uzunluğu sıfırdan büyükse karakter sayacını gösterir
+        if (length > 0) {
+            $('#vipub-counter').show();
+            // Kalan karakter sayısına göre renk belirler
+            if (remaining < maxLength * 0.075) {
+                color = "#F4212D";
+            } else if (remaining < maxLength * 0.355) {
+                color = "#FFA500";
+            } else {
+                color = "#1C9BEF";
+            }
+            // Karakter sayacının rengini günceller
+            $('#vipub-counter').css('color', color);
+
+            // Kalan karakter sayısı sıfırsa gönder düğmesini devre dışı bırakır
+            if (remaining <= 0) {
+                $('#share-ew-post').attr('disabled', true);
+            } else {
+                $('#share-ew-post').removeAttr('disabled');
+            }
+        } else {
+            // Metin uzunluğu sıfırsa karakter sayacını gizler ve gönder düğmesini devre dışı bırakır
+            $('#vipub-counter').hide();
+            $('#share-ew-post').attr('disabled', true);
+        }
+    });
+
+    // Metin kutusu yüksekliğini içeriğe göre otomatik ayarlar
+    $('#content_post').on('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+
+    // Yeni gönderi gönderme formu gönderildiğinde çalışacak fonksiyon
+    $('#vipub-new-post').on('submit', function(e) {
+    e.preventDefault();
+    var content_post = $('#content_post').val();
+    
+    var has_media = false;
+    var has_video = false;
+    var has_gif = false;
+
+    // Medya dosyası seçildiyse has_media'ya true atanır
+    var fileInput = $('#media')[0];
+    if (fileInput.files.length > 0) {
+        has_media = true;
+    }
+
+    // Video dosyası seçildiyse has_video'ya true atanır
+    var fileInputu = $('#add_video_input')[0];
+    if (fileInputu.files.length > 0) {
+        var fileSize = fileInputu.files[0].size; // Dosya boyutunu alır
+        if (fileSize > 10 * 1024 * 1024) { // 10MB sınırı
+            var vipubSM_msgIcon = '<i class="bi bi-file-earmark-lock2-fill"></i>';
+            var vipubSM_msgText = '<?php echo vipub_translate("upload_new_media_video_file_content_10_mb_error_message"); ?>';
+            var vipubSM_alertTimeout = 5000;
+            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            return; // Ekleme işlemi yapılmaz
+        }
+        has_video = true;
+    }
+
+    // Gif dosyası seçildiyse has_gif'e true atanır
+    var gifInput = $('#gif_image').val();
+    if (gifInput.trim() !== '') {
+        has_gif = true;
+    }
+
+    // Hem metin hem de medya/video/gif yoksa hata mesajı gösterir ve işlemi sonlandırır
+    if (!has_media && !has_video && !has_gif && content_post.trim() == '') {
+        var vipubSM_msgIcon = '<i class="bi bi-body-text"></i>';
+        var vipubSM_msgText = '<?php echo vipub_translate("share_new_post_error_notif_msg"); ?>';
+        var vipubSM_alertTimeout = 5000;
+        vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+        return;
+    }
+
+    // Gönder düğmesini tıklayıp birden fazla kez gönderilmesini önlemek için devre dışı bırakır
+    $('#share-ew-post').attr('disabled', true);
+
+    // Başarılı gönderi mesajını gösterir
+    var vipubSM_msgIcon = '<i class="bi bi-pencil-square"></i>';
+    var vipubSM_msgText = '<?php echo vipub_translate("sucess_post_share"); ?>';
+    var vipubSM_alertTimeout = 2000;
+    vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+
+    // Gönderi verilerini sunucuya gönderir
+    setTimeout(function() {
+    var formData = new FormData($('#vipub-new-post')[0]);
+    formData.append('add_image', $('#media')[0].files[0]);
+    formData.append('add_video', $('#add_video_input')[0].files[0]);
+    $.ajax({
+        url: '/apps/ajax/timeline/new-post.phtml',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            fetchPosts();
+            $('#vipub-new-post')[0].reset();
+            $('#content_post').css('height', 'auto');
+            $('#vipub-counter').text(maxLength + ' karakter');
+            $('#share-ew-post').removeAttr('disabled');
+
+            $('#video_preview').attr('src', '');
+            $('#video_preview').hide();
+            $('#displayVideoClose').attr('src', '');
+            $('#displayVideoClose').hide();
+
+            setTimeout(function() {
+            location.reload();
+        }, 2000);
+        }
+    });
+}, 2000);
+});
+});
+</script>
+
+<script>
+    function fetchPosts() {
+        $.ajax({
+            url: '/apps/ajax/timeline/timeline-list.phtml',
+            type: 'GET',
+            success: function(data) {
+                $('#feed-timeline').html(data);
+            }
+        });
+    }
+
+    //setInterval(fetchPosts, 2000);
+    fetchPosts();
+</script>
+
+
+<script>
+    new VipubEmojiSelect({
+        trigger: [
+            {
+                selector: '.vipubSelect-emoji',
+                insertInto: '.vipubEmojiContent'
+            }
+        ],
+        closeButton: true,
+    });
+</script>

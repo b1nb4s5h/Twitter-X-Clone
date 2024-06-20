@@ -1,0 +1,38 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+# @*************************************************************************@
+# @ Software author: Robert Dayzen (robertdayzen)                           @
+# @ Author_url 2: http://codecanyon.net/user/robertdayzen                   @
+# @ Author E-mail: robertdayzen@gmail.com                                   @
+# @*************************************************************************@
+# @ Vipub - The Ultimate Modern PHP Social Media Sharing Platform           @
+# @ Copyright (c) 2022 - 2023 Vipub. All rights reserved.                   @
+# @*************************************************************************@
+require_once("../../../../core/vipub_web_core.phtml");
+$vipub_oauth = vipub_oauth_settings();
+use Abraham\TwitterOAuth\TwitterOAuth;
+
+
+if($vipub_oauth["twitter_login_status"]=="0"){
+    if(!isset($_SESSION["user_id"])){
+        $consumer_key = $vipub_oauth["twitter_api_key"];
+        $consumer_secret = $vipub_oauth["twitter_api_key_secret"];
+        $callback_url = $vipub_oauth["twitter_callback_url"]; 
+    
+        $twitterOAuth = new TwitterOAuth($consumer_key, $consumer_secret);
+    
+        $request_token = $twitterOAuth->oauth('oauth/request_token', array('oauth_callback' => $callback_url));
+    
+        session_start();
+        $_SESSION['oauth_token'] = $request_token['oauth_token'];
+        $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+    
+        $login_url = $twitterOAuth->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
+        header('Location: ' . $login_url);
+    }else {
+        header("Location: /404");
+    }  
+} else {
+    header("Location: /404");
+}

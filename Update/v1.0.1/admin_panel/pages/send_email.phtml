@@ -1,0 +1,186 @@
+<?php
+$smtp_settings = vipub_smtp();
+if (isset($_GET["email"]) && is_numeric($_GET["email"])) {
+    $user_id = $_GET["email"];
+    $sql = "SELECT * FROM vipub_users WHERE id=$user_id";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc(); ?>
+<?php $settings = vipub_site_settings(); ?>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>General Configuration</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">User</li>
+          <li class="breadcrumb-item active">Send private email</li>
+        </ol>
+      </nav>
+    </div>
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" style="color:#0f1419; font-size: 15px;">User specific <strong>email</strong></h5>
+              Via this field, (<strong>@<?php echo $row["username"]; ?></strong>) you can send a custom email to the user.
+
+            </div>
+        </div>
+    </div>
+
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" style="color:#0f1419; font-size: 15px;">
+                Determine the structure of <strong>your hashtag list</strong>
+                </h5>
+
+                <form action="" method="POST">
+
+                    <fieldset class="row mb-3" style="background:#F5F8FE; padding: 15px; border-radius: 5px;">
+                        <div class="col-sm-15">
+
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-5 col-form-label">Screen name</label>
+                                <div class="col-sm-15">
+                                    <input type="text" class="form-control" name="screen_name" placeholder="Screen name" value="<?php echo $row["fullname"]; ?>" required readonly>
+                                </div>
+                            </div>
+                                
+                            <div class="row mb-3">
+                            <label for="inputText" class="col-sm-5 col-form-label">Username</label>
+                                <div class="col-sm-15">
+                                    <input type="text" class="form-control" name="username" placeholder="Username" value="<?php echo $row["username"]; ?>" required readonly>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                            <label for="inputText" class="col-sm-5 col-form-label">E-mail addres</label>
+                                <div class="col-sm-15">
+                                    <input type="text" class="form-control" name="email" placeholder="Email" value="<?php echo $row["email"]; ?>" required readonly>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                            <label for="inputText" class="col-sm-5 col-form-label">Email subject</label>
+                                <div class="col-sm-15">
+                                    <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-15">
+                                <label for="email_body" class="col-sm-5 col-form-label">Email body</label>
+                                <textarea class="tinymce-editor" id="email_body" name="email_body" required>
+                                  Hello, <strong><?php echo $row["fullname"]; ?></strong>.
+                                  <br>
+                                  <br>
+                                  Thank you for joining <?php echo $settings["site_name"]; ?>!
+                                </textarea>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                              <div class="col-sm-50">
+                              <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                                  <button type="submit" style="width: 100% !important;" class="btn btn-primary" name="sendUserEmail">Send email</button>
+                                  <?php else: ?>
+                                    <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                              <?php endif; ?>
+                              </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                    </div>
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+</main>
+<?php
+  } else {
+    echo "User not found";
+}
+} else {
+echo "Invalid user ID";
+}
+?>
+
+<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+if(isset($_POST['sendUserEmail'])) {
+  $screen_name = $_POST['screen_name'];
+  $username = $_POST['username'];
+  $email = $_POST['email'];
+  $email_body = $_POST['email_body'];
+  $subject = $_POST['subject'];
+  
+  $mail = new PHPMailer(true);
+  
+  try {
+      $mail->isSMTP();                                            
+      $mail->Host       = $smtp_settings["smtp_host"];                     
+      $mail->SMTPAuth   = true;                                   
+      $mail->Username   = $smtp_settings["smtp_username"];                 
+      $mail->Password   = $smtp_settings["smtp_password"];                        
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;        
+      $mail->Port       = $smtp_settings["smtp_port"];                                    
+      $mail->setFrom($smtp_settings["smtp_username"], $settings["site_name"]);
+      $mail->addAddress($email, $screen_name);
+      $mail->isHTML(true);
+      $mail->CharSet = 'UTF-8'; 
+      $mail->Subject = $subject;
+      $mail->Body    = '
+          <div class="vipub-content-email">
+            <div class="container">
+                <div class="email-top-logo" style="position: relative; margin-bottom: 12px;">
+                    <p>'.$email_body.'</p>
+                </div>
+            </div>
+        </div>
+      ';
+      $mail->send(); ?>
+      <script>
+        new Noty({
+            type: 'success',
+            text: 'Email sent to user successfully',
+            timeout: 1500,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/send_email?email=<?php echo $_GET["email"]; ?>";
+                }
+            }
+        }).show();
+        </script>
+  <?php    
+  } catch (Exception $e) { ?>
+      <script>
+        new Noty({
+            type: 'error',
+            text: 'An error occurred while sending the email: <?php echo $mail->ErrorInfo; ?>',
+            timeout: 1500,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/email_settings?error_smtp=yes";
+                }
+            }
+        }).show();
+        </script>
+  <?php }
+}
+  ?>

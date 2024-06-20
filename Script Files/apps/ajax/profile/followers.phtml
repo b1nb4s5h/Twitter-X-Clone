@@ -1,0 +1,26 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  echo "Oturum açmamış kullanıcı!";
+  exit;
+}
+
+$followers = mysqli_real_escape_string($conn, $_POST['followers']);
+if (!is_numeric($followers)) {
+  echo "0";
+  exit();
+}
+$sql = "SELECT followers FROM vipub_users WHERE account_status = 0 AND id = ?";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, 'i', $followers);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+if ($result->num_rows > 0) {
+    $row = mysqli_fetch_assoc($result);
+    echo htmlspecialchars($row["followers"]);
+} else {
+    echo "0";
+}
+mysqli_stmt_close($stmt);
+$conn->close();

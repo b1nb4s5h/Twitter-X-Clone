@@ -1,0 +1,244 @@
+<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+    
+        <div class="account-settings-page-for-users-page">
+            <div class="settings-page-top-title">
+                <h5><?php echo vipub_translate("account_settings"); ?></h5>
+            </div>
+
+            <div class="settings-page-content-full">
+                <div class="settings-page-content-user-menu">
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings"); ?>">
+                            <h5 id="active-menu-settings-menu"><?php echo vipub_translate("settings_my_profile"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings/fullname"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_1"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings/username"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_2"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings/email"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_3"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_45"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_4"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_6"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings/password"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_10"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings/language"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_46"); ?></h5>
+                        </a>
+                    </div>
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings/display"); ?>">
+                            <h5><?php echo vipub_translate("account_settings_menu_14"); ?></h5>
+                        </a>
+                    </div>
+                    
+                   
+                        <div class="menu-content-user-selection">
+                            <?php if ($settings["user_sent_verified"] == "Active"): ?>
+                                <a href="<?php echo vipub_link("settings/send_verified"); ?>">
+                                    <h5><?php echo vipub_translate("account_settings_menu_16"); ?></h5>
+                                </a>
+                            <?php elseif ($settings["premium_verified"] == "1" && $row["premium_account"] != "1"): ?>
+                                <a href="<?php echo vipub_link("settings/send_verified"); ?>">
+                                    <h5><?php echo vipub_translate("vipub_verified_page"); ?></h5>
+                                </a>
+                            <?php elseif ($row["premium_account"] == "1"): ?>
+                                <a href="<?php echo vipub_link("business/premium"); ?>">
+                                    <h5><?php echo vipub_translate("vipub_verified_page"); ?></h5>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                        
+
+                    <?php if($settings["email_notifications"]=="Active"): ?>
+                        <div class="menu-content-user-selection">
+                            <a href="<?php echo vipub_link("settings/email_notifications"); ?>">
+                                <h5><?php echo vipub_translate("settings_page_email_notifs_2"); ?></h5>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="menu-content-user-selection">
+                        <a href="<?php echo vipub_link("settings/delete_account"); ?>">
+                            <h5 id="delete-account-settings-menu"><?php echo vipub_translate("account_settings_menu_21"); ?></h5>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="settings-edit-profile-right-zone">
+                    <div class="edit-profile-right-zone-title">
+                        <h5><?php echo vipub_translate("settings_my_profile"); ?></h5>
+                    </div>
+
+                    <div class="user-profile-edit-form-content-full">
+                        <form id="change-avatar" enctype="multipart/form-data">
+                            <span id="changeAvatar">
+                                <img src="<?php echo vipub_link($row["avatar"]); ?>"> 
+                                
+                                <h5>
+                                    <?php echo $row["username"]; ?>
+                                    <span><?php echo vipub_translate("account_settings_menu_12"); ?></span>
+                                </h5>
+                            </span>
+                            <input type="file" name="avatar" id="avatarInput" style="display:none;">
+                        </form>
+
+                        <form id="edit-user-account">
+                            <div class="edit-input-profile">
+                                <label for="fullname"><?php echo vipub_translate("account_settings_menu_45"); ?></label>
+                                <input maxlength="100" type="url" class="maxlenght-textarea-in-input-400" name="website" id="website" value="<?php if($row["user_website"]): ?><?php echo $row["user_website"]; ?><?php endif; ?>" placeholder="<?php echo vipub_translate("account_settings_menu_45"); ?>">
+                            </div>
+
+                            <div class="edit-input-profile">
+                                <label for="user_bio"><?php echo vipub_translate("account_settings_menu_31"); ?></label>
+                                <textarea maxlength="150" class="maxlenght-textarea-in-input-400" name="user_bio" id="user_bio" placeholder="<?php echo vipub_translate("account_settings_menu_31"); ?>"><?php if($row["user_bio"]==NULL): ?><?php else: ?><?php echo $row["user_bio"]; ?><?php endif; ?></textarea>
+                                <small id="user_bio_maxlength">0 / 150</small>
+                            </div>
+
+                            <div class="edit-input-profile">
+                                <label for="location"><?php echo vipub_translate("account_settings_menu_41"); ?></label>
+                                <input maxlength="30" type="text" class="maxlenght-textarea-in-input-400" name="location" id="location" value="<?php if($row["user_location"]==NULL): ?><?php else: ?><?php echo $row["user_location"]; ?><?php endif; ?>" placeholder="<?php echo vipub_translate("account_settings_menu_41"); ?>">
+                            </div>
+
+                            <div class="edit-input-profile">
+                                <button type="submit" class="save-in-change-profile"><?php echo vipub_translate("account_settings_menu_27"); ?></button>
+                            </div>
+                        </form>
+                        
+                    </div>
+
+
+                </div>
+                
+            </div>
+
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+    $('#changeAvatar').click(function() {
+        $('#avatarInput').click();
+    });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#changeAvatar').click(function() {
+        $('#avatarInput').click();
+        });
+        $('#avatarInput').change(function() {
+        var formData = new FormData($('#change-avatar')[0]);
+        formData.append('action', 'change-avatar');
+        $.ajax({
+            type: 'POST',
+            url: '/apps/ajax/settings/avatar.phtml',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                $('#changeAvatar img').attr('src', response);
+                new Noty({
+                    type: 'success',
+                    text: '<?php echo vipub_translate("settings_page_save_value_desc_8"); ?>',
+                    timeout: 2000
+                }).show();
+            },
+            error: function(response) {
+                new Noty({
+                    type: 'error',
+                    text: 'Only JPG, JPEG, PNG and GIF files are allowed.',
+                    timeout: 2000
+                }).show();
+            }
+        });
+    });
+});
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#edit-user-account').submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/apps/ajax/settings/edit.profile.phtml',
+            data: {
+                website: $("#website").val(),
+                user_bio: $("#user_bio").val(),
+                location: $("#location").val()
+            },
+            success: function(response) {
+                var vipubSM_msgIcon = '<i class="bi bi-check-circle"></i>';
+                var vipubSM_msgText = '<?php echo vipub_translate("success_for_profile_edit_message_settings_home_page_noty"); ?>';
+                var vipubSM_alertTimeout = 3000;
+
+                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            },
+            error: function(response) {
+                var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                var vipubSM_msgText = 'Error: ' + response.responseText;
+                var vipubSM_alertTimeout = 3000;
+
+                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            }
+        });
+    });
+});
+
+</script>
+
+<script>
+$(document).ready(function() {
+  var maxLength = 150;
+
+  function updateCharCount() {
+    var currentLength = $('#user_bio').val().length;
+    var remainingLength = maxLength - currentLength;
+
+    $('#user_bio_maxlength').text(currentLength + ' / ' + maxLength);
+  }
+
+  updateCharCount();
+
+  $('#user_bio').on('input', function() {
+    updateCharCount();
+  });
+});
+</script>

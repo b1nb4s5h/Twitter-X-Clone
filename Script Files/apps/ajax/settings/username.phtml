@@ -1,0 +1,30 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  vipub_redirect("/welcome/login");
+  exit;
+}
+
+$username = mysqli_real_escape_string($conn, $_POST["username"]);
+$user_id = mysqli_real_escape_string($conn, $_SESSION["user_id"]);
+$verified_status = "0";
+
+$sql = "SELECT id FROM vipub_users WHERE username='$username' AND id != $user_id";
+$result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    echo 'Kullanıcı adı zaten kullanılıyor.';
+} else {
+    $sql = "UPDATE vipub_users SET username='$username', verified='$verified_status' WHERE id=$user_id";
+    if (mysqli_query($conn, $sql)) {
+        echo $username;
+
+        $sql2 = "DELETE FROM vipub_notifs WHERE user_id ='$user_id' AND sender_id = $user_id AND type ='verified'";
+        $result = mysqli_query($conn, $sql2);
+    } else {
+        echo "Hata: " . mysqli_error($conn);
+    }
+}
+
+mysqli_close($conn);

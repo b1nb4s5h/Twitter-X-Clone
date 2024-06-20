@@ -1,0 +1,272 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php 
+$conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_GET["uname"])); 
+$row = vipub_get_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        <div class="site-header-box">
+            <h5>
+            <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+            <?php echo vipub_croptxt($row["fullname"], 0, 40); ?>
+            <?php if($row["verified"]=="1"): ?>
+                    <?php echo vipub_userBlue(); ?>
+                <?php endif; ?>
+            </h5>
+        </div>
+        <div class="user-profile-page">
+            <div class="user-cover">
+                <a href="<?php echo vipub_link($row["cover"]); ?>" data-lightbox="cover">
+                    <img src="<?php echo vipub_link($row["cover"]); ?>">
+                </a>
+            </div>
+            <div class="user-avatar">
+                <a href="<?php echo vipub_link($row["avatar"]); ?>" data-lightbox="avatar">
+                    <img src="<?php echo vipub_link($row["avatar"]); ?>">
+                </a>
+            </div>
+            
+            <div class="user-information">
+                <h5><?php echo vipub_croptxt($row["fullname"], 0, 40); ?>
+                <?php if($row["verified"]=="1"): ?>
+                    <?php echo vipub_userBlue(); ?>
+                <?php endif; ?>
+                </h5>
+                <span>@<?php echo $row["username"]; ?> 
+                <?php if(isset($_SESSION["user_id"])): ?>
+                    <span id="follow-status"></span>
+                <?php endif; ?></span>
+            </div>
+
+            <div class="user-profile-selection">
+                <?php if(isset($_SESSION["user_id"])): ?>
+                    <?php if($row["id"]==$_SESSION["user_id"]): ?>
+                        <button class="modal-settings-btn"><?php echo vipub_translate("settings_my_profile"); ?></button>
+                    <?php else: ?>
+
+                        <a href="<?php echo vipub_link("messages/".$row["id"]); ?>" title="Message">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"></path></g></svg>
+                        </a>
+
+                        <form id="vipubUser-follow">
+                            <input type="hidden" name="user_id" value="<?php echo $row["id"]; ?>">
+                            <button class="follow-value"><?php echo vipub_translate("follow"); ?></button>
+                        </form>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <button><?php echo vipub_translate("follow"); ?></button>
+                <?php endif; ?>
+            </div>
+            
+            <?php if($row["user_bio"]): ?>
+            <div class="user-profile-general-bio">
+                <span><?php echo convertVipubText($row["user_bio"]); ?></span>
+            </div>
+            <?php endif; ?>
+
+            <div class="user-profile-general-extra">
+             <?php if($row["user_location"]): ?>
+                <span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M12 7c-1.93 0-3.5 1.57-3.5 3.5S10.07 14 12 14s3.5-1.57 3.5-3.5S13.93 7 12 7zm0 5c-.827 0-1.5-.673-1.5-1.5S11.173 9 12 9s1.5.673 1.5 1.5S12.827 12 12 12zm0-10c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 17.77c-1.665-1.241-6.5-5.196-6.5-9.27C5.5 6.916 8.416 4 12 4s6.5 2.916 6.5 6.5c0 4.073-4.835 8.028-6.5 9.27z"></path></g></svg>
+                    <?php echo $row["user_location"]; ?>
+                </span>
+                <?php endif; ?>
+
+                <?php if($row["user_website"]): ?>
+                <span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z"></path></g></svg>
+                    <a href="<?php echo $row["user_website"]; ?>" target="_blank" rel="noopener noreferrer">
+                    <?php echo $row["user_website"]; ?>
+                    </a>
+                </span>
+                <?php endif; ?>
+
+                <span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path></g></svg>
+                    <?php echo vipub_translate('month_'.strtolower(date('M', strtotime($row["joined"])))) . " " . date("Y", strtotime($row["joined"])); ?>
+                    <?php echo vipub_translate("user_joined_date"); ?>
+                </span>
+            </div>
+
+            <div class="user-profile-following-info">
+                <a href="<?php echo vipub_link($row["username"]."/following/".$row["id"]); ?>">
+                <form id="following-counter">
+                    <input type="hidden" name="following" id="following" value="<?php echo $row["id"]; ?>">
+                    <span class="following-user">
+                        <strong id="following-count"><?php echo $row["following"]; ?></strong> <?php echo vipub_translate("my_following"); ?>
+                    </span>
+                </form>
+                </a>
+                
+                <a href="<?php echo vipub_link($row["username"]."/followers/".$row["id"]); ?>">
+                    <form id="followers-counter">
+                        <input type="hidden" name="followers" id="followers" value="<?php echo $row["id"]; ?>">
+                        <span>
+                            <strong id="followers-count"><?php echo $row["followers"]; ?></strong> <?php echo vipub_translate("my_followers"); ?>
+                        </span>
+                    </form>
+                </a>
+            </div>
+
+            <div class="user-profile-bot-menu">
+                <a href="<?php echo vipub_link("@".$row["username"]); ?>" class="active">
+                    <?php echo vipub_translate("profile_menu_1"); ?>
+                </a>
+
+                <a href="<?php echo vipub_link("@".$row["username"]."/media"); ?>">
+                   <?php echo vipub_translate("profile_menu_3"); ?>
+                </a>
+
+                <a href="#">
+                    <?php echo vipub_translate("profile_menu_4"); ?>
+                </a>
+            </div>
+
+            <div id="profile-timeline"></div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        function fetchPosts() {
+                $.ajax({
+                    url: '/apps/ajax/profile/timeline.phtml?uname=<?php echo $row["username"]; ?>',
+                    type: 'GET',
+                    success: function(data) {
+                        $('#profile-timeline').html(data);
+                    }
+                });
+            }
+            setInterval(fetchPosts, 2000);
+            fetchPosts();
+    });
+</script>
+<?php if(isset($_SESSION["user_id"])): ?>
+<script>
+    $(document).ready(function() {
+        function updateFollowing() {
+            var following = $('#following').val();
+            $.ajax({
+            type: "POST",
+            url: "/apps/ajax/profile/following.phtml",
+            data: {following: following},
+            success: function(data) {
+                $('#following-count').text(data);
+            }
+            });
+        }
+        
+        setInterval(updateFollowing, 2000);
+    });
+
+    $(document).ready(function() {
+        function updateFollowing() {
+            var followers = $('#followers').val();
+            $.ajax({
+            type: "POST",
+            url: "/apps/ajax/profile/followers.phtml",
+            data: {followers: followers},
+            success: function(data) {
+                $('#followers-count').text(data);
+            }
+            });
+        }
+        
+        setInterval(updateFollowing, 2000);
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+    checkFollowStatus();
+
+    $('#vipubUser-follow').on('click', '.follow-value', function(e) {
+        e.preventDefault();
+        
+        var button = $(this);
+        var user_id = button.siblings('input[name="user_id"]').val();
+        var follow_status = button.text();
+        
+        button.prop('disabled', true);
+        
+        $.ajax({
+            url: '/apps/ajax/profile/user-follow.phtml',
+            method: 'POST',
+            data: {
+                user_id: user_id,
+                follow_status: follow_status
+            },
+            success: function(data) {
+                if (follow_status == '<?php echo vipub_translate("follow"); ?>') {
+                    button.text('<?php echo vipub_translate("unfollow"); ?>');
+                } else {
+                    button.text('<?php echo vipub_translate("follow"); ?>');
+                    new Noty({
+                        type: 'error',
+                        text: "<?php echo $row["fullname"]; ?> <?php echo vipub_translate("unfollow_user"); ?>",
+                        timeout: 2000
+                    }).show();
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("Hata: " + textStatus + " - " + errorThrown);
+            },
+            complete: function() {
+                button.prop('disabled', false);
+            }
+        });
+    });
+
+
+    function checkFollowStatus() {
+        var user_id = $('input[name="user_id"]').val();
+
+        $.ajax({
+            url: '/apps/ajax/profile/check-follow.phtml',
+            method: 'POST',
+            data: {
+                user_id: user_id
+            },
+            success: function(data) {
+                if (data == 'true') {
+                    $('.follow-value').text('<?php echo vipub_translate("unfollow"); ?>');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("Error: " + textStatus + " - " + errorThrown);
+            }
+        });
+    }
+});
+
+const button = document.querySelector('.modal-settings-btn');
+button.addEventListener('click', () => {
+  window.location.href = '<?php echo vipub_link("/settings"); ?>';
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+        var user_id = <?php echo $row["id"]; ?>;
+        $.ajax({
+            url: '/apps/ajax/profile/follow-status-check.phtml',
+            type: 'GET',
+            data: { user_id: user_id },
+            dataType: 'json',
+            success: function(response) {
+            if (response.message) {
+                $('#follow-status').text(response.message);
+            } else {
+                $('#follow-status').css('display', 'none');
+            }
+            },
+            error: function() {
+            $('#follow-status').text('Takipçi durumu kontrol edilemedi');
+            }
+        });
+    });
+</script>
+<?php endif; ?>
+<?php vipub_template("main/sidebar/right-sidebar"); ?>

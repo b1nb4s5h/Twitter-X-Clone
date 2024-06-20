@@ -1,0 +1,41 @@
+<?php
+function vipub_rightsidebar_guest_footer() {
+    ?>
+    <?php $settings = vipub_site_settings(); ?>
+    <a href="<?php echo vipub_link("pages/about"); ?>"><?php echo vipub_translate("welcome_footer_1"); ?></a>
+    <a href="<?php echo vipub_link("pages/privacy-policy"); ?>"><?php echo vipub_translate("welcome_footer_2"); ?></a>
+    <a href="<?php echo vipub_link("pages/terms-policy"); ?>"><?php echo vipub_translate("welcome_footer_3"); ?></a>
+    <a href="<?php echo vipub_link("pages/cookies-policy"); ?>"><?php echo vipub_translate("welcome_footer_5"); ?></a>
+    <a href="<?php echo vipub_link("pages/help-center"); ?>"><?php echo vipub_translate("welcome_footer_4"); ?></a>
+    
+    <a href="#" class="site-language-select dropdown-toggle"><?php echo vipub_translate("language_name"); ?></a>
+    <ul class="welcome-dropdown-menu">
+        <li><a href="?lang=turkish"><?php echo vipub_translate("language_name_1"); ?></a></li>
+        <li><a href="?lang=english"><?php echo vipub_translate("language_name_2"); ?></a></li>
+        <li><a href="?lang=espanol"><?php echo vipub_translate("language_name_3"); ?></a></li>
+        <li><a href="?lang=german"><?php echo vipub_translate("language_name_4"); ?></a></li>
+        <li><a href="?lang=russian"><?php echo vipub_translate("language_name_5"); ?></a></li>
+        <li><a href="?lang=portuguese"><?php echo vipub_translate("language_name_6"); ?></a></li>
+        <li><a href="?lang=french"><?php echo vipub_translate("language_name_7"); ?></a></li>
+        <li><a href="?lang=chinese"><?php echo vipub_translate("language_name_8"); ?></a></li>
+        <li><a href="?lang=hindi"><?php echo vipub_translate("language_name_9"); ?></a></li>
+    </ul>
+    
+    <a href="#">© <?php echo $settings["site_name"]; ?> - <?php echo date("Y"); ?></a>
+    <?php
+}
+
+function vipub_rightsidebar_footer() {
+    ?>
+    <?php $settings = vipub_site_settings(); ?>
+    <a href="<?php echo vipub_link("pages/about"); ?>"><?php echo vipub_translate("welcome_footer_1"); ?></a>
+    <a href="<?php echo vipub_link("pages/privacy-policy"); ?>"><?php echo vipub_translate("welcome_footer_2"); ?></a>
+    <a href="<?php echo vipub_link("pages/terms-policy"); ?>"><?php echo vipub_translate("welcome_footer_3"); ?></a>
+    <a href="<?php echo vipub_link("pages/cookies-policy"); ?>"><?php echo vipub_translate("welcome_footer_5"); ?></a>
+    <a href="<?php echo vipub_link("pages/help-center"); ?>"><?php echo vipub_translate("welcome_footer_4"); ?></a>
+    
+    <a href="<?php echo vipub_link("settings/language"); ?>" class="dropdown-toggle"><?php echo vipub_translate("language_name"); ?></a>
+    
+    <a href="#">© <?php echo $settings["site_name"]; ?> - <?php echo date("Y"); ?></a>
+    <?php
+}

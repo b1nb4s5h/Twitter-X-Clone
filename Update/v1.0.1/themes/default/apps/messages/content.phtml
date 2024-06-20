@@ -1,0 +1,30 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        <div class="site-header-box">
+            <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+            <?php echo vipub_translate("messages"); ?></h5>
+        </div>
+        <div class="get-message-my-list">
+          <div id="myuser-only-chatlist"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+  $.ajax({
+    url: '/apps/ajax/messages/get-my-chatlist.phtml',
+    type: 'GET',
+    dataType: 'html',
+    success: function(response) {
+      $('#myuser-only-chatlist').html(response);
+    },
+    error: function() {
+      alert('Error Message');
+    }
+  });
+});
+</script>
+<style>body{overflow:hidden;}</style>
+<?php vipub_template("main/sidebar/right-sidebar"); ?>

@@ -1,0 +1,23 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        <div class="margin-bottom-connection-people"></div>
+        <div class="connection-people-conn">
+            <h6>
+                <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                <?php echo vipub_translate("profile"); ?>
+            </h6>
+            
+            <div class="user-not-and-banned-profile-container">
+                <i class="bi bi-exclamation-circle"></i>
+                <h4><?php echo vipub_croptxt(vipub_dont_profile_name(), 0, 40); ?></h4>
+                <h5><?php echo vipub_translate("user_profile_dont_empty_1"); ?></h5>
+                <span><?php echo vipub_translate("user_profile_dont_empty_2"); ?></span>
+            </div>
+                    
+            <div class="suggested-page-bottom-footer">
+                <?php echo vipub_rightsidebar_footer(); ?>
+            </div>
+        </div>
+    </div>
+</div>

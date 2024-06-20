@@ -1,0 +1,96 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once("../../../../core/vipub_web_core.phtml");
+$conn = vipubConnectDatabase();
+$vipub_oauth = vipub_oauth_settings();
+use Abraham\TwitterOAuth\TwitterOAuth;
+
+
+$consumer_key = $vipub_oauth["twitter_api_key"];
+$consumer_secret = $vipub_oauth["twitter_api_key_secret"];
+
+if($vipub_oauth["twitter_login_status"]=="0"){
+    if(!isset($_SESSION["user_id"])){
+        $twitterOAuth = new TwitterOAuth($consumer_key, $consumer_secret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+
+        $access_token = $twitterOAuth->oauth('oauth/access_token', array('oauth_verifier' => $_REQUEST['oauth_verifier']));
+        $twitterOAuth = new TwitterOAuth($consumer_key, $consumer_secret, $access_token['oauth_token'], $access_token['oauth_token_secret']);
+        $user_info = $twitterOAuth->get('account/verify_credentials');
+    
+        if (isset($user_info->name)) {
+            $twitter_fullname = $user_info->screen_name;
+        } else {
+            $twitter_fullname = '';
+        }
+    
+        if (isset($user_info->username)) {
+            $twitter_username = $user_info->username;
+        } else {
+            $twitter_username = '';
+        }
+    
+        if (isset($user_info->description)) {
+            $twitter_bio = $user_info->description;
+        } else {
+            $twitter_bio = '';
+        }
+    
+        $twitter_email = '';
+    
+        $newTwitterRegisterFullname = "John Doe";
+        do {
+            $newTwitterRegisterUsername = "twtr" . rand(5435, 1231252135123);
+            if (strlen($newTwitterRegisterUsername) > 15) {
+                $newTwitterRegisterUsername = substr($newTwitterRegisterUsername, 0, 15);
+            }
+            $sql_check_username = "SELECT COUNT(*) FROM vipub_users WHERE username = ?";
+            $stmt_check_username = $conn->prepare($sql_check_username);
+            $stmt_check_username->bind_param("s", $newTwitterRegisterUsername);
+            $stmt_check_username->execute();
+            $stmt_check_username->bind_result($username_count);
+            $stmt_check_username->fetch();
+            $stmt_check_username->close();
+        } while ($username_count > 0);
+    
+        do {
+            $newTwitterRegisterEmail = "twitteroauth_email@" . rand(5435, 1231252135123) . ".com";
+    
+            // E-postayı veritabanından kontrol edin
+            $sql_check_email = "SELECT COUNT(*) FROM vipub_users WHERE email = ?";
+            $stmt_check_email = $conn->prepare($sql_check_email);
+            $stmt_check_email->bind_param("s", $newTwitterRegisterEmail);
+            $stmt_check_email->execute();
+            $stmt_check_email->bind_result($email_count);
+            $stmt_check_email->fetch();
+            $stmt_check_email->close();
+        } while ($email_count > 0);
+        $randomPassword = "newUserTwitterPassword";
+        $registerType = "Twitter";
+        $password = mysqli_real_escape_string($conn, sha1($randomPassword));
+    
+        // Kullanıcı bilgilerini veritabanına ekleme
+        $sql = "INSERT INTO vipub_users (fullname, username, password, email, oauth)
+                VALUES (?, ?, ?, ?, ?)";
+    
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssss", $newTwitterRegisterFullname, $newTwitterRegisterUsername, $password, $newTwitterRegisterEmail, $registerType);
+    
+        if ($stmt->execute()) {
+            // Kayıt başarılı oldu, kullanıcıyı diğer sayfaya yönlendirin
+            $last_inserted_id = $conn->insert_id;
+            $_SESSION["user_id"] = $last_inserted_id;
+            header('Location: /settings/password?oauth=twitter');
+        } else {
+            // Hata durumunda buraya gelin
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    
+        $stmt->close();
+        $conn->close();
+    } else {
+        header("Location: /404");
+    }
+} else {
+    header("Location: /404");
+}

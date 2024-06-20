@@ -1,0 +1,79 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  header("Location: /welcome"); 
+  exit;
+}
+
+$post_id = mysqli_real_escape_string($conn, $_POST['post_id']);
+$content = htmlspecialchars_decode(strip_tags(trim($_POST['content'])), ENT_QUOTES);
+$userId = $_SESSION['user_id'];
+
+// Save hashtags before inserting the reply
+saveHashtags($conn, $content);
+
+$query = "INSERT INTO vipub_posts (reply_post_id, user_id, content_post, content_image, post_type) VALUES ('$post_id', '$userId', '$content', 'NULL', 'reply')";
+
+if (mysqli_query($conn, $query)) {
+  $reply_query = "SELECT COUNT(*) AS reply FROM vipub_posts WHERE reply_post_id = '$post_id' AND post_type = 'reply'";
+  $reply_result = mysqli_query($conn, $reply_query);
+  $reply_row = mysqli_fetch_assoc($reply_result);
+  $reply_count = $reply_row['reply'];
+  
+
+  $update_query = "UPDATE vipub_posts SET reply = '$reply_count' WHERE p_id = '$post_id'";
+  if (mysqli_query($conn, $update_query)) {
+
+    // @mention
+    $pattern = '/@([a-zA-Z0-9_]+)/';
+    preg_match_all($pattern, $content, $matches);
+
+    if (!empty($matches[1])) {
+        foreach ($matches[1] as $mention) {
+            $user_stmt = $conn->prepare("SELECT id FROM vipub_users WHERE username = ?");
+            $user_stmt->bind_param("s", $mention);
+            $user_stmt->execute();
+            $user_result = $user_stmt->get_result();
+
+            if ($user_result->num_rows > 0) {
+                $user_row = $user_result->fetch_assoc();
+                $mentioned_user_id = $user_row['id'];
+
+                if ($mentioned_user_id != $userId) {
+                    $notif_stmt = $conn->prepare("INSERT INTO vipub_notifs (user_id, sender_id, post_id, type) VALUES (?, ?, ?, 'mention_reply')");
+                    $notif_stmt->bind_param("iii", $mentioned_user_id, $userId, $post_id);
+                    $notif_stmt->execute();
+                }
+            }
+        }
+    }
+
+     // Yorum yapılan post'un sahibine bildirim gönderme
+     $post_owner_query = "SELECT user_id FROM vipub_posts WHERE p_id = ?";
+     $post_owner_stmt = $conn->prepare($post_owner_query);
+     $post_owner_stmt->bind_param("i", $post_id);
+     $post_owner_stmt->execute();
+     $post_owner_result = $post_owner_stmt->get_result();
+ 
+     if ($post_owner_result->num_rows > 0) {
+         $post_owner_row = $post_owner_result->fetch_assoc();
+         $post_owner_id = $post_owner_row['user_id'];
+ 
+         if ($post_owner_id != $userId) {
+             $notif_stmt = $conn->prepare("INSERT INTO vipub_notifs (user_id, sender_id, post_id, type) VALUES (?, ?, ?, 'comment')");
+             $notif_stmt->bind_param("iii", $post_owner_id, $userId, $post_id);
+             $notif_stmt->execute();
+         }
+     }
+
+
+    echo "Reply added successfully";
+  } else {
+    echo "Error updating reply count: " . mysqli_error($conn);
+  }
+} else {
+  echo "Error adding reply: " . mysqli_error($conn);
+}
+
+mysqli_close($conn);

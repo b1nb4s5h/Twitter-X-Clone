@@ -1,0 +1,73 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>List of pages</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Page</li>
+          <li class="breadcrumb-item active">List of pages</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><?php echo $settings["site_name"]; ?> <strong>page list</strong></h5>
+              <p>Below is a list of all page on your website. When you want to edit any page, you can click on the <strong>id</strong> at the top of the table or the <strong>"edit"</strong> button at the end of the table.</p>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Page title</th>
+                    <th scope="col">SEO Url</th>
+                    <th scope="col">Page name</th>
+                    <th scope="col">Page content</th>
+                    <th scope="col">Page date</th>
+                    <th scope="col">Open</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $sql = "SELECT * FROM vipub_pages ORDER BY page_date DESC";
+        
+                    $stmt = mysqli_prepare($conn, $sql);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+                    
+                    if ($result) {
+                    // Gönderileri göster
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) { 
+                ?>
+                    <tr>
+                        <th scope="row"><a style="color:#0f1419 !important; font-weight: 700;" href="<?php echo vipub_link("admin_panel/edit_page?edit=".$row["page_id"]); ?>"><?php echo $row["page_id"]; ?></a></th>
+                        <td><?php echo vipub_croptxt($row["page_title"], 0, 15); ?></td>
+                        <td><a  style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo vipub_link("pages/".$row["page_title_seo"]); ?>"><?php echo vipub_croptxt($row["page_title_seo"], 0, 25); ?></a></td>
+                        <td><a><?php echo vipub_croptxt($row["page_name"], 0, 25); ?></a></td>
+                        <td><?php echo vipub_croptxt($row["page_content"], 0, 30); ?></td>
+                        <td><?php echo date("d.m.Y - h:i:s", strtotime($row["page_date"])); ?></td>
+                        <td><a style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo vipub_link("pages/".$row["page_title_seo"]); ?>" class="text-primary">Open</a></td>
+                        <td><a style="font-weight: 800; color: red !important;" href="<?php echo vipub_link("admin_panel/edit_page?edit=".$row["page_id"]); ?>" class="text-primary">Edit</a></td>
+                    </tr>
+                    
+                    <?php } } } ?>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>

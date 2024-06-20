@@ -1,0 +1,75 @@
+<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+    
+        <div class="account-settings-page-for-users-page">
+            <div class="settings-page-top-title">
+                <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg><?php echo vipub_translate("account_settings"); ?></h5>
+            </div>
+
+            <div class="settings-page-content-full next-settings-page-container-none-border">
+
+                <div class="settings-edit-profile-right-zone next-settings-page-container">
+                    <div class="edit-profile-right-zone-title">
+                        <h5><?php echo vipub_translate("account_settings_menu_34"); ?></h5>
+                        <small><?php echo vipub_translate("account_settings_menu_35"); ?></small>
+                    </div>
+
+                    <div class="user-profile-edit-form-content-full">
+                        
+                        <form id="change-email-notifications">
+                            <div class="edit-input-profile">
+                                <div class="user-switch-container-change">
+                                    <input type="radio" class="radio-btn" name="theme" value="master.white.theme" checked> 
+                                    <span>
+                                        <?php echo vipub_translate("account_settings_menu_36"); ?>
+                                    </span>
+
+                                    <input type="radio" class="radio-btn" name="theme" value="master.dark.theme"> 
+                                    <span>
+                                        <?php echo vipub_translate("account_settings_menu_37"); ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<script>
+        $('input[name="theme"]').change(function() {
+        var theme = $('input[name="theme"]:checked').val();
+        var styleUrl = '<?php echo vipub_template_master("style"); ?>/' + theme + '.css';
+        $('#style').attr('href', styleUrl);
+        $.ajax({
+            type: "POST",
+            url: "/apps/ajax/settings/display-save.phtml",
+            data: { theme: theme },
+            success: function() {
+            console.log("Changed Vipub template");
+            }
+        });
+        });
+
+        $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "/apps/ajax/settings/display.phtml",
+            success: function(theme) {
+            if (theme != null) {
+                var styleUrl = '<?php echo vipub_template_master("style"); ?>/' + theme + '.css';
+                $('#style').attr('href', styleUrl);
+                $('input[name="theme"][value="' + theme + '"]').prop('checked', true);
+            }
+            }
+        });
+        });
+</script>

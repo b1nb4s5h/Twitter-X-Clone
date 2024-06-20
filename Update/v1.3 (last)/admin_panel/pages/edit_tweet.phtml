@@ -1,0 +1,150 @@
+<?php
+if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
+    $ids = $_GET["edit"];
+
+    $sql = "SELECT p.*, u.* 
+    FROM vipub_posts p 
+    JOIN vipub_users u ON p.user_id = u.id 
+    WHERE p_id ='$ids'
+    ORDER BY p.post_joined DESC";
+$result = $conn->query($sql);
+
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc(); ?>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Tweet owner and tweet content</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Tweet</li>
+          <li class="breadcrumb-item active">Edit tweet</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+              <img src="<?php echo vipub_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
+              <h2><?php echo vipub_croptxt($row["fullname"], 0, 30); ?></h2>
+              <h3>@<?php echo $row["username"]; ?></h3>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tweet-edit">Tweet content and edit</button>
+                </li>
+              </ul>
+              <div class="tab-content pt-2">
+
+                
+
+                <div class="tab-pane profile-edit pt-3 active" id="tweet-edit">
+
+                  <form action="" method="POST">
+
+                    <div class="row mb-5">
+                      <label for="content_post_original" class="col-md-4 col-lg-3 col-form-label">Tweet content</label>
+                      <div class="col-md-8 col-lg-9">
+                        <textarea class="form-control" id="content_post_original" disabled style="height: 100px"><?php echo $row["content_post"]; ?></textarea>
+                    
+                    <?php if($row["content_image"]=="NULL"): ?>
+                      <?php else: ?>
+                      <div class="tweet-content-image" style="position: relative; margin-top: 25px;">
+                        <img style="width: 550px; border:1px solid #d9d9d9; border-radius: 10px;" src="<?php echo vipub_link($row["content_image"]); ?>" alt="Tweet content image">
+                      </div>
+                      <?php endif; ?>
+                    </div>
+                      
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="content_post" class="col-md-4 col-lg-3 col-form-label">Editing</label>
+                      <div class="col-md-8 col-lg-9">
+                        <textarea class="form-control" id="content_post" name="content_post" style="height: 100px"><?php echo $row["content_post"]; ?></textarea>
+                      
+                        <?php if($row["content_image"]=="NULL"): ?>
+                      <?php else: ?>
+                      <div class="tweet-content-image" style="position: relative; margin-top: 25px;">
+                        <img style="width: 550px; border:1px solid #d9d9d9; border-radius: 10px;" src="<?php echo vipub_link($row["content_image"]); ?>" alt="Tweet content image">
+                      </div>
+                      <?php endif; ?>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="text-center" style="margin-top:40px; position: relative;">
+                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                      <button type="submit" style="width: 100%;" class="btn btn-primary" name="saveTweet">Save Changes</button>
+                      <?php else: ?>
+                            <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                        <?php endif; ?>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <?php
+  } else {
+    echo "Tweet not found";
+}
+} else {
+echo "Invalid tweet ID";
+}
+?>
+
+<?php
+if(isset($_POST["saveTweet"])) {
+    $id = $_GET["edit"];
+    $content_post = htmlspecialchars($_POST["content_post"]);
+    
+    $stmt = $conn->prepare("UPDATE vipub_posts SET content_post=? WHERE p_id=?");
+    $stmt->bind_param("si", $content_post, $id);
+    $stmt->execute();
+    
+    if ($stmt->affected_rows > 0) {
+        ?>
+        <script>
+        new Noty({
+            type: 'success',
+            text: 'The tweet was successfully updated',
+            timeout: 200,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/edit_tweet?edit=<?php echo $id; ?>";
+                }
+            }
+        }).show();
+        </script>
+        <?php
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+?>

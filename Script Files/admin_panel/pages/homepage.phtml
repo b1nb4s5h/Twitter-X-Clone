@@ -1,0 +1,569 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel"); ?>">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section dashboard">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="row">
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Users <span>| Total users</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #DBEBF8;">
+                      <i class="bi bi-people-fill" style="fill:#1C9BEE !important;color:#1C9BEE !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(id) as user_count FROM vipub_users";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $userCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $userCount["user_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Admins <span>| Total admin</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #DBEBF8;">
+                      <i class="bi bi-person-lines-fill" style="fill:#1C9BEE !important;color:#1C9BEE !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(id) as admin_count FROM vipub_users WHERE admin_status='1'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $admin_count = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $admin_count["admin_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Banneds <span>| Total ban</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #DBEBF8;">
+                      <i class="bi bi-x-circle-fill" style="fill:#1C9BEE !important;color:#1C9BEE !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(id) as banned_count FROM vipub_users WHERE account_status='1'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $bannedCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $bannedCount["banned_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Not verified <span>| Unverified accounts</span> </h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #DBEBF8;">
+                      <i class="bi bi-person-x-fill" style="fill:#1C9BEE !important;color:#1C9BEE !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(id) as not_verified FROM vipub_users WHERE verified='0'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $notVerifiedCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $notVerifiedCount["not_verified"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Verifieds <span>| Verified account</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #DBEBF8;">
+                      <i class="bi bi-patch-check-fill" style="fill:#1C9BEE !important;color:#1C9BEE !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(id) as verified_account FROM vipub_users WHERE verified='1'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $verifiedCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $verifiedCount["verified_account"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Waitings <span>| The requesting account</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #DBEBF8;">
+                      <i class="bi bi-person-fill-exclamation" style="fill:#1C9BEE !important;color:#1C9BEE !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(id) as waiting_count FROM vipub_users WHERE verified='2'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $waitingCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $waitingCount["waiting_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Tweets <span>| Total Tweets</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #F8E3EB;">
+                      <i class="bi bi-pencil-square" style="fill:#D8277D !important; color:#D8277D !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(p_id) as tweet_count FROM vipub_posts WHERE post_type='post'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $tweetsCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $tweetsCount["tweet_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card customers-card">
+                <div class="card-body">
+                  <h5 class="card-title">Replys <span>| Total reply</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #F8E3EB;">
+                      <i class="bi bi-reply-all-fill" style="fill:#D8277D !important; color:#D8277D !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(p_id) as reply_count FROM vipub_posts WHERE post_type='reply'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $replyCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $replyCount["reply_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card customers-card">
+                <div class="card-body">
+                  <h5 class="card-title">Retweets <span>| Total retweet</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #F8E3EB;">
+                      <i class="bi bi-repeat-1" style="fill:#D8277D !important; color:#D8277D !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(p_id) as repost_count FROM vipub_posts WHERE post_type='repost'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $repostCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $repostCount["repost_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Image <span>| Image Tweets</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #F8E3EB;">
+                      <i class="bi bi-images" style="fill:#D8277D !important; color:#D8277D !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(p_id) as post_image_count FROM vipub_posts WHERE post_type='post_image'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $postImage = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $postImage["post_image_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Video <span>| Total Video Tweets</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #F8E3EB;">
+                      <i class="bi bi-play-circle" style="fill:#D8277D !important; color:#D8277D !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(p_id) as post_video_count FROM vipub_posts WHERE post_type='post_video'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $postVideo = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $postVideo["post_video_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">GIFs <span>| Total GIF Tweets</span></h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #F8E3EB;">
+                      <i class="bi bi-filetype-gif" style="fill:#D8277D !important; color:#D8277D !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(p_id) as post_content_count_gif FROM vipub_posts WHERE content_gif IS NOT NULL";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $postContentGif = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $postContentGif["post_content_count_gif"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Hashtags <span>| Total hashtags</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #0f1419;">
+                      <i class="bi bi-hash" style="fill:#e7e9ea !important; color:#e7e9ea !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(h_id) as hashtag_count FROM vipub_hashtag";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $hashtagCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $hashtagCount["hashtag_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-xl-12">
+              <div class="card info-card customers-card">
+                <div class="card-body">
+                  <h5 class="card-title">Notifications <span>| Sent notifications</span></h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #0f1419;">
+                      <i class="bi bi-bell-fill" style="fill:#e7e9ea !important; color:#e7e9ea !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(n_id) as notifs_count FROM vipub_notifs";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $notifsCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $notifsCount["notifs_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Messages <span>| Sent messages</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #0f1419;">
+                      <i class="bi bi-chat-quote-fill" style="fill:#e7e9ea !important; color:#e7e9ea !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(m_id) as message_count FROM vipub_messages";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $messageCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $messageCount["message_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-xl-12">
+              <div class="card info-card customers-card">
+                <div class="card-body">
+                  <h5 class="card-title">Likes <span>| Total tweet likes</span></h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #0f1419;">
+                      <i class="bi bi-heart-fill" style="fill:#e7e9ea !important; color:#e7e9ea !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(l_id) as likes_count FROM vipub_likes";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $likesCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $likesCount["likes_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Follow <span>| Total Follow</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #0f1419;">
+                      <i class="bi bi-person-add" style="fill:#e7e9ea !important; color:#e7e9ea !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(f_id) as follow_count FROM vipub_follow";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $followCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $followCount["follow_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Unread <span>| messages</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #0f1419;">
+                      <i class="bi bi-envelope-exclamation" style="fill:#e7e9ea !important; color:#e7e9ea !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(m_id) as follow_count FROM vipub_messages WHERE notifs_status='0'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $followCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $followCount["follow_count"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-12 col-md-12">
+              <div class="card info-card revenue-card">
+                <div class="card-body">
+                  <h5 class="card-title">Password reset <span>| Total, email sent for forgot password</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: #FDEF09;">
+                      <i class="bi bi-send-check" style="fill:#000 !important; color:#000 !important;"></i>
+                    </div>
+                    <div class="ps-3">
+                        <?php
+                        $sql = "SELECT COUNT(id) as reset_token FROM vipub_users WHERE reset_token";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $resetPasswordCount = $result->fetch_assoc();
+                        }
+                        ?>
+                      <h6><?php echo $resetPasswordCount["reset_token"]; ?></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Online user <span>| Total users online</span></h5>
+                <div class="activity">
+                      <div class="activity-item d-flex">
+                          <div class="activite-label">Online</div>
+                          <?php $onlineUserCount = vipub_online_user_count(); ?>
+                          <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                          <div class="activity-content" style="font-weight: 700; color: #0f1419; font-size: 15px;">
+                             <?php echo $onlineUserCount; ?>
+                          </div>
+                      </div>   
+                </div>
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Users <span>| Users who joined today</span></h5>
+                <div class="activity">
+                    <?php
+                        $sql = "SELECT * FROM vipub_users WHERE joined >= NOW() - INTERVAL 1 DAY ORDER BY joined DESC";
+                        $result = mysqli_query($conn, $sql);
+                        
+                        if ($result) {
+                            $i = 1;
+                            if (mysqli_num_rows($result) > 0) {
+                                while ($joinedUser = mysqli_fetch_assoc($result)) { 
+                                    ?>
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label"><?php echo date("d M - h:i:s ", strtotime($joinedUser["joined"])); ?></div>
+                                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                        <div class="activity-content">
+                                            Registered today <a target="_blank"href="<?php echo vipub_link("@".$joinedUser["username"]); ?>" class="fw-bold text-dark">@<?php echo $joinedUser["username"]; ?></a> one of our members.
+                                        </div>
+                                    </div>
+                                <?php 
+                                    $i++; 
+                                }
+                            } else {
+                                echo "This field will list users who registered within <strong>24 hours</strong> (today). And probably, if you're seeing this post, no user has registered.";
+                            }
+                        } 
+                    ?>
+                </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Hashtags <span>| What's going on?</span></h5>
+                <div class="activity">
+                    <?php
+                        $sql = "SELECT * FROM vipub_hashtag ORDER BY total_post DESC LIMIT 10";
+                        $result = mysqli_query($conn, $sql);
+                        
+                        if ($result) {
+                            $i = 1;
+                            if (mysqli_num_rows($result) > 0) {
+                                while ($hash = mysqli_fetch_assoc($result)) { 
+                                    ?>
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label"><?php echo date("d M", strtotime($hash["add_date"])); ?></div>
+                                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                        <div class="activity-content">
+                                        Currently <a target="_blank" href="<?php echo vipub_link("explore?q=".$hash["htag"]); ?> " class="fw-bold text-dark"> #<?php echo $hash["htag"]; ?></a> in the tag <strong> <?php echo $hash["total_post"]; ?></strong> there is a tweet.
+                                        </div>
+                                    </div>
+                                <?php 
+                                    $i++; 
+                                }
+                            } else {
+                                echo "No #hashtags have been created yet.";
+                            }
+                        } 
+                    ?>
+                </div>
+            </div>
+          </div>
+
+      </div>
+    </section>
+
+  </main>
+  

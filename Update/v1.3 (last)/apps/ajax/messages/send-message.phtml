@@ -1,0 +1,108 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+$smtp_settings = vipub_smtp();
+
+if (!isset($_SESSION["user_id"])) {
+  header("Location: /welcome");
+  exit;
+}
+
+if ($receiver_id == $_SESSION["user_id"]) {
+  header("Location: /messages");
+  exit;
+}
+
+$settings = vipub_site_settings();
+$message = trim($_POST['message']);
+$message = htmlspecialchars_decode(strip_tags(trim($_POST['message'])), ENT_QUOTES);
+
+$sender_id = $_SESSION['user_id'];
+$receiver_id = filter_input(INPUT_POST, 'receiver_id', FILTER_SANITIZE_NUMBER_INT);
+if ($sender_id == $receiver_id) {
+  die(header('Location: /messages'));
+}
+
+// Resim yükleme işlemi
+if (isset($_FILES['content_image']) && $_FILES['content_image']['error'] === UPLOAD_ERR_OK) {
+  $uploadDir = '../../../upload/media/';
+  $fileName = $_FILES['content_image']['name'];
+  $tempName = $_FILES['content_image']['tmp_name'];
+  $fileSize = $_FILES['content_image']['size'];
+  $allowedFileSize = 15 * 1024 * 1024; // 15MB olarak ayarladık
+
+  // Geçerli dosya uzantısını kontrol et
+  $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
+  $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+  if (!in_array($fileExtension, $allowedExtensions)) {
+    echo '<script>alert("Sadece jpg, jpeg, png ve gif uzantılı dosyalar yüklenebilir!");</script>';
+    exit();
+  }
+
+  // Dosya boyutunu kontrol et
+  if ($fileSize > $allowedFileSize) {
+    echo '<script>alert("Dosya boyutu 15 MB\'ı geçemez!");</script>';
+    exit();
+  }
+
+  // Yeni, benzersiz bir dosya adı oluştur
+  $uniqueFileName = time() . '_' . uniqid() . '.' . $fileExtension;
+
+  $filePath = $uploadDir . $uniqueFileName;
+
+  if (move_uploaded_file($tempName, $filePath)) {
+    // Dosya başarıyla yüklendi, dosyanın kaydedildiği yolu $content_image değişkenine atayın
+    $content_image = $filePath;
+  } else {
+    // Dosya yüklenirken bir hata oluştu
+    echo '<script>alert("Dosya yüklenirken bir hata oluştu!");</script>';
+    exit();
+  }
+} else {
+  // Eğer resim yüklenmediyse, $content_image değişkenini NULL olarak atayın
+  $content_image = NULL;
+}
+
+$query = "INSERT INTO vipub_messages (sender_id, receiver_id, message, content_image) VALUES (?, ?, ?, ?)";
+$stmt = $conn->prepare($query);
+$stmt->bind_param('iiss', $sender_id, $receiver_id, $message, $content_image);
+$stmt->execute();
+
+$email_send_notifs = "SELECT * FROM vipub_users WHERE id = '$receiver_id'";
+$send_user_email_notifications = mysqli_query($conn, $email_send_notifs);
+$receiver_user = mysqli_fetch_assoc($send_user_email_notifications);
+
+$email_send_notifs2 = "SELECT * FROM vipub_users WHERE id = '$sender_id'";
+$send_user_email_notifications2 = mysqli_query($conn, $email_send_notifs2);
+$sender_user = mysqli_fetch_assoc($send_user_email_notifications2);
+
+if ($settings["email_notifications"] == "Active") {
+  if ($receiver_user["dm_notification"] == "Active") {
+    ob_start();
+    require_once("../../../themes/default/apps/content_email/email.notifications.phtml");
+    $body = ob_get_clean();
+    $body = str_replace(array('<?', '?>'), array('&lt;?', '?&gt;'), $body);
+
+    $mail = new PHPMailer(true);
+    try {
+      $mail->isSMTP();
+      $mail->Host       = $smtp_settings["smtp_host"];
+      $mail->SMTPAuth   = true;
+      $mail->Username   = $smtp_settings["smtp_username"];
+      $mail->Password   = $smtp_settings["smtp_password"];
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+      $mail->Port       = $smtp_settings["smtp_port"];
+      $mail->setFrom($smtp_settings["smtp_username"], $settings["site_name"]);
+      $mail->addAddress($receiver_user["email"], $receiver_user["fullname"]);
+      $mail->isHTML(true);
+      $mail->CharSet = 'UTF-8';
+      $mail->Subject = vipub_translate("email_message_notifications_6");
+      $mail->Body = $body;
+      $mail->send();
+    } catch (Exception $e) {
+      echo "error";
+    }
+  }
+}
+?>

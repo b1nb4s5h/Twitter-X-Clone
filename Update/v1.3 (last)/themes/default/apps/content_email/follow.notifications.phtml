@@ -1,0 +1,42 @@
+<?php $settings = vipub_site_settings(); ?>
+<div class="vipub-content-email">
+    <div class="container" style="position: relative; padding: 40px; background: #F5F8FD !important;">
+        <div class="email-top-logo">
+            <a style="text-decoration: none !important; position: relative !important; margin-top: -25px !important; font-size: 25px; font-weight: 700; color: #1da1f2;" href="<?php echo vipub_link("welcome/login"); ?>"><?php echo $settings["site_name"]; ?></a>
+            <p style="font-size: 15px;"><?php echo vipub_translate("email_message_notifications_1"); ?>, <strong><?php echo $receiver_user["fullname"]; ?></strong>,</p>
+            <p style="font-size: 15px;"><strong><?php echo $my_user_detail["fullname"]; ?></strong> <?php echo vipub_translate("email_notification_user_follow_2"); ?></p>
+
+            <div class="user-follow-card"
+            style="display: flex; position: relative; width: 400px; background: #fff; border:1px solid #EFF3F4; border-radius: 15px; cursor: pointer !important;">
+
+                <img style="padding-left: 10px; padding-top: 13px; padding-right: 10px; width: 50px; height: 50px; border-radius: 50%;" src="<?php echo vipub_link($my_user_detail["avatar"]); ?>">
+                <h5 style="font-size: 15px; font-weight: 700; position: relative; align-items:center; justify-items: center; top: -50px !important">
+                <?php echo vipub_croptxt($my_user_detail["fullname"], 0, 15); ?>
+
+                <span style="font-size: 15px; font-weight: 400; position: relative; margin-left: 1px !important">@<?php echo vipub_croptxt($my_user_detail["username"], 0, 15); ?></span>
+                </h5><br>
+            </div><br>
+
+            <span><?php echo vipub_translate("email_notification_user_post_owner_like_4"); ?></span><br><br>
+            <a 
+                target="_blank" 
+                href="<?php echo vipub_link("@".$my_user_detail["username"]); ?>"
+                style="
+                text-decoration: none !important; 
+                padding: 5px 15px; 
+                position: relative; 
+                font-size: 13px; 
+                font-weight: 700; 
+                line-height: 15px; 
+                color: #fff; 
+                background: 
+                #1da1f2; 
+                border: none; 
+                otuline:none; 
+                border-radius: 5px;"
+                >
+                <?php echo vipub_translate("email_notification_user_follow_3"); ?>
+            </a>
+        </div>
+    </div>
+</div>

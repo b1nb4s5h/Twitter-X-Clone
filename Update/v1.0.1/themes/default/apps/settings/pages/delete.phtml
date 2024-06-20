@@ -1,0 +1,116 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        
+    <div class="site-header-box">
+            <h5>
+            <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+            <?php echo vipub_translate("account_settings"); ?></h5>
+        </div>
+
+        <div class="account-settings-page">
+            
+            <div class="settings-page-container">
+                <div class="settings-page-title">
+                    <h5>Hesabı devre dışı bırak</h5>
+                </div>
+
+                <div class="setpage-save-info">
+                   Bu, hesabını devre dışı bırakacaktır
+                </div>
+
+                <div class="form-save-element-value">
+                    <form id="account-deleted">
+                        <div class="form-floating">
+                            <div class="alert alert-secondary">
+                                <span style="margin-bottom: 0px;">
+                                    Hesabını devre dış bırakma işlemine başlamak üzeresin. Görünen adın, @username kullanıcı adın ve herkese açık profilin artık görüntülenemeyeceği anlamanı gelir.
+                                </span>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <span style="margin-bottom: 0px; font-weight: 700;">
+                                    Bilmen gereken diğer konular
+                                </span>
+                            </div>
+
+                            <div class="alert alert-secondary">
+                                <span style="margin-bottom: 0px;">
+                                    Hesabın, kazara veya yanlışlıkla devre dışı bırakılmışsa, devre dışı bırakmayı izleyen 15 gün içerisinde hesabını yeniden açabilirsin.
+                                </span>
+                            </div>
+
+                            <div class="alert alert-secondary">
+                                <span style="margin-bottom: 0px;">
+                                    Sadece @username kullanıcı adını değiştirmek istiyorsan, hesabını devre dışı bırakman gerekmez. Kullanıcı adını ayarlar sayfanda düzenleyebilirsin.
+                                </span>
+                            </div>
+
+                            <div class="alert alert-secondary">
+                                <span style="margin-bottom: 0px;">
+                                    Geçerli @username kullanıcı adını veya e-posta adresini farklı bir Twitter hesabıyla kullanmak için, bu hesabı devre dışı bırakmadan önce @username ve e-posta adresini ayarlar sayfandan değiştir.
+                                </span>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="account-delete-suspensed" data-id="<?php echo $_SESSION["user_id"]; ?>">Hesabı devre dışı bırak</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+    $(".account-delete-suspensed").click(function(event) {
+        event.preventDefault(); // varsayılan davranışı engelle
+        
+        var user_id = $(this).data("id");
+        // Sweetalert2 ile onay kutusu aç
+        Swal.fire({
+            title: "Hesabınızı devre dışı bırakmak istediğine emin misin?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Hesabı devre dışı bırak",
+            cancelButtonText: "İptal et"
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                // Kullanıcının hesap verilerini silmek için Ajax isteği oluşturun
+                $.ajax({
+                    url: "",
+                    type: "POST",
+                    data: { user_id: user_id },
+                    success: function(response) {
+                        // Yanıtı işleyin ve kullanıcıyı hesap silme işlemi hakkında bilgilendirin
+                        if (response == "success") {
+                            Swal.fire({
+                                title: "Hesabınız başarıyla devre dışı bırakıldı",
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonText: "Tamam"
+                            }).then(function() {
+                                // Sayfayı yenileyin veya hesap verilerini gizleyin
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Hata",
+                                text: "Hesabınız devre dışı bırakılırken bir hata oluştu.",
+                                icon: "error",
+                                showCancelButton: false,
+                                confirmButtonText: "Tamam"
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+
+<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php vipub_template("main/footer.content"); ?>

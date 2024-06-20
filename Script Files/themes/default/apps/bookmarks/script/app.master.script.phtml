@@ -1,0 +1,26 @@
+<script>
+    $(document).ready(function() {
+        var userId = <?php echo $_SESSION["user_id"]; ?>;
+        $.ajax({
+            url: "/apps/ajax/bookmarks/get-user-bookmarks.phtml",
+            method: "POST",
+            data: {userId: userId},
+            dataType: "html",
+            success: function(response) {
+            $("#bookmarks-lives-user-feed").html(response);
+            }
+        });
+
+        setInterval(function() {
+            $.ajax({
+            url: "/apps/ajax/bookmarks/get-user-bookmarks.phtml",
+            method: "POST",
+            data: {userId: userId},
+            dataType: "html",
+            success: function(response) {
+                $("#bookmarks-lives-user-feed").html(response);
+            }
+            });
+        }, 2000);
+    });
+</script>

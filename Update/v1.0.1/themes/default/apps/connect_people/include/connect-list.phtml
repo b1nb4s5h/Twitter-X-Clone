@@ -1,0 +1,22 @@
+<div class="post vipup-post-publication">
+    <div class="vipup-post-userinfo">
+        <a href="/@<?php echo $connect_people["username"]; ?>">
+        <img src="/<?php echo $connect_people["avatar"]; ?>">
+        </a>
+        <a href="/@<?php echo $connect_people["username"]; ?>">
+        <h5><?php echo vipub_croptxt($connect_people["fullname"], 0, 25); ?>
+        <?php if($connect_people["verified"]=="1"): ?>
+            <?php echo vipub_userBlue(); ?>
+        <?php endif; ?>
+        </h5>
+        </a>
+        <a href="/@<?php echo $connect_people["username"]; ?>">
+        <span>@<?php echo $connect_people["username"]; ?></span>
+        </a>
+    </div>
+    <?php if(isset($connect_people["user_bio"])): ?>
+    <div class="post-content-line"><?php echo convertVipubText($connect_people["user_bio"]); ?></div>
+    <?php else: ?>
+    <div class="post-content-line">empty bio</div>
+    <?php endif; ?>
+</div>

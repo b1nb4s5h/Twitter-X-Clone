@@ -1,0 +1,21 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  vipub_redirect("/welcome/login");
+  exit;
+}
+$website = $_POST['website'];
+$user_bio = $_POST['user_bio'];
+$location = $_POST['location'];
+$user_id = $_SESSION["user_id"];
+$sql = "UPDATE vipub_users SET user_website=?, user_bio=?, user_location=? WHERE id=?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sssi", $website, $user_bio, $location, $user_id);
+if ($stmt->execute()) {
+    //echo "Veri güncellendi.";
+} else {
+    echo "Hata: " . $conn->error;
+}
+$stmt->close();
+$conn->close();

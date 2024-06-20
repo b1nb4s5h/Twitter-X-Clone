@@ -1,0 +1,144 @@
+<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+    
+        <div class="account-settings-page-for-users-page">
+            <div class="settings-page-top-title">
+                <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg><?php echo vipub_translate("account_settings"); ?></h5>
+            </div>
+
+            <div class="settings-page-content-full next-settings-page-container-none-border">
+                <div class="settings-edit-profile-right-zone next-settings-page-container">
+                    <?php if($settings["user_sent_verified"]=="Active"): ?>
+                        <div class="edit-profile-right-zone-title">
+                            <?php if($row["verified"]=="0"): ?>
+                                <h5><?php echo vipub_translate("account_settings_menu_15"); ?></h5>
+                                <small><?php echo vipub_translate("new_verified_account_reguested"); ?></small>
+                            <?php elseif($row["verified"]=="1"): ?>
+                                <h5><?php echo vipub_translate("user_verified_one_notifs"); ?></h5>
+                                <small><?php echo vipub_translate("user_account_success_verified_msg_info"); ?></small>
+                            <?php elseif($row["verified"]=="2"): ?>
+                                <h5><?php echo vipub_translate("user_account_wait_verified_msg_title"); ?></h5>
+                                <small><?php echo vipub_translate("user_account_wait_verified_msg_info_msg"); ?></small>
+                            <?php endif ?>
+                        </div>
+                
+                        <div class="user-profile-edit-form-content-full">
+                            <?php if($row["verified"]=="0"): ?>
+                                <form id="new-account-verified-send">
+                                    <div class="edit-input-profile">
+                                        <label for="fullname"><?php echo vipub_translate("account_settings_menu_26"); ?></label>
+                                        <input readonly type="text" name="fullname" id="fullname" value="<?php echo $row["fullname"]; ?>" placeholder="<?php echo vipub_translate("account_settings_menu_26"); ?>">
+                                    </div>
+
+                                    <div class="edit-input-profile">
+                                        <label for="username"><?php echo vipub_translate("welcome_page_text_11"); ?></label>
+                                        <input readonly type="text" name="username" id="username" value="<?php echo $row["username"]; ?>" placeholder="<?php echo vipub_translate("welcome_page_text_11"); ?>">
+                                    </div>
+
+                                    <div class="edit-input-profile">
+                                        <label for="verifiedCategory"><?php echo vipub_translate("new_verified_account_reguested_category_title"); ?></label>
+                                        <select name="verified_category" id="verifiedCategory" required>
+                                        <option disabled selected value=""><?php echo vipub_translate("new_verified_account_reguested_category_title"); ?></option>
+                                            <option value="1"><?php echo vipub_translate("new_verified_account_reguested_category_1"); ?></option>
+                                            <option value="2"><?php echo vipub_translate("new_verified_account_reguested_category_2"); ?></option>
+                                            <option value="3"><?php echo vipub_translate("new_verified_account_reguested_category_3"); ?></option>
+                                            <option value="4"><?php echo vipub_translate("new_verified_account_reguested_category_4"); ?></option>
+                                            <option value="5"><?php echo vipub_translate("new_verified_account_reguested_category_5"); ?></option>
+                                            <option value="6"><?php echo vipub_translate("new_verified_account_reguested_category_6"); ?></option>
+                                            <option value="7"><?php echo vipub_translate("new_verified_account_reguested_category_7"); ?></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="edit-input-profile">
+                                        <button type="submit" class="new-verified-requst"><?php echo vipub_translate("new_verified_account_reguested_btn"); ?></button>
+                                    </div>
+                                </form>
+                                <?php elseif($row["verified"]=="1"): ?>
+
+                                <div class="user-verified-page-in-status-account">
+                                        <small><?php echo vipub_translate("verified_user_account_blue_tick_success_msg"); ?></small>
+                                        <span><?php echo $row["username"]; ?><?php echo vipub_userBlue(); ?></span>
+                                </div>
+                                <?php elseif($row["verified"]=="2"): ?>
+                                <div class="user-verified-page-in-status-account">
+                                        <?php echo vipub_userBlue(); ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                            <?php elseif ($settings["premium_verified"] == "1" && $row["premium_account"] == "0"): ?>
+                                <div class="premium-account-container">
+                                    <h5><?php echo vipub_translate("vipub_verified_page"); ?></h5>
+                                    <small><?php echo vipub_translate("vipub_verified_page_general_info"); ?></small>
+                                </div>
+
+                                <div class="preimum-account-selection-info">
+                                    <h5><?php echo vipub_translate("vipub_verified_new_subscription_info_title"); ?></h5>
+                                    <span><?php echo vipub_translate("vipub_verified_new_subscription_info_paragraphe"); ?></span>
+                                    <?php echo vipub_userBlue(); ?>
+
+                                    <p>
+                                        <?php echo vipub_translate("vipub_verified_new_subscription_info_paragraphe_large"); ?>
+                                    </p>
+                                </div>
+                            <?php elseif ($row["premium_account"] == "1"): ?>
+                                <meta http-equiv=refresh content="0; URL=<?php echo vipub_link("business/premium"); ?>">
+                            <?php else: ?>
+                            <div class="empty-new-sent-verified-user">
+                                <h5><?php echo vipub_translate("no_user_new_sent_verified_reguested_title"); ?></h5>
+                                <small><?php echo vipub_translate("no_user_new_sent_verified_reguested_info_msg"); ?></small>
+                            </div>
+                        <?php endif; ?>
+                    
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php if($settings["user_sent_verified"]=="Active"): ?>
+    <?php if($row["verified"]=="0"): ?>
+        <script>
+            $(document).ready(function() {
+                $('#new-account-verified-send').submit(function(event) {
+                    event.preventDefault();
+                    if ($('#fullname').val() === '') {
+                        new Noty({
+                            type: 'error',
+                            text: '<?php echo vipub_translate("new_verified_account_reguested_form_success_sent_error_msg"); ?>',
+                            timeout: 1500
+                        }).show();
+                    } else {
+                        var selectedCategory = $('#verifiedCategory').val();
+                        $.ajax({
+                            type: 'POST',
+                            url: '/apps/ajax/settings/verified.phtml',
+                            data: {
+                                fullname: $('#fullname').val(),
+                                verified_category: selectedCategory
+                            },
+                            success: function(response) {
+                                $('#fullname').val(response);
+                                new Noty({
+                                    type: 'success',
+                                    text: '<?php echo vipub_translate("new_verified_account_reguested_form_success_sent"); ?>',
+                                    timeout: 1500
+                                }).show();
+                                
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1500);
+                            },
+                            error: function(response) {
+                                alert('Hata oluştu: ' + response.responseText);
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

@@ -1,0 +1,83 @@
+<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+    
+        <div class="account-settings-page-for-users-page">
+            <div class="settings-page-top-title">
+                <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg><?php echo vipub_translate("account_settings"); ?></h5>
+            </div>
+
+            <div class="settings-page-content-full next-settings-page-container-none-border">
+                <div class="settings-edit-profile-right-zone next-settings-page-container">
+                    <div class="edit-profile-right-zone-title">
+                        <h5><?php echo vipub_translate("account_settings_menu_1"); ?></h5>
+                        <small><?php echo vipub_translate("account_settings_menu_25"); ?></small>
+                    </div>
+                    <div class="user-profile-edit-form-content-full">
+                        <form id="change-fullname">
+                            <div class="edit-input-profile">
+                                <label for="fullname"><?php echo vipub_translate("account_settings_menu_26"); ?></label>
+                                <input type="text" name="fullname" id="fullname" value="<?php echo $row["fullname"]; ?>" placeholder="<?php echo vipub_translate("account_settings_menu_26"); ?>">
+                            </div>
+                            <div class="edit-input-profile">
+                                <button type="submit" class="fullname-save"><?php echo vipub_translate("account_settings_menu_27"); ?></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+    $('#change-fullname').submit(function(event) {
+        event.preventDefault();
+        const fullnameValue = $('#fullname').val().trim();
+
+        if (fullnameValue === '') {
+            var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+            var vipubSM_msgText = '<?php echo vipub_translate("settings_page_save_value_desc_3"); ?>';
+            var vipubSM_alertTimeout = 1500;
+            
+            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+        } else {
+            const validRegex = /^[a-zA-Z0-9\s!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~\p{Emoji}]+$/u;
+            if (!validRegex.test(fullnameValue)) {
+                var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                var vipubSM_msgText = '<?php echo vipub_translate("settings_page_save_value_desc_3"); ?>';
+                var vipubSM_alertTimeout = 1500;
+                
+                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/apps/ajax/settings/fullname.phtml',
+                    data: {
+                        fullname: fullnameValue
+                    },
+                    success: function(response) {
+                        $('#fullname').val(response);
+
+                        var vipubSM_msgIcon = '<i class="bi bi-check-circle"></i>';
+                        var vipubSM_msgText = '<?php echo vipub_translate("settings_page_save_value_desc_4"); ?>';
+                        var vipubSM_alertTimeout = 1500;
+
+                        vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                    },
+                    error: function(response) {
+                        var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                        var vipubSM_msgText = 'Error: ' + response.responseText;
+                        var vipubSM_alertTimeout = 5000;
+
+                        vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                    }
+                });
+            }
+        }
+    });
+
+    $('#fullname').attr('maxlength', 50);
+});
+</script>

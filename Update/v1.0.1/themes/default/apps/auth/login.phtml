@@ -1,0 +1,68 @@
+<div class="welcome-page-container">
+    <div class="left-section">
+        <div class="site-welcome-logo">
+            <img src="<?php echo vipub_template_master("images/logo_white.png"); ?>">
+        </div>
+    </div>
+
+    <div class="right-section">
+        <div class="user-form-value-content">
+            <div class="title">
+                <a href="<?php echo vipub_link("welcome/login"); ?>">
+                    <img src="<?php echo vipub_template_master("images/logo.png"); ?>">
+                </a>
+                <h5><?php echo vipub_translate("welcome_page_text_1"); ?></h5>
+                <span><?php echo vipub_translate("welcome_page_text_2"); ?></span>
+            </div>
+            
+            <div class="user-form-container">
+                <form id="login-form">
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="<?php echo vipub_translate("welcome_page_text_3"); ?>">
+                        <label for="username"><?php echo vipub_translate("welcome_page_text_3"); ?></label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="<?php echo vipub_translate("welcome_page_text_4"); ?>">
+                        <label for="password"><?php echo vipub_translate("welcome_page_text_4"); ?></label>
+                    </div>
+
+                    <div class="forget-your-password">
+                        <a href="<?php echo vipub_link("welcome/refresh_password"); ?>"><?php echo vipub_translate("welcome_page_text_5"); ?></a>
+                    </div>
+
+                    <div class="form-submit-content">
+                        <button type="submit" id="login-button"><?php echo vipub_translate("welcome_page_text_6"); ?></button>
+                    </div>
+                </form>
+
+                <div class="user-form-tho-select">
+                    <span><?php echo vipub_translate("welcome_page_text_7"); ?></span>
+                </div>
+
+
+                <div class="user-form-footer">
+                    <a href="<?php echo vipub_link("pages/about"); ?>"><?php echo vipub_translate("welcome_footer_1"); ?></a>
+                    <a href="<?php echo vipub_link("pages/privacy-policy"); ?>"><?php echo vipub_translate("welcome_footer_2"); ?></a>
+                    <a href="<?php echo vipub_link("pages/terms-policy"); ?>"><?php echo vipub_translate("welcome_footer_3"); ?></a>
+                    <a href="<?php echo vipub_link("pages/help-center"); ?>"><?php echo vipub_translate("welcome_footer_4"); ?></a>
+
+                    <a href="#" class="site-language-select dropdown-toggle"><?php echo vipub_translate("language_name"); ?></a>
+                    <ul class="welcome-dropdown-menu">
+                        <li><a href="<?php echo vipub_link("language/turkish"); ?>"><?php echo vipub_translate("language_name_1"); ?></a></li>
+                        <li><a href="<?php echo vipub_link("language/english"); ?>"><?php echo vipub_translate("language_name_2"); ?></a></li>
+                        <li><a href="<?php echo vipub_link("language/espanol"); ?>"><?php echo vipub_translate("language_name_3"); ?></a></li>
+                        <li><a href="<?php echo vipub_link("language/german"); ?>"><?php echo vipub_translate("language_name_4"); ?></a></li>
+                        <li><a href="<?php echo vipub_link("language/russian"); ?>"><?php echo vipub_translate("language_name_5"); ?></a></li>
+                    </ul>
+                </div>
+
+
+            </div>
+            
+        </div>
+
+
+    </div>
+</div>
+<?php vipub_template("auth/script/vipub.master.script"); ?>

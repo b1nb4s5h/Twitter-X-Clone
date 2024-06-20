@@ -1,0 +1,68 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once("../../../core/vipub_web_core.phtml");
+header('Content-Type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  // Gelen verileri al
+  $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
+  $username = mysqli_real_escape_string($conn, $_POST['username']);
+  $email = mysqli_real_escape_string($conn, $_POST['email']);
+  $password = mysqli_real_escape_string($conn, $_POST["password"]);
+  $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+  // Gerekli alanların dolu olup olmadığını kontrol et
+  if (empty($fullname) || empty($username) || empty($email) || empty($password)) {
+    http_response_code(400);
+    echo json_encode(array('message' => 'Lütfen tüm alanları doldurun!'));
+    exit();
+  }
+
+  // Kullanıcı adının uzunluğunu ve geçerli karakterleri kontrol et
+  if (strlen($username) < 3 || strlen($username) > 15 || !preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
+    http_response_code(400);
+    echo json_encode(array('message' => 'Kullanıcı adınız en az 3 en fazla 15 karakterden oluşmalıdır.'));
+    exit();
+  }
+
+  // Kullanıcı adının benzersiz olmasını kontrol et
+  $check_query = "SELECT * FROM vipub_users WHERE username='$username'";
+  $result = mysqli_query($conn, $check_query);
+  if (mysqli_num_rows($result) > 0) {
+    http_response_code(400);
+    echo json_encode(array('message' => 'Bu kullanıcı adı zaten kullanılıyor.'));
+    exit();
+  }
+
+  // E-postanın benzersiz olmasını kontrol et
+  $check_email_query = "SELECT * FROM vipub_users WHERE email='$email'";
+  $result = mysqli_query($conn, $check_email_query);
+  if (mysqli_num_rows($result) > 0) {
+    http_response_code(400);
+    echo json_encode(array('message' => 'Bu e-posta adresi zaten kullanılıyor.'));
+    exit();
+  }
+
+  // Kullanıcıyı veritabanına kaydet
+  $insert_query = "INSERT INTO vipub_users (fullname, username, email, password) VALUES ('$fullname', '$username', '$email', '$password_hash')";
+  if (mysqli_query($conn, $insert_query)) {
+    $user_id = mysqli_insert_id($conn);
+
+    // Kullanıcı oturumunu başlat ve yanıtı döndür
+    $_SESSION["user_id"] = $user_id;
+    $_SESSION["fullname"] = $fullname;
+    $_SESSION["email"] = $email;
+    $_SESSION["joined"] = date('Y-m-d H:i:s');
+    $_SESSION["username"] = $username;
+
+    http_response_code(200);
+    echo json_encode(array('message' => 'success'));
+  } else {
+    http_response_code(500);
+    echo json_encode(array('message' => 'Kayıt işlemi başarısız oldu. Lütfen daha sonra tekrar deneyin.'));
+  }
+} else {
+  http_response_code(404);
+  echo json_encode(array('message' => 'This page can only be accessed by POST.'));
+}

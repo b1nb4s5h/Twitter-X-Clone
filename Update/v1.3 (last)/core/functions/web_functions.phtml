@@ -1,0 +1,930 @@
+<?php
+function vipub_site_url($path = '/') {
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+    $base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+    $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $base_url . '/';
+    if ($path !== null) {
+        $url .= ltrim($path, '/');
+    }
+    return $url;
+}
+
+function vipub_link($path) {
+    $base_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}/";
+    $url = $base_url . ltrim($path, '/');
+    return $url;
+}
+function not_empty($value) {
+    if (isset($value) && trim($value) !== '') {
+      return true;
+    } else {
+      return false;
+    }
+}  
+function vipub_general_template($file_path) {
+    $root_path = "/var/www/html"; // sunucu kök dizini
+    $full_path = $root_path . '/' . $file_path;
+    
+    if (file_exists($full_path)) {
+        require_once $full_path;
+    } else {
+        trigger_error("Hata: Dosya bulunamadı! Dosya yolunuzu kontrol edin: $full_path");
+    }
+}
+
+function vipub_template($file_path) {
+    $root_path = $_SERVER['DOCUMENT_ROOT'];
+    $extensions = [".php", ".phtml", ".js"];
+    
+    foreach ($extensions as $ext) {
+        $full_path = $root_path . '/themes/default/apps/' . $file_path . $ext;
+        if (file_exists($full_path)) {
+            include $full_path;
+            return;
+        }
+    }
+    header("Location: /404"); exit();
+}
+
+function vipub_admin_template($file_path) {
+    $root_path = $_SERVER['DOCUMENT_ROOT'];
+    $extensions = [".php", ".phtml", ".js"];
+    
+    foreach ($extensions as $ext) {
+        $full_path = $root_path . '/admin_panel/' . $file_path . $ext;
+        if (file_exists($full_path)) {
+            include $full_path;
+            return;
+        }
+    }
+    die("Böyle bir dosya bulunmamaktadır.");
+}
+
+function vipub_apps_native($file_path) {
+    $root_path = $_SERVER['DOCUMENT_ROOT'];
+    $extensions = [".php", ".phtml", ".js"];
+    
+    foreach ($extensions as $ext) {
+        $full_path = $root_path . '/apps/native/' . $file_path . $ext;
+        if (file_exists($full_path)) {
+            require_once $full_path;
+            return;
+        }
+    }
+    die("Böyle bir dosya bulunmamaktadır.");
+}
+
+function vipub_template_master($path = '/') {
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+    $base_url = rtrim('/themes/default/statics/', '/\\');
+    $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $base_url . '/' . ltrim($path, '/');
+    return $url;
+}
+function vipub_translate($key) {
+    global $vipubTranslate;
+    return $vipubTranslate[$key] ?? $key;
+}  
+  
+function vipub_dynamic_spaAjax() {
+    $app = isset($_GET['app']) ? $_GET['app'] : 'home';
+    switch ($app) {
+        case 'login':
+            if(!isset($_SESSION["user_id"])){
+                vipub_template("auth/login");
+            } else {
+                header("Location: /404");
+            }
+            break;
+        case 'register':
+            if(!isset($_SESSION["user_id"])){
+                vipub_template("auth/register");
+            } else {
+                header("Location: /404");
+            }
+            break;
+        case 'refresh_password':
+            if(!isset($_SESSION["user_id"])){
+                vipub_template("auth/refresh_password");
+            } else {
+                header("Location: /404");
+            }
+            break;
+        case 'new_password':
+            if(!isset($_SESSION["user_id"])){
+                vipub_template("auth/new_password");
+            } else {
+                header("Location: /404");
+            }
+            break;
+        case 'home':
+            vipub_usersession_online();
+            if(!isset($_SESSION["user_id"])){
+                header("Location: /welcome/login");
+            } else {
+                vipub_template("home/content");
+            }
+            
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'bookmarks':
+            vipub_usersession_online();
+            if(!isset($_SESSION["user_id"])){
+                header("Location: /welcome/login");
+            } else {
+                vipub_template("bookmarks/content");
+            }
+            
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'connect_people':
+            vipub_usersession_online();
+            if(!isset($_SESSION["user_id"])){
+                header("Location: /welcome/login");
+            }
+            vipub_template("connect_people/content");
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'settings':
+            vipub_usersession_online();
+            if(!isset($_SESSION["user_id"])){
+                header("Location: /welcome/login");
+            }
+            if (isset($_GET["sapp"])) {
+                $sapp = $_GET["sapp"];
+                echo '<title>'.vipub_translate("settings_title").'</title>';
+                vipub_template("settings/pages/".$sapp);
+                
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                    vipub_template("main/sidebar/mobile_menu");
+                }
+            } else {
+                vipub_template("settings/content");
+
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                    vipub_template("main/sidebar/mobile_menu");
+                }
+            }
+            break;
+
+        case 'business':
+            vipub_usersession_online();
+            if(!isset($_SESSION["user_id"])){
+                header("Location: /welcome/login");
+            }
+            if (isset($_GET["sapp"])) {
+                $sapp = $_GET["sapp"];
+                vipub_template("business/pages/".$sapp);
+                
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                    vipub_template("main/sidebar/mobile_menu");
+                }
+            } else {
+                vipub_template("business/content");
+
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                    vipub_template("main/sidebar/mobile_menu");
+                }
+            }
+            break;
+
+        case 'profile':
+            vipub_usersession_online();
+            if (isset($_GET["uname"])) {
+                $conn = vipubConnectDatabase();
+                $username = $_GET["uname"];
+                $user_query = "SELECT fullname, username, account_status FROM vipub_users WHERE username = '$username'";
+                $user_result = mysqli_query($conn, $user_query);
+                
+                if (mysqli_num_rows($user_result) > 0) {
+                    $user_row = mysqli_fetch_assoc($user_result);
+                    $fullname = $user_row["fullname"];
+                    $username = $user_row["username"];
+                    
+                    if ($user_row["account_status"] == 0) {
+                        vipub_template("profile/content");
+                    } else if ($user_row["account_status"] == 1) {
+                        vipub_template("profile/include/banned-profile");
+                    }
+
+                    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                    if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                        vipub_template("main/sidebar/mobile_menu");
+                    }
+                } else {
+                    vipub_template("profile/include/no-profile");
+                    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                    if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                        vipub_template("main/sidebar/mobile_menu");
+                    }
+                }
+            } else {
+                echo 'Profil bulunamadı.';
+
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                    vipub_template("main/sidebar/mobile_menu");
+                }
+            }
+            break;
+        case 'notifications':
+            vipub_usersession_online();
+            if(!isset($_SESSION["user_id"])){
+                header("Location: /404");
+            }
+            echo '<title>'.vipub_translate("notifications_title").'</title>';
+            vipub_template("notifications/content");
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'messages':
+            vipub_usersession_online();
+            if(!isset($_SESSION["user_id"])){
+                header("Location: /404");
+            }
+            if (isset($_GET["row"])) {
+                $conn = vipubConnectDatabase();
+                $user_id = htmlspecialchars(trim($_GET["row"]));
+                $row = vipub_get_message_user($conn, $user_id);
+                if ($row !== null && !empty($row)) {
+                    echo '<title>'.$row["fullname"].' '.vipub_translate("profile_title").'</title>';
+                    vipub_template("messages/include/send-chat");
+                } else {
+                    vipub_template("profile/include/no-profile");
+                }
+            }
+            else {
+                echo '<title>'.vipub_translate("messages_title").'</title>';
+                vipub_template("messages/content");
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                    vipub_template("main/sidebar/mobile_menu");
+                }
+            }
+            break;
+        case 'status':
+            vipub_usersession_online();
+            vipub_template("status/content");
+
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case '404':
+            vipub_usersession_online();
+            vipub_template("404/content");
+
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'search':
+            vipub_usersession_online();
+            vipub_template("search/content");
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'likes':
+            vipub_usersession_online();
+            vipub_template("timeline/include/like-list");
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'repost':
+            vipub_usersession_online();
+            vipub_template("timeline/include/repost-list");
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'explore':
+            vipub_usersession_online();
+            vipub_template("search/explore-content");
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'pages':
+            vipub_usersession_online();
+            vipub_template("pages/content");
+
+            if(isset($_SESSION["user_id"])){
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                    vipub_template("main/sidebar/mobile_menu");
+                }
+            }
+            break;
+        case 'following':
+            vipub_usersession_online();
+            if (isset($_GET["username"])) {
+                vipub_template("profile/pages/following");
+            }
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'followers':
+            vipub_usersession_online();
+            if (isset($_GET["username"])) {
+                vipub_template("profile/pages/followers");
+            }
+
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'media':
+            vipub_usersession_online();
+            if (isset($_GET["username"])) {
+                vipub_template("profile/pages/media");
+            }
+
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        case 'quotes':
+            vipub_usersession_online();
+            if (isset($_GET["username"])) {
+                vipub_template("profile/pages/quotes");
+            }
+
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge\s|maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $user_agent) || preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $user_agent)) {
+                vipub_template("main/sidebar/mobile_menu");
+            }
+            break;
+        default:
+            vipub_template("auth/login");
+            break;
+    }
+}
+
+function vipub_directFiles($filepath) {
+    $ext = pathinfo($filepath, PATHINFO_EXTENSION);
+    if($ext !== 'php' && $ext !== 'phtml') {
+        $filepath .= '.php';
+    }
+    require_once($_SERVER['DOCUMENT_ROOT'].'/'.$filepath);
+}
+
+function convertVipubText($text) {
+    $base_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}/";
+
+    $text = preg_replace_callback('/https:\/\/www\.tiktok\.com\/(@[a-zA-Z0-9_]+\/video\/\d+)/', function($matches) {
+        $videoLink = $matches[1];
+        preg_match('/\/video\/(\d+)/', $videoLink, $videoMatches);
+
+        if (isset($videoMatches[1])) {
+            $videoId = $videoMatches[1];
+            return '<iframe class="vipub-embed-for-tiktok-video" src="https://www.tiktok.com/embed/' . $videoId . '"></iframe>';
+        } else {
+            return $matches[0];
+        }
+    }, $text);
+
+    $text = preg_replace_callback('/https:\/\/www\.instagram\.com\/p\/([a-zA-Z0-9_\-]+)\/?/', function($matches) {
+        $postLink = $matches[1];
+        return '<iframe class="vipub-embed-for-instagram-post" src="https://www.instagram.com/p/' . $postLink . '/embed"></iframe>';
+    }, $text);
+
+    $text = preg_replace_callback('/https:\/\/twitter\.com\/([a-zA-Z0-9_]+)\/status\/(\d+)/', function($matches) {
+        $username = $matches[1];
+        $tweetId = $matches[2];
+        return '<div class="vipub-for-tweet-embedding-post"><blockquote class="twitter-tweet"><a href="https://twitter.com/' . $username . '/status/' . $tweetId . '"></a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div> ';
+    }, $text);
+
+    $text = preg_replace('/\B\@([a-zA-Z0-9_]{3,15})/', '<a href="/@$1">@$1</a>', $text);
+    $text = preg_replace('/#([a-zA-Z0-9çÇğĞıİöÖşŞüÜ]+)/s', '<a href="/explore?q=$1">#$1</a>', $text);
+
+    $youtube_pattern = '/https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/';
+    $text = preg_replace($youtube_pattern, '<iframe class="vipub-embed-for-youtube-video" style="height: 277px;" src="https://www.youtube.com/embed/$1"></iframe>', $text);
+
+    $text = preg_replace_callback('/https?:\/\/[^\s]+/', function($matches) use ($base_url) {
+    $url = $matches[0];
+
+    if (strpos($url, $base_url) === 0) {
+        return '<a href="' . $url . '">' . $url . '</a>';
+    } else {
+        return $matches[0];
+        }
+    }, $text);
+
+    return $text;
+}
+
+function vipubMessageText($text) 
+{ 
+    $text = preg_replace("/(^|[\n ])([\w]*?)([\w]*?:\/\/[\w]+[^ \,\"\n\r\t<]*)/is",
+        "$1$2<a target=\"_blank\" href=\"$3\" >$3</a>", $text);  
+    
+    $text = preg_replace("/(^|[\n ])([\w]*?)((www)\.[^ \,\"\t\n\r<]*)/is",
+        "$1$2<a target=\"_blank\" href=\"https://$3\" >$3</a>", $text);
+    
+    $hash_regex = "/#([a-zA-Z0-9çÇğĞıİöÖşŞüÜ]+)/s";
+    $text = preg_replace($hash_regex, '<a href="/explore?q=$1">#$1</a>', $text);
+
+    $user_profile_regex = "/\B\@([a-zA-Z0-9_]{3,15})/";
+    $text = preg_replace($user_profile_regex, '<a href="/@$1">@$1</a>', $text);
+    return $text;  
+}
+
+function vipubMessageOnlyEmoji($string) {
+    $emojiPattern = "/^[\\x{1F600}-\\x{1F64F}\\x{1F300}-\\x{1F5FF}\\x{1F680}-\\x{1F6FF}\\x{2600}-\\x{26FF}\\x{2700}-\\x{27BF}\\x{1F900}-\\x{1F9FF}\\x{1F1E0}-\\x{1F1FF}\\x{1F191}-\\x{1F251}\\x{1F004}\\x{1F0CF}\\x{1F170}-\\x{1F171}\\x{1F17E}-\\x{1F17F}\\x{1F18E}\\x{3030}\\x{2B50}\\x{2B55}\\x{2934}-\\x{2935}\\x{2B05}-\\x{2B07}\\x{2B1B}-\\x{2B1C}\\x{3297}\\x{3299}\\x{303D}\\x{00A9}\\x{00AE}\\x{2122}\\x{23F3}\\x{24C2}\\x{23E9}-\\x{23EF}\\x{25B6}\\x{25C0}\\x{1F191}-\\x{1F251}\\x{1F004}\\x{1F0CF}\\x{1F170}-\\x{1F171}\\x{1F17E}-\\x{1F17F}\\x{1F18E}\\x{1F910}-\\x{1F918}\\x{1F980}-\\x{1F984}\\x{1F9C0}\\x{1F44B}\\x{1F44D}-\\x{1F44F}\\x{1F64B}-\\x{1F64F}\\x{1F91D}\\x{1F93C}-\\x{1F93E}\\x{1F9D1}-\\x{1F9DD}\\x{1F600}-\\x{1F64F}\\x{1F900}-\\x{1F9FF}\\x{1F1E0}-\\x{1F1FF}\\x{1F191}-\\x{1F251}\\x{1F004}\\x{1F0CF}\\x{1F170}-\\x{1F171}\\x{1F17E}-\\x{1F17F}\\x{1F18E}\\x{1F910}-\\x{1F918}\\x{1F980}-\\x{1F984}\\x{1F9C0}\\x{1F44B}\\x{1F44D}-\\x{1F44F}\\x{1F64B}-\\x{1F64F}\\x{1F91D}\\x{1F93C}-\\x{1F93E}\\x{1F9D1}-\\x{1F9DD}]*$/u";
+
+    return preg_match($emojiPattern, $string);
+}
+
+function vipub_ajax_query($url) {
+    switch($url) {
+        case "vipub/native_api/rsbr-search":
+            return "/apps/ajax/rsbr-search.php";
+        case "vipub/native_api/userlogin":
+            return "/apps/ajax/login.php";
+        case "vipub/native_api/usersignup":
+            return "/apps/ajax/register.php";
+        case "vipub/native_api/rsbr-htags":
+            return "/apps/ajax/rsbr-htags.php";
+        default:
+            return $url;
+    }
+}
+
+function vipub_get_user_profile($conn, $uname) {
+    $username = trim($uname);
+    $sql = "SELECT * FROM vipub_users WHERE username='".$uname."'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0){
+        while ($profile = mysqli_fetch_assoc($result)) {
+            $userId = $profile["id"];
+            $fullname = $profile["fullname"];
+            $username = $profile["username"];
+            $joined = $profile["joined"];
+            return array("id"=>$userId, "fullname"=>$fullname, "username"=>$username, "joined"=>$joined);
+        }
+    } else {
+        return null;
+    }
+}
+
+function vipub_redirect($url) {
+    if (!headers_sent()) {
+        header("Location: " . $url);
+        exit;
+    } else {
+        echo "<script type='text/javascript'>";
+        echo "window.location.href='" . $url . "';";
+        echo "</script>";
+        echo "<noscript>";
+        echo "<meta http-equiv='refresh' content='0;url=" . $url . "' />";
+        echo "</noscript>";
+        exit;
+    }
+}
+function vipubConnectDatabase() {
+    global $vipub, $vipub_db_host, $vipub_db_user, $vipub_db_pass, $vipub_db_name;
+    $conn = new mysqli($vipub_db_host, $vipub_db_user, $vipub_db_pass, $vipub_db_name);
+    if (mysqli_connect_errno()) {
+        array_push($vipub["vipub_db_errors"], mysqli_connect_error());
+        if (not_empty($vipub["vipub_db_errors"])) {
+            echo "Error Database.";
+            die();
+        }
+    }
+    return $conn;
+}
+
+function vipub_date($date) {
+    return date("M Y", strtotime($date));
+}
+function vipub_added_balance_date($date) {
+    return date("d.m.Y | H:i", strtotime($date));
+}
+function vipub_save_media($file) {
+    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/upload/';
+    $fileName = uniqid() . '_' . $file['name'];
+    $targetFile = $uploadDir . $fileName;
+
+    if (move_uploaded_file($file['tmp_name'], $targetFile)) {
+        return $uploadDir . $fileName;
+    } else {
+        return false;
+    }
+}
+function vipub_back_page() {
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $back_page = $_SERVER['HTTP_REFERER'];
+    } else {
+        $back_page = '/home';
+    }
+    return $back_page;
+}
+function vipub_count($count) {
+    if ($count < 1000) {
+        return $count;
+    } else if ($count < 1000000) {
+        return round($count / 1000, 1) . 'K';
+    } else if ($count < 1000000000) {
+        return round($count / 1000000, 1) . 'M';
+    } else {
+        return round($count / 1000000000, 1) . 'B';
+    }
+}
+function vipub_site_settings() {
+    global $conn;
+    $site_general_settings = mysqli_query($conn, "SELECT * FROM vipub_settings");
+    $settings = mysqli_fetch_array($site_general_settings);
+    return $settings;
+}
+function vipub_oauth_settings() {
+    global $conn;
+    $vipub_oauth_settings = mysqli_query($conn, "SELECT * FROM vipub_oauth_settings");
+    $vipub_oauth = mysqli_fetch_array($vipub_oauth_settings);
+    return $vipub_oauth;
+}
+function vipub_smtp() {
+    global $conn;
+    $site_smtp_settings = mysqli_query($conn, "SELECT * FROM vipub_smtp");
+    $smtp_settings = mysqli_fetch_array($site_smtp_settings);
+    return $smtp_settings;
+}
+function vipub_dynamicTitle() {
+    $app = isset($_GET['app']) ? $_GET['app'] : 'home';
+    $title = '';
+    
+    function vipubGetPageTitle($baseTitle) {
+        return $baseTitle;
+    }
+
+    switch ($app) {
+        case 'home':
+            $title = vipubGetPageTitle(vipub_translate("homepage_title"));
+            break;
+        case 'notifications':
+            $title = vipubGetPageTitle(vipub_translate("notifications_title"));
+            break;
+        case 'messages':
+            $title = vipubGetPageTitle(vipub_translate("messages_title"));
+            break;
+        case 'search':
+            $title = vipubGetPageTitle(vipub_translate("search_title"));
+            break;
+        case 'likes':
+            $title = vipubGetPageTitle(vipub_translate("status_page_post_like_reply_repost_2"));
+            $title .= vipubGetPageTitle(vipub_translate("profile_title"));
+            break;
+        case 'repost':
+            $title = vipubGetPageTitle(vipub_translate("status_page_post_like_reply_repost_3"));
+            $title .= vipubGetPageTitle(vipub_translate("profile_title"));
+            break;
+        case 'explore':
+            $query = isset($_GET["q"]) ? $_GET["q"] : '';
+            $title = "(" . $query . ") " . vipubGetPageTitle(vipub_translate("search_title"));
+            break;
+        case 'bookmarks':
+            $title = vipubGetPageTitle(vipub_translate("bookmarks"));
+            $title .= vipubGetPageTitle(vipub_translate("profile_title"));
+            break;
+        case 'settings':
+            $title = vipubGetPageTitle(vipub_translate("settings_title"));
+            break;
+        case 'following':
+            $title = vipubGetPageTitle(vipub_translate("following_followers_title_1"));
+            break;
+            case 'followers':
+                $title = vipub_translate("following_followers_title_2");
+                break;
+            case 'business':
+                error_reporting(0);
+                if (isset($_GET["transfer"]) && $_GET["transfer"] == "banktransfer"){
+                    $title = "Bakiye ekleyin". vipub_translate("profile_title");
+                } elseif (isset($_GET["transfer"]) && $_GET["transfer"] == "paypal"){
+                    $title = "PayPal ile bakiye ekleyin". vipub_translate("profile_title");
+                } elseif (isset($_GET["transfer"]) && $_GET["transfer"] == "stripe"){
+                    $title = "Stripe ile bakiye ekleyin". vipub_translate("profile_title");
+                } 
+                else {
+                    $title = "Cüzdan". vipub_translate("profile_title");
+                }
+                break;
+            case 'pages':
+                $conn = vipubConnectDatabase();
+                $page_title_seo = htmlspecialchars(trim($_GET["page_title_seo"]));
+                $stmt = $conn->prepare("SELECT page_title, page_title_seo FROM vipub_pages WHERE page_title_seo = ?");
+                $stmt->bind_param("s", $page_title_seo);
+                $stmt->execute();
+                $get_page = $stmt->get_result();
+            
+                if ($get_page->num_rows > 0) {
+                    $pages = $get_page->fetch_assoc();
+                    $page_title = $pages["page_title"];
+                } else {
+                    return "404 Page";
+                }
+            
+                $title = $page_title . vipub_translate("profile_title");
+                break;
+            case 'status':
+                $conn = vipubConnectDatabase();
+                $stmt = $conn->prepare("SELECT id, fullname FROM vipub_users WHERE username = ?");
+                $stmt->bind_param("s", $_GET["uname"]);
+                $stmt->execute();
+                $user_result = $stmt->get_result();
+            
+                if ($user_result->num_rows > 0) {
+                    $user_row = $user_result->fetch_assoc();
+                    $user_id = $user_row["id"];
+                    $full_name = $user_row["fullname"];
+                } else {
+                    return "404 Page";
+                }
+            
+                $stmt = $conn->prepare("SELECT content_post FROM vipub_posts WHERE p_id = ? AND user_id = ?");
+                $stmt->bind_param("ii", $_GET["status_id"], $user_id);
+                $stmt->execute();
+                $status_result = $stmt->get_result();
+            
+                if ($status_result->num_rows > 0) {
+                    $status_row = $status_result->fetch_assoc();
+                    $content_post = $status_row["content_post"];
+                } else {
+                    return "404 Page";
+                }
+            
+                $title = $full_name . " " . vipub_translate("on_vipub_status_title") . ' "' . $content_post . '"';
+                break;            
+            case '404':
+                $title = vipub_translate("404_page_title");
+                break;
+            case 'profile':
+                if (isset($_GET["uname"])) {
+                    $conn = vipubConnectDatabase();
+                    $username = $_GET["uname"];
+                    $user_query = "SELECT fullname, username FROM vipub_users WHERE username = '$username'";
+                    $user_result = mysqli_query($conn, $user_query);
+                    if (mysqli_num_rows($user_result) > 0) {
+                        $user_row = mysqli_fetch_assoc($user_result);
+                        $fullname = $user_row["fullname"];
+                        $username = $user_row["username"];
+                        $title = $fullname . (" (@".$username.")") . vipub_translate("profile_title");
+                    }
+                }
+                break;
+            case 'media':
+                if (isset($_GET["profuname"])) {
+                    $conn = vipubConnectDatabase();
+                    $username = $_GET["profuname"];
+                    $user_query = "SELECT fullname, username FROM vipub_users WHERE username = '$username'";
+                    $user_result = mysqli_query($conn, $user_query);
+                    if (mysqli_num_rows($user_result) > 0) {
+                        $user_row = mysqli_fetch_assoc($user_result);
+                        $fullname = $user_row["fullname"];
+                        $username = $user_row["username"];
+                        $title = $fullname . (" (@".$username.")") . " " . vipub_translate("user_profile_media_timeline_title") . vipub_translate("profile_title");
+                    }
+                }
+                break;
+            case 'quotes':
+                if (isset($_GET["profuname"])) {
+                    $conn = vipubConnectDatabase();
+                    $username = $_GET["profuname"];
+                    $user_query = "SELECT fullname, username FROM vipub_users WHERE username = '$username'";
+                    $user_result = mysqli_query($conn, $user_query);
+                    if (mysqli_num_rows($user_result) > 0) {
+                        $user_row = mysqli_fetch_assoc($user_result);
+                        $fullname = $user_row["fullname"];
+                        $username = $user_row["username"];
+                        $title = $fullname . (" (@".$username.")") . " " . "adlı kişinin alıntıladığı gönderiler" . vipub_translate("profile_title");
+                    }
+                }
+                break;
+            case 'login':
+                $title = vipub_translate("welcome_page_text_1").vipub_translate("profile_title");
+                break;
+            case 'register':
+                $title = vipub_translate("welcome_page_text_8").vipub_translate("profile_title");
+                break;
+            case 'refresh_password':
+                $title = vipub_translate("refresh_password_title").vipub_translate("profile_title");
+                break;
+            case 'new_password':
+                $title = vipub_translate("new_password_title").vipub_translate("profile_title");
+                break;
+            case 'connect_people':
+                $title = vipub_translate("who_to_follow_title").vipub_translate("profile_title");
+                break;
+        default:
+            $title = vipubGetPageTitle(vipub_translate("404_page_title"));
+            break;
+    }
+
+    return "<title>$title</title>";
+}
+function vipub_croptxt($text, $start, $length) {
+    if (strlen($text) > $length) {
+        return substr($text, $start, $length) . "..";
+    } else {
+        return $text;
+    }
+}
+function vipub_site_settings2($conn) {
+    $sql = "SELECT * FROM vipub_settings";
+    $result = mysqli_query($conn, $sql);
+    $settings = array();
+
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+        $settings['site_title'] = $row["site_title"];
+        $settings['site_description'] = $row["site_description"];
+        $settings['site_keywords'] = $row["site_keywords"];
+        $settings['site_register_status'] = $row["site_register_status"];
+        $settings['site_white_logo'] = $row["site_white_logo"];
+        $settings['site_dark_logo'] = $row["site_dark_logo"];
+        $settings['site_favicon'] = $row["site_favicon"];
+        $settings['default_theme'] = $row["default_theme"];
+        $settings['post_maxlength'] = $row["post_maxlength"];
+    }
+}
+mysqli_close($conn);
+return $settings;
+}
+function vipub_dont_profile_name() {
+    $url = $_SERVER['REQUEST_URI'];
+    $url = explode('/', $url);
+    $nouser = array_pop($url);
+    return $nouser;
+}
+function vipub_seolink($text){
+	$find = array("/Ğ/","/Ü/","/Ş/","/İ/","/Ö/","/Ç/","/ğ/","/ü/","/ş/","/ı/","/ö/","/ç/");
+	$degis = array("G","U","S","I","O","C","g","u","s","i","o","c");
+	$text = preg_replace("/[^0-9a-zA-ZÄzÜŞİÖÇğüşıöç]/"," ",$text);
+	$text = preg_replace($find,$degis,$text);
+	$text = preg_replace("/ +/"," ",$text);
+	$text = preg_replace("/ /","-",$text);
+	$text = preg_replace("/\s/","",$text);
+	$text = strtolower($text);
+	$text = preg_replace("/^-/","",$text);
+	$text = preg_replace("/-$/","",$text);
+	return $text;
+}
+function vipub_wallet_balance($balance) {
+    return number_format($balance, 2, ',', '.');
+}
+function vipub_user_acceptLanguage() {
+    return substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+}
+
+function vipub_usersession_online() {
+    $conn = vipubConnectDatabase();
+
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+
+        $query = "SELECT * FROM vipub_session WHERE session_user_id = '$user_id'";
+        $result = $conn->query($query);
+
+        if ($result->num_rows > 0) {
+            $query = "UPDATE vipub_session SET last_seen = NOW() WHERE session_user_id = '$user_id'";
+            $conn->query($query);
+        } else {
+            $query = "INSERT INTO vipub_session (session_user_id, last_seen) VALUES ('$user_id', NOW())";
+            $conn->query($query);
+        }
+    }
+    $conn->close();
+}
+function vipub_online_user_count() {
+    $conn = vipubConnectDatabase();
+    $query = "SELECT COUNT(*) as online_user_status FROM vipub_session WHERE last_seen >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)";
+    $result = $conn->query($query);
+    $row = $result->fetch_assoc();
+    $onlineUserCount = $row['online_user_status'];
+    $conn->close();
+
+    return $onlineUserCount;
+}
+function vipub_check_like($userId, $postId) {
+    $conn = vipubConnectDatabase();
+    $sql = "SELECT * FROM vipub_likes WHERE user_id = ? AND post_id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ii", $userId, $postId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result && mysqli_num_rows($result) > 0) {
+      return true;
+    } else {
+      return false;
+    }
+}
+function vipub_check_bookmarks($userId, $postId) {
+    $conn = vipubConnectDatabase();
+    $sql = "SELECT * FROM vipub_bookmarks WHERE user_id = ? AND post_id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ii", $userId, $postId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result && mysqli_num_rows($result) > 0) {
+      return true;
+    } else {
+      return false;
+    }
+}
+function vipub_get_user_fullname($userId) {
+    $conn = vipubConnectDatabase();
+    $sql = "SELECT fullname FROM vipub_users WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $userId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['fullname'];
+    } else {
+        return "Kullanıcı bulunamadı"; // veya başka bir hata mesajı döndürebilirsiniz
+    }
+}
+
+function vipub_check_repost($userId, $postId) {
+    $conn = vipubConnectDatabase();
+    $sql = "SELECT * FROM vipub_repost WHERE repost_user_id = ? AND repost_post_id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ii", $userId, $postId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $repostUserId = $row['repost_user_id'];
+        $userFullname = vipub_get_user_fullname($repostUserId);
+        return $userFullname;
+    } else {
+        return false;
+    }
+}
+function vipub_post_date($date)
+{
+    $formatted_date = ltrim(date('j', strtotime($date)), '0') . " " . vipub_translate('month_' . strtolower(date('M', strtotime($date))));
+    $formatted_time = date("h:i A", strtotime($date));
+    $formatted_datetime = $formatted_date . " " . $formatted_time;
+    return $formatted_datetime;
+}
+
+function vipub_post_new_date($date)
+{
+    $now = time();
+    $post_time = strtotime($date);
+    $time_difference = $now - $post_time;
+
+    if ($time_difference < 60) {
+        $formatted_datetime = $time_difference . " ". vipub_translate("new_post_date_1");
+    } elseif ($time_difference < 3600) {
+        $minutes = floor($time_difference / 60);
+        $formatted_datetime = $minutes . " ". vipub_translate("new_post_date_2");
+    } elseif ($time_difference < 86400) {
+        $hours = floor($time_difference / 3600);
+        $formatted_datetime = $hours . " ". vipub_translate("new_post_date_3");
+    } elseif ($time_difference < 604800) { // 604800 saniye = 1 hafta
+        $days = floor($time_difference / 86400);
+        $formatted_datetime = $days . " ". vipub_translate("new_post_date_4");
+    } elseif ($time_difference < 2592000) { // 2592000 saniye = 1 ay
+        $weeks = floor($time_difference / 604800);
+        $formatted_datetime = $weeks . " ". vipub_translate("new_post_date_5");
+    } else {
+        $months = floor($time_difference / 2592000);
+        $formatted_datetime = $months . " ". vipub_translate("new_post_date_6");
+    }
+
+    return $formatted_datetime;
+}
+function vipub_premium_package() {
+    global $conn;
+    $vipub_premium_package = mysqli_query($conn, "SELECT * FROM vipub_premium_package");
+    $premium = mysqli_fetch_array($vipub_premium_package);
+    return $premium;
+}

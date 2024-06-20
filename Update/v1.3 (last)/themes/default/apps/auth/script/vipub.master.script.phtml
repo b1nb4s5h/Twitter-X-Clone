@@ -1,0 +1,181 @@
+<script>
+$(function() {
+    $('#register-form button[type="submit"]').prop('disabled', true);
+
+    $('#register-form input').on('keyup', function() {
+        var allFilled = true;
+        $('#register-form input').each(function() {
+            if ($(this).val() == '') {
+                allFilled = false;
+                return false;
+            }
+        });
+
+        if (allFilled) {
+            $('#register-form button[type="submit"]').prop('disabled', false);
+        } else {
+            $('#register-form button[type="submit"]').prop('disabled', true);
+        }
+    });
+
+    $('#register-form').submit(function(event) {
+        event.preventDefault();
+        var fullname = $('#fullname').val().trim();
+        var username = $('#username').val().trim();
+        var email = $('#email').val().trim();
+        var password = $('#password').val().trim();
+
+        if (!fullname) {
+            toastr.info('<?php echo vipub_translate("welcome_page_register_1"); ?>');
+            return;
+        }
+
+        if (username.length < 3 || username.length > 15) {
+            toastr.info('<?php echo vipub_translate("welcome_page_register_2"); ?>');
+            return;
+        }
+
+        $('#register-form button[type="submit"]').html('<?php echo vipub_translate("welcome_page_register_7"); ?>').prop('disabled', true);
+
+        setTimeout(function() {
+        $.ajax({
+            type: 'POST',
+            url: '/apps/ajax/auth/register.phtml',
+            data: { fullname: fullname, username: username, email: email, password: password },
+            success: function(response) {
+            if (response == 'success') {
+                new Noty({
+                text: "<?php echo vipub_translate('welcome_page_register_3'); ?>",
+                timeout: 2000,
+                type: 'success'
+                }).show();
+                setTimeout(function() {
+                window.location.href = '/home?cache=<?php echo rand(412322,982138123); ?>';
+                }, 1500);
+            } else {
+                if (response == 'email_exists') {
+                new Noty({
+                    text: "<?php echo vipub_translate('welcome_page_register_4'); ?>",
+                    timeout: 2000,
+                    type: 'error'
+                }).show();
+                } else if (response == 'username_exists') {
+                new Noty({
+                    text: "<?php echo vipub_translate('welcome_page_register_5'); ?>",
+                    timeout: 2000,
+                    type: 'error'
+                }).show();
+                } else {
+                new Noty({
+                    text: response,
+                    timeout: 2000,
+                    type: 'error'
+                }).show();
+                }
+                $('#register-form button[type="submit"]').html("<?php echo vipub_translate('welcome_page_register_6'); ?>").prop('disabled', false);
+            }
+            },
+            error: function(xhr, status, error) {
+            console.log(xhr);
+            console.log(status);
+            console.log(error);
+            }
+        });
+        }, 2000);
+
+    });
+
+    $('#register-form button[type="submit"]').click(function(event) {
+        event.preventDefault();
+        $('#register-form').submit();
+    });
+});
+
+
+
+$(document).ready(function() {
+    $('#login-button').attr('disabled', true);
+
+    $('#username, #password').keyup(function() {
+        var username = $('#username').val();
+        var password = $('#password').val();
+        if (username !== '' && password !== '') {
+            $('#login-button').attr('disabled', false);
+        } else {
+            $('#login-button').attr('disabled', true);
+        }
+    });
+
+    $('#login-form').submit(function(event) {
+        event.preventDefault();
+        var username = $('#username').val();
+        var password = $('#password').val();
+        if (username !== '' && password !== '') {
+            $('#login-button').html('<?php echo vipub_translate("welcome_page_login_6"); ?>').attr('disabled', true);
+            setTimeout(function() {
+                $.ajax({
+                    url: '/apps/ajax/auth/login.phtml',
+                    method: 'POST',
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function(data) {
+                        $('#login-button').html('<?php echo vipub_translate("welcome_page_text_6"); ?>').attr('disabled', false);
+                        console.log(data);
+                        if (data === 'success') {
+                            var vipubSM_msgIcon = '<i class="bi bi-check-circle"></i>';
+                            var vipubSM_msgText = '<?php echo vipub_translate("welcome_page_login_1"); ?>';
+                            var vipubSM_alertTimeout = 3000;
+
+                            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+
+                            setTimeout(function() {
+                                window.location.href = '/home?cache=<?php echo rand(412322, 982138123); ?>';
+                            }, vipubSM_alertTimeout);
+                        } else if (data === 'banned') {
+                            var vipubSM_msgIcon = '<i class="bi bi-exclamation-triangle"></i>';
+                            var vipubSM_msgText = '<?php echo vipub_translate("welcome_page_login_2"); ?>';
+                            var vipubSM_alertTimeout = 8000;
+
+                            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                        } else if (data === 'error') {
+                            var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                            var vipubSM_msgText = '<?php echo vipub_translate("welcome_page_login_3"); ?>';
+                            var vipubSM_alertTimeout = 5000;
+
+                            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                        } else if (data === 'username_error') {
+                            var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                            var vipubSM_msgText = '<?php echo vipub_translate("welcome_page_login_4"); ?>';
+                            var vipubSM_alertTimeout = 5000;
+
+                            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                        } else {
+                            var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                            var vipubSM_msgText = '<?php echo vipub_translate("welcome_page_login_5"); ?>';
+                            var vipubSM_alertTimeout = 5000;
+
+                            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $('#login-button').html('<?php echo vipub_translate("welcome_page_text_6"); ?>').attr('disabled', false);
+
+                        var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                        var vipubSM_msgText = '<?php echo vipub_translate("welcome_page_login_5"); ?>';
+                        var vipubSM_alertTimeout = 5000;
+
+                        vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+
+                        console.log(textStatus + ': ' + errorThrown);
+                    }
+                });
+            }, 2000);
+        } else {
+            $('#login-button').attr('disabled', true);
+            toastr.warning('<?php echo vipub_translate("welcome_page_login_7"); ?>');
+        }
+    });
+});
+</script>

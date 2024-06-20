@@ -1,0 +1,161 @@
+<?php $vipub_oauth = vipub_oauth_settings(); ?>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Site email settings </h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Email</li>
+          <li class="breadcrumb-item active">Site email settings</li>
+        </ol>
+      </nav>
+    </div>
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" style="color:#0f1419; font-size: 15px;">Twitter oAuth <strong>Settings</strong></h5>
+              By configuring your <strong>Twitter oAuth</strong> settings, new users who want to register on your website can quickly register on your website using their <strong>Twitter accounts</strong>.
+              <br>
+              <hr />
+
+              <span style="font-size: 14px; line-height: 11px;">
+                To use the Twitter login application on your website, please <strong>create an application</strong> at <a href="https://developer.twitter.com" target="_blank">https://developer.twitter.com</a>.
+              </span>
+              <br>
+              <br>
+              <span style="font-size: 14px; line-height: 11px;">
+                And, please add the <strong>API Key</strong> and <strong>API Key Secret</strong> information to be given specifically to your application in the relevant boxes on the right.
+              </span>
+              <br>
+              <br>
+              <span style="font-size: 14px; line-height: 11px;">
+                Then configure your application settings on the <strong>Twitter Developer</strong> page and replace your <strong>Twitter callback url</strong> with the link structure in the right box.
+              </span>
+
+              <br>
+              <br>
+              <span style="font-size: 14px;">
+                <strong>You are now ready to use Sign in with Twitter.</strong>
+              </span>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" style="color:#0f1419; font-size: 15px;">
+                Twitter <strong>oAuth Client</strong>
+                </h5>
+
+                <form action="" method="POST">
+
+                    <fieldset class="row mb-3" style="background:#F5F8FE; padding: 15px; border-radius: 5px;">
+                        <div class="col-sm-15">
+
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-5 col-form-label">Twitter API Key</label>
+                                <div class="col-sm-15">
+                                <input type="text" class="form-control" name="twitter_api_key" 
+                                placeholder="<?php echo empty($vipub_oauth["twitter_api_key"]) ? 'Your Twitter API Key' : ''; ?>"
+                                value="<?php echo isset($vipub_oauth["twitter_api_key"]) ? $vipub_oauth["twitter_api_key"] : ''; ?>">
+                                </div>
+                            </div>
+                                
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-12 col-form-label">Twitter API Key Secret</label>
+                                <div class="col-sm-15">
+                                    <input type="text" class="form-control" name="twitter_api_key_secret" 
+                                    placeholder="<?php echo empty($vipub_oauth["twitter_api_key_secret"]) ? 'Your Twitter API Key Secret' : ''; ?>"
+                                    value="<?php echo isset($vipub_oauth["twitter_api_key_secret"]) ? $vipub_oauth["twitter_api_key_secret"] : ''; ?>">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-5 col-form-label">Twitter Callback URL</label>
+                                <div class="col-sm-15">
+                                    <input type="text" class="form-control" name="twitter_callback_url" 
+                                    placeholder="<?php echo vipub_link("oauth/twitter/callback"); ?>" value="<?php echo vipub_link("oauth/twitter/callback"); ?>">
+                                    <small style="font-size: 12px; position: relative; padding: 5px 15px; background: #000; border-radius: 6px; color: #fff; text-align:center;">
+                                    Your Twitter for Callback URL: <strong><?php echo vipub_link("oauth/twitter/callback"); ?></strong></small>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-5 col-form-label">Twitter oAuth Status</label>
+                                <div class="col-sm-15">
+                                
+                                <select class="form-select" name="twitter_login_status">
+                                    
+                                    <option value="0" <?php if($vipub_oauth["twitter_login_status"]=="0"): ?>selected<?php endif; ?>>
+                                            Twitter oAuth Enabled
+                                    </option>
+                                    <option value="1" <?php if($vipub_oauth["twitter_login_status"]=="1"): ?>selected<?php endif; ?>>
+                                            Twitter oAuth Disabled
+                                    </option>
+                                </select>
+                                
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                              <div class="col-sm-50">
+                              <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                                  <button type="submit" style="width: 100% !important;" class="btn btn-success" name="saveTwitterOauth">Save settings</button>
+                                  <?php else: ?>
+                                  <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                                  <?php endif; ?>
+                              </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                    </div>
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+</main>
+
+
+<?php
+if(isset($_POST['saveTwitterOauth'])) {
+
+    $twitter_api_key = mysqli_real_escape_string($conn, $_POST['twitter_api_key']);
+    $twitter_api_key_secret = mysqli_real_escape_string($conn, $_POST['twitter_api_key_secret']);
+    $twitter_callback_url = mysqli_real_escape_string($conn, $_POST['twitter_callback_url']);
+    $twitter_login_status = mysqli_real_escape_string($conn, $_POST['twitter_login_status']);
+
+    $sql = "UPDATE vipub_oauth_settings SET twitter_api_key='$twitter_api_key', twitter_api_key_secret='$twitter_api_key_secret', twitter_callback_url='$twitter_callback_url', twitter_login_status='$twitter_login_status' WHERE oauth_name='Twitter'";
+
+    if(mysqli_query($conn, $sql)) {
+        ?>
+        <script>
+        new Noty({
+            type: 'success',
+            text: 'Twitter oAuth Settings updated successfully',
+            timeout: 1500,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/twitter_oauth";
+                }
+            }
+        }).show();
+        </script>
+        <?php
+    } else {
+        echo "Error " . mysqli_error($conn);
+    }
+    mysqli_close($conn);
+}
+?>

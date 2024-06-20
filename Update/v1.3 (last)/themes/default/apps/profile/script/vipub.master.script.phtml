@@ -1,0 +1,27 @@
+<script>
+    function fetchPosts() {
+        $.ajax({
+            url: '/apps/ajax/profile/user-followers-list.phtml?username=<?php echo $_GET["username"]; ?>',
+            type: 'GET',
+            success: function(data) {
+                $('#followers-page-timeline').html(data);
+            }
+        });
+    }
+    setInterval(fetchPosts, 7000);
+    fetchPosts();
+</script>
+
+<script>
+    function fetchPosts() {
+        $.ajax({
+            url: '/apps/ajax/profile/user-following-list.phtml?username=<?php echo $_GET["username"]; ?>',
+            type: 'GET',
+            success: function(data) {
+                $('#following-page-timeline').html(data);
+            }
+        });
+    }
+    setInterval(fetchPosts, 5000);
+    fetchPosts();
+</script>

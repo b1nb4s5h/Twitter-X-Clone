@@ -1,0 +1,29 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: /welcome");
+  exit;
+}
+
+$count = 0;
+
+if(isset($_SESSION["user_id"])) {
+  $user_id = $_SESSION["user_id"];
+
+  $query = "SELECT COUNT(*) as count FROM vipub_notifs WHERE user_id = ? AND is_read = ?";
+  $stmt = mysqli_prepare($conn, $query);
+
+  $is_read = 0;
+  mysqli_stmt_bind_param($stmt, 'ii', $user_id, $is_read);
+  mysqli_stmt_execute($stmt);
+
+  $result = mysqli_stmt_get_result($stmt);
+
+  if(mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $count = $row["count"];
+  }
+  mysqli_stmt_close($stmt);
+}
+echo json_encode(array("count" => $count));

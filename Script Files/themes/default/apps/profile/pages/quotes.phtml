@@ -1,0 +1,15 @@
+<div id="profile-quotes-timeline"></div>
+<script>
+    $(document).ready(function() {
+        function fetchPosts() {
+            $.ajax({
+                url: '/apps/ajax/profile/quotes-timeline.phtml?uname=<?php echo $row["id"]; ?>',
+                type: 'GET',
+                success: function(data) {
+                    $('#profile-quotes-timeline').html(data);
+                }
+            });
+        }
+        fetchPosts();
+    });
+</script>

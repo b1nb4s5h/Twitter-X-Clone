@@ -1,0 +1,348 @@
+<?php
+if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
+    $user_id = $_GET["edit"];
+    $sql = "SELECT * FROM vipub_users WHERE id=$user_id";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc(); ?>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>User account</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item active">Edit user</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+              <img src="<?php echo vipub_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
+              <h2><?php echo vipub_croptxt($row["fullname"], 0, 30); ?></h2>
+              <h3>@<?php echo $row["username"]; ?></h3>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <p>Send a customized private email to this user.</p>
+              <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+              <a href="<?php echo vipub_link("admin_panel/send_email?email=".$row["id"]); ?>">
+              <button class="btn btn-danger">Send e-mail</button>
+              <?php else: ?>
+                    <button disabled style="width: 100% !important;" class="btn btn-danger">Cannot trade because your account is demo</button>
+                <?php endif; ?>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Profile summary</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Account</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    <h5 class="card-title">Personal Biography</h5>
+                    <?php if($row["user_bio"]): ?>
+                    <p class="small">
+                    <?php echo $row["user_bio"]; ?>
+                    </p>
+                    <?php else: ?>
+                    <p class="small">
+                    There are no biographies on this user's profile yet.
+                    </p>
+                    <?php endif; ?>
+
+                  <h5 class="card-title">Profile Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Screen name</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $row["fullname"]; ?></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Username</div>
+                    <div class="col-lg-9 col-md-8">@<?php echo $row["username"]; ?></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Location</div>
+                    <?php if($row["user_location"]): ?>
+                    <div class="col-lg-9 col-md-8"><?php echo $row["user_location"]; ?></div>
+                    <?php else: ?>
+                        <div class="col-lg-9 col-md-8">The user did not add location information.</div>
+                    <?php endif; ?>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Website</div>
+                    <?php if($row["user_website"]): ?>
+                    <div class="col-lg-9 col-md-8"><?php echo $row["user_website"]; ?></div>
+                    <?php else: ?>
+                        <div class="col-lg-9 col-md-8">User did not add website information.</div>
+                    <?php endif; ?>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Joined</div>
+                    <div class="col-lg-9 col-md-8">
+                        <?php echo vipub_translate('month_'.strtolower(date('M', strtotime($row["joined"])))) . " " . date("Y", strtotime($row["joined"])); ?>
+                    <?php echo vipub_translate("user_joined_date"); ?>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                  <form action="" method="POST">
+                    <div class="row mb-3">
+                      <label for="fullname" class="col-md-4 col-lg-3 col-form-label">Screen name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="fullname" type="text" class="form-control" id="fullname" value="<?php echo $row["fullname"]; ?>" required>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="username" class="col-md-4 col-lg-3 col-form-label">Username</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="username" type="text" class="form-control" id="username" value="<?php echo $row["username"]; ?>" required>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="email" type="email" class="form-control" id="Email" value="<?php echo $row["email"]; ?>" required>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="user_bio" class="col-md-4 col-lg-3 col-form-label">Biography</label>
+                      <div class="col-md-8 col-lg-9">
+                        <textarea name="user_bio" class="form-control" id="user_bio" style="height: 100px"><?php echo $row["user_bio"]; ?></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="user_location" class="col-md-4 col-lg-3 col-form-label">Location</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="user_location" type="text" class="form-control" id="user_location" value="<?php echo $row["user_bio"]; ?>">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="user_website" class="col-md-4 col-lg-3 col-form-label">Website</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="user_website" type="text" class="form-control" id="user_website" value="<?php echo $row["user_website"]; ?>">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="verified" class="col-md-4 col-lg-3 col-form-label">Account verified</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select class="form-select" name="verified" id="verified">
+                            <option value="0" <?php if($row["verified"]=="0"): ?>selected<?php endif; ?>>
+                                <?php if($row["verified"]=="0"): ?>Valid: <?php endif; ?>
+                                    Not verified profile
+                                </option>
+                            <option value="1" <?php if($row["verified"]=="1"): ?>selected<?php endif; ?>>
+                                <?php if($row["verified"]=="1"): ?>Valid: <?php endif; ?>
+                                    Verified profile
+                            </option>
+                            <option value="2" <?php if($row["verified"]=="2"): ?>selected<?php endif; ?>>
+                                <?php if($row["verified"]=="2"): ?>Valid: <?php endif; ?>
+                                    Submitted a verification request.
+                            </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="admin_status" class="col-md-4 col-lg-3 col-form-label">Admin status</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select class="form-select" name="admin_status" id="admin_status">
+                            <option value="0" <?php if($row["admin_status"]=="0"): ?>selected<?php endif; ?>>
+                                <?php if($row["admin_status"]=="0"): ?>Valid: <?php endif; ?>
+                                    Not admin
+                                </option>
+                            <option value="1" <?php if($row["admin_status"]=="1"): ?>selected<?php endif; ?>>
+                                <?php if($row["admin_status"]=="1"): ?>Valid: <?php endif; ?>
+                                    Admin
+                            </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="account_status" class="col-md-4 col-lg-3 col-form-label">Account status</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select class="form-select" name="account_status" id="account_status">
+                            <option value="0" <?php if($row["account_status"]=="0"): ?>selected<?php endif; ?>>
+                                <?php if($row["account_status"]=="0"): ?>Valid: <?php endif; ?>
+                                    Not banned
+                                </option>
+                            <option value="1" <?php if($row["account_status"]=="1"): ?>selected<?php endif; ?>>
+                                <?php if($row["account_status"]=="1"): ?>Valid: <?php endif; ?>
+                                    Banned
+                            </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="text-center" style="margin-top:40px; position: relative;">
+                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                      <button type="submit" style="width: 100%;" class="btn btn-primary" name="saveProfile">Save Changes</button>
+                      <?php else: ?>
+                            <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                        <?php endif; ?>
+                    </div>
+                  </form>
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-change-password">
+                  <form action="" method="POST">
+
+                    <div class="row mb-3">
+                      <label for="password" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="password" type="password" class="form-control" id="password" required>
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                      <button type="submit" class="btn btn-primary" name="savePassword">Change Password</button>
+                      <?php else: ?>
+                            <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                        <?php endif; ?>
+                    </div>
+                  </form>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <?php
+  } else {
+    echo "User not found";
+}
+} else {
+echo "Invalid user ID";
+}
+?>
+
+<?php
+if(isset($_POST["saveProfile"])) {
+    $id = $_GET["edit"];
+    $fullname = htmlspecialchars($_POST["fullname"]);
+    $username = htmlspecialchars($_POST["username"]);
+    $email = htmlspecialchars($_POST["email"]);
+    $user_bio = htmlspecialchars($_POST["user_bio"]);
+    $user_location = htmlspecialchars($_POST["user_location"]);
+    $user_website = htmlspecialchars($_POST["user_website"]);
+    $admin_status = $_POST["admin_status"];
+    $account_status = $_POST["account_status"];
+    $verified = $_POST["verified"];
+    
+    $stmt = $conn->prepare("UPDATE vipub_users SET fullname=?, username=?, email=?, user_bio=?, user_location=?, user_website=?, admin_status=?, account_status=?, verified=? WHERE id=?");
+    $stmt->bind_param("ssssssssii", $fullname, $username, $email, $user_bio, $user_location, $user_website, $admin_status, $account_status, $verified, $id);
+    $stmt->execute();
+    
+    if ($stmt->affected_rows > 0) {
+
+        if($verified==1){
+            $sender_id = $_SESSION["user_id"];
+            $type = "verified";
+
+            $notifsverfy = "INSERT INTO vipub_notifs (user_id, sender_id, type) VALUES ('$id','$sender_id','$type')";
+            $result = mysqli_query($conn, $notifsverfy);
+        }
+        
+        // başarılı mesajını gösterme
+        ?>
+        <script>
+        new Noty({
+            type: 'success',
+            text: 'Profil başarıyla güncellendi',
+            timeout: 200,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/edit_user?edit=<?php echo $id; ?>";
+                }
+            }
+        }).show();
+        </script>
+        <?php
+    } else {
+        echo "Bir hata oluştu: " . $conn->error;
+    }
+}
+?>
+
+<?php
+if(isset($_POST["savePassword"])) {
+    $id = $_GET["edit"];
+    $password = mysqli_real_escape_string($conn, sha1($_POST["password"]));
+
+  $sql = "UPDATE vipub_users SET password='$password' WHERE id=$id";
+
+  if ($conn->query($sql) === TRUE) { ?>
+        <script>
+        new Noty({
+            type: 'success',
+            text: 'Password updated successfully',
+            timeout: 200,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/edit_user?edit=<?php echo $id; ?>";
+                }
+            }
+        }).show();
+        </script>
+  <?php } else {
+    echo "Error updating record: " . $conn->error;
+  }
+}
+$conn->close();
+?>

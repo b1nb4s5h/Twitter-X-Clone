@@ -1,0 +1,49 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once("../../../core/vipub_web_core.phtml");
+
+if(vipub_userLogin()){
+    header("Location: /home");
+    exit;
+}
+
+$username = isset($_POST["username"]) ? $_POST["username"] : null;
+$password = isset($_POST["password"]) ? $_POST["password"] : null;
+
+if ($username && $password) {
+
+    $username = mysqli_real_escape_string($conn, $username);
+    $password_hashed = sha1(mysqli_real_escape_string($conn, $password));
+
+    $sql = "SELECT * FROM vipub_users WHERE (username='$username' OR email='$username') AND password='$password_hashed'";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        
+        if ($row['account_status'] == '1') {
+            echo 'banned';
+        } else {
+
+            $_SESSION["user_id"] = $row["id"];
+            $_SESSION["fullname"] = $row["fullname"];
+            $_SESSION["email"] = $row["email"];
+            $_SESSION["joined"] = $row["joined"];
+            $_SESSION["username"] = $row["username"];
+            echo 'success';
+        }
+    } else {
+        $sql = "SELECT * FROM vipub_users WHERE (username='$username' OR email='$username')";
+        $result = mysqli_query($conn, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            echo 'error';
+        } else {
+            echo 'username_error';
+        }
+    }
+} else{
+    header("Location: /404");
+}
+mysqli_close($conn);

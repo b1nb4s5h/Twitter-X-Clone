@@ -1,0 +1,15 @@
+<div id="profile-timeline"></div>
+<script>
+    $(document).ready(function() {
+        function fetchPosts() {
+                $.ajax({
+                    url: '/apps/ajax/profile/timeline.phtml?uname=<?php echo $row["username"]; ?>',
+                    type: 'GET',
+                    success: function(data) {
+                        $('#profile-timeline').html(data);
+                    }
+                });
+            }
+            fetchPosts();
+    });
+</script>

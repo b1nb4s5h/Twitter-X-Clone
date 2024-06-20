@@ -1,0 +1,147 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); $settings = vipub_site_settings(); $premium = vipub_premium_package(); 
+$premium_user = vipub_premium_active_user($conn, $uname);
+
+$starting_date = $premium_user["starting_date"];
+$end_date = $premium_user["end_date"];
+
+$starting_timestamp = strtotime($starting_date);
+$end_timestamp = strtotime($end_date);
+
+$new_end_timestamp = strtotime("+1 month", $starting_timestamp);
+$new_end_date = date("d.m.Y", $new_end_timestamp);
+
+$current_date = strtotime("today");
+$is_expired = $current_date > $end_timestamp;
+
+$todayDateNewSubs = date('Y-m-d H:i:s');
+$monthEndDateSubs = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($todayDateNewSubs)));
+
+
+
+?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+    
+        <div class="account-settings-page-for-users-page">
+            <div class="settings-page-top-title">
+                <h5>
+                    <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                    <?php echo vipub_translate("vipub_verified_page"); ?>
+                </h5>
+            </div>
+
+            <div class="settings-page-content-full next-settings-page-container-none-border">
+                <div class="settings-edit-profile-right-zone next-settings-page-container">
+                
+                    <?php if($row["premium_account"]=="1"): ?>
+                        
+                        <div class="user-balance-current">
+                            <h5><?php echo vipub_translate("cancel_for_vipub_subscription_top_title"); ?></h5>
+                            <span><?php echo vipub_translate("cancel_for_vipub_subscription_top_title_bottom_info"); ?></span>
+                        </div>
+                        <form id="cancel-or-verified-subscription-buy-month">
+                            <div class="preimum-account-selection-info">
+                                <div class="card">
+                                    <h6><small><?php echo date("d.m.Y", $starting_timestamp); ?> • <small style="color: red;"><?php echo $new_end_date; ?></small></small></h6>
+                                    <h5><?php echo $premium_user["package_name"]; ?></h5>
+                                    <h4><?php echo number_format($premium_user["package_price"], 2) ?> $ <small style="font-size: 12px;">/ month</small></h4>
+
+                                    <?php if ($is_expired): ?>
+                                        
+                                        <button type="submit" class="refresh-for-money-subscription">
+                                            <?php echo vipub_translate("refresh_for_vipub_subscription_btn"); ?>
+                                        </button>
+                                    <?php else: ?>
+                                        <button type="submit" class="cancel-verified-subscription">
+                                            <?php echo vipub_translate("cancel_for_vipub_subscription"); ?>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </form>
+                    <?php else: ?>
+                        <div class="user-balance-current">
+                            <h5><?php echo vipub_translate("vipub_user_balance_extra_money_info_8"); ?></h5>
+                            <h4><?php echo number_format($row["user_wallet"], 2) ?> $</h4>
+                        </div>
+                        
+                        <div class="user-balance-current">
+                            <h5><?php echo vipub_translate("vipub_verified_new_subscription_info_title"); ?></h5>
+                            <span><?php echo vipub_translate("vipub_verified_page_general_info"); ?></span>
+                        </div>
+                        <form id="new-verified-subscription-buy-month">
+                            <div class="preimum-account-selection-info">
+                                
+                                <div class="card">
+                                    <h6><?php echo vipub_translate("vipub_verified_text"); ?></h6>
+                                    <h5><?php echo $premium["package_name"]; ?></h5>
+                                    <h4><?php echo number_format($premium["package_price"], 2) ?> $ <small style="font-size: 12px;">/ month</small></h4>
+
+                                    <input type="hidden" name="package_id" value="<?php echo $premium["pack_id"]; ?>">
+                                    <input type="hidden" name="end_date" value="<?php echo $monthEndDateSubs; ?>">
+                                    <input type="hidden" name="uwal" value="<?php echo $row["user_wallet"] - $premium["package_price"]; ?>">
+                                    
+
+                                    <?php if($row["user_wallet"] > $premium["package_price"]): ?>
+                                    <button type="submit" class="new-verified-subscription"><?php echo vipub_translate("vipub_verified_subscription_btn_text"); ?></button>
+                                    <?php else: ?>
+                                        <button disabled style="cursor: default;"><?php echo vipub_translate("vipub_verified_subscription_btn_text"); ?></button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </form>
+                    
+                        <div class="vipub-verified-subscription-info-text">
+                            <?php if($row["user_wallet"] > $premium["package_price"]): ?>
+                                <?php echo vipub_translate("vipub_verified_subscription_balance_success_info"); ?>
+                            <?php else: ?>
+                                <?php echo vipub_translate("vipub_verified_subscription_balance_error_info"); ?>
+                            <?php endif; ?>
+                        </div>
+
+
+                        <script>
+                            $(document).ready(function() {
+                                $("#new-verified-subscription-buy-month").on("submit", function(e) {
+                                    e.preventDefault();
+                                    var $submitButton = $(this).find(".new-verified-subscription");
+                                    
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/apps/ajax/balance/new-subscription.phtml",
+                                        data: $(this).serialize(),
+                                        success: function(response) {
+                                            if (response === "success") {
+                                                new Noty({
+                                                    type: "success",
+                                                    text: "Vipub Verified aboneliğine katıldığınız için teşekkür ederiz.",
+                                                    timeout: 2000,
+                                                    callbacks: {
+                                                        onClose: function() {
+                                                            // Sayfayı yenile
+                                                            location.reload();
+                                                        }
+                                                    }
+                                                }).show();
+                                                
+                                                // Butonu devre dışı bırak
+                                                $submitButton.prop("disabled", true);
+                                            } else {
+                                                new Noty({
+                                                    type: "error",
+                                                    text: "İşlem sırasında bir hata oluştu.",
+                                                    timeout: 2000
+                                                }).show();
+                                            }
+                                        },
+                                    });
+                                });
+                            });
+                        </script>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

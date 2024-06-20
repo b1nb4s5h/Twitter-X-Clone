@@ -1,0 +1,67 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once("../../../core/vipub_web_core.phtml");
+header("Access-Control-Allow-Origin: *");
+header('Content-type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['screen_name']) && !empty(trim($_GET['screen_name']))) {
+        $user_ip = $_SERVER['REMOTE_ADDR'];
+        $usage_domain = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/';
+        $request_url = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        
+        if(isset($_SESSION["user_id"])){
+            $vipub["account"] = vipub_my_user_info();
+            $api_user_key = $vipub["account"]["id"];
+        } else {
+            $api_user_key = 'NULL';
+        }
+
+        $check_ip_sql = "SELECT user_ip FROM vipub_api_usage WHERE user_ip = '$user_ip' LIMIT 1";
+        $check_ip_result = $conn->query($check_ip_sql);
+
+        if ($check_ip_result->num_rows === 0) {
+            $insert_sql = "INSERT INTO vipub_api_usage (user_ip, request_url, url_using, usage_type, api_user_key) VALUES ('$user_ip', '$request_url', '$usage_domain', 'User info', '$api_user_key')";
+            $conn->query($insert_sql);
+        }
+
+        $screen_name = "'" . $_GET['screen_name'] . "'";
+        $sql = "SELECT id, fullname, username, email, avatar, cover, user_bio, user_website, user_location, verified, following, followers, theme_color, account_status, joined FROM vipub_users WHERE username=$screen_name LIMIT 1";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $rows = array();
+            while ($r = mysqli_fetch_assoc($result)) {
+                $rows[] = array(
+                    "account_id" => $r["id"],
+                    "screen_name" => $r["fullname"],
+                    "username" => $r["username"],
+                    "email" => $r["email"],
+                    "user_bio" => $r["user_bio"],
+                    "user_website" => $r["user_website"],
+                    "user_location" => $r["user_location"],
+                    "user_verified" => $r["verified"],
+                    "profile_picture" => vipub_link($r["avatar"]),
+                    "profile_cover" => vipub_link($r["cover"])
+                );
+            }
+            echo json_encode($rows);
+        } else {
+            $response = array(
+                "error_code" => 404,
+                "error_data" => "vipub_get_user_nout_found_username",
+                "error_message" => "Searched user not found"
+            );
+            http_response_code(404);
+            echo json_encode($response);
+        }
+    } else {
+        $response = array(
+            "error_code" => 400,
+            "error_message" => "Username not entered"
+        );
+        http_response_code(400);
+        echo json_encode($response);
+    }
+}

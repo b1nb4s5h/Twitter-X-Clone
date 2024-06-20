@@ -1,0 +1,29 @@
+<div class="htag-list-look">
+    <div class="htag-list-target">
+        <?php
+        // Total post sayısına göre mesaj belirleme
+        $total_post = intval($row["total_post"]);
+        if ($total_post >= 1000) {
+            $message = vipub_translate("hot_hashtage_1");
+        }
+        else if ($total_post >= 500) {
+            $message = vipub_translate("hot_hashtage_2");
+        } 
+        else if ($total_post >= 300) {
+            $message = vipub_translate("hot_hashtage_3");
+        }
+        else if ($total_post >= 50) {
+            $message = vipub_translate("hot_hashtage_4");
+        } else if ($total_post >= 10) {
+            $message = vipub_translate("hot_hashtage_5");
+        } else {
+            $message = "";
+        }
+        ?>
+        <p><?php echo htmlspecialchars($message); ?></p>
+        <a href="/explore?q=<?php echo htmlspecialchars($row["htag"]); ?>">
+            <h5>#<?php echo htmlspecialchars($row["htag"]); ?></h5>
+        </a>
+        <span><?php echo $total_post; ?> <?php echo vipub_translate("post"); ?></span>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+<?php vipub_template("main/sidebar/left-sidebar"); $settings = vipub_site_settings(); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+    
+        <div class="account-settings-page-for-users-page">
+            <div class="settings-page-top-title">
+                <h5><svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg><?php echo vipub_translate("account_settings"); ?></h5>
+            </div>
+
+            <div class="settings-page-content-full next-settings-page-container-none-border">
+                <div class="settings-edit-profile-right-zone next-settings-page-container">
+                    <div class="edit-profile-right-zone-title">
+                        <h5><?php echo vipub_translate("account_settings_menu_29"); ?></h5>
+                        <small><?php echo vipub_translate("account_settings_menu_28"); ?></small>
+                    </div>
+                    <div class="user-profile-edit-form-content-full">
+                        <form id="change-username">
+                            <div class="edit-input-profile">
+                              <label for="username"><?php echo vipub_translate("account_settings_menu_29"); ?></label>
+                                <input type="text" name="username" id="username" value="<?php echo $row["username"]; ?>" placeholder="<?php echo vipub_translate("account_settings_menu_29"); ?>">
+                            </div>
+                            <div class="edit-input-profile">
+                                <button type="submit" class="fullname-save"><?php echo vipub_translate("account_settings_menu_27"); ?></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function isValidUsername(username) {
+    var validUsernameRegex = /^[a-zA-Z0-9_]{3,15}$/;
+    return validUsernameRegex.test(username);
+}
+
+$(document).ready(function() {
+    $('#username').attr('minlength', 3);
+    $('#username').attr('maxlength', 15);
+
+    $('#change-username').submit(function(event) {
+        event.preventDefault();
+        var username = $.trim($('#username').val());
+        if (username.length === 0) {
+            var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+            var vipubSM_msgText = '<?php echo vipub_translate("trim_for_username_in_error_success"); ?>';
+            var vipubSM_alertTimeout = 5000;
+            
+            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            return false;
+        }
+        if (!isValidUsername(username)) {
+            var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+            var vipubSM_msgText = '<?php echo vipub_translate("trim_for_username_in_error_success_2"); ?>';
+            var vipubSM_alertTimeout = 5000;
+            
+            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            return false;
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/apps/ajax/settings/check-username.phtml',
+                data: {
+                    username: username
+                },
+                success: function(response) {
+                    if (response === '1') {
+                        var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                        var vipubSM_msgText = '<?php echo vipub_translate("settings_page_save_value_desc_5"); ?>';
+                        var vipubSM_alertTimeout = 5000;
+                        
+                        vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                    } else {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/apps/ajax/settings/username.phtml',
+                            data: {
+                                username: username
+                            },
+                            success: function(response) {
+                                $('#username').val(response);
+
+                                var vipubSM_msgIcon = '<i class="bi bi-check-circle"></i>';
+                                var vipubSM_msgText = '<?php echo vipub_translate("settings_page_save_value_desc_6"); ?>';
+                                var vipubSM_alertTimeout = 5000;
+
+                                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                            },
+                            error: function(response) {
+                                var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                                var vipubSM_msgText = 'Error: ' + response.responseText;
+                                var vipubSM_alertTimeout = 5000;
+
+                                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                            }
+                        });
+                    }
+                },
+                error: function(response) {
+                    var vipubSM_msgIcon = '<i class="bi bi-x-circle"></i>';
+                    var vipubSM_msgText = 'Error: ' + response.responseText;
+                    var vipubSM_alertTimeout = 5000;
+
+                    vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                }
+            });
+        }
+    });
+});
+</script>

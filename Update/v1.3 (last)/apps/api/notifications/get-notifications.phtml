@@ -1,0 +1,71 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once("../../../core/vipub_web_core.phtml");
+header("Access-Control-Allow-Origin: *");
+header('Content-type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $userId = mysqli_real_escape_string($conn, $_GET['user_id']);
+
+    if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] == $userId) {
+        $sql = "SELECT n.sender_id, n.type, n.post_id, n.post_id, u.verified, u.fullname, u.avatar, u.username FROM vipub_notifs AS n 
+                INNER JOIN vipub_users AS u ON n.sender_id = u.id
+                WHERE n.user_id = '$userId'
+                ORDER BY n.n_id DESC";
+        $result = mysqli_query($conn, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            $rows = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $senderId = $row['sender_id'];
+                $type = $row['type'];
+                $post_id = $row['post_id'];
+                $fullname = htmlspecialchars($row['fullname']); 
+                $avatar = $row['avatar'];
+                $username = htmlspecialchars($row['username']);
+                $verified = $row['verified'];
+
+                $mySql = "SELECT username FROM vipub_users WHERE id = '$userId'";
+                $userResult = mysqli_query($conn, $mySql);
+
+                while ($vipub_user = mysqli_fetch_assoc($userResult)) {
+                    $response = array(
+                        "sender_id" => $senderId,
+                        "post_id" => $post_id,
+                        "type" => $type,
+                        "screen_name" => $fullname,
+                        "username" => $username,
+                        "avatar" => vipub_link($avatar),
+                        "verified" => $verified,
+                        "my_username" => $vipub_user['username']
+                    );
+                }
+                mysqli_free_result($userResult);
+                $rows[] = $response;
+            }
+            echo json_encode($rows);
+        } else {
+            $response = array(
+                "error_code" => 404,
+                "error_message" => "No notification found."
+            );
+            http_response_code(400);
+            echo json_encode($response);
+        }
+    } else {
+        $response = array(
+            "error_code" => 400,
+            "error_message" => "Session request that doesn't belong to you."
+        );
+        http_response_code(401);
+        echo json_encode($response);
+    }
+} else {
+    $response = array(
+        "error_code" => 405,
+        "error_message" => "Method not allowed."
+    );
+    http_response_code(405);
+    echo json_encode($response);
+}

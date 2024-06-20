@@ -1,0 +1,94 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+$smtp_settings = vipub_smtp();
+$settings = vipub_site_settings();
+if (!isset($_SESSION["user_id"])) {
+  echo "Oturum açmamış kullanıcı!";
+  exit;
+}
+
+if (isset($_POST['user_id'], $_POST['follow_status'])) {
+    $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
+    $follow_status = mysqli_real_escape_string($conn, $_POST['follow_status']);
+    $loggedInUserId = $_SESSION['user_id'];
+
+    if ($follow_status == vipub_translate("follow")) {
+        $sql = "INSERT INTO vipub_follow (user_id, follower_id) VALUES ('$user_id', '$loggedInUserId')";
+    
+        $updateFollowingSql = "UPDATE vipub_users SET following = following + 1 WHERE id = '$loggedInUserId'";
+        mysqli_query($conn, $updateFollowingSql);
+    
+        $updateFollowersSql = "UPDATE vipub_users SET followers = followers + 1 WHERE id = '$user_id'";
+        mysqli_query($conn, $updateFollowersSql);
+    
+        // Send notification
+        $notifSql = "INSERT INTO vipub_notifs (user_id, sender_id, type) VALUES ('$user_id', '$loggedInUserId', 'follow')";
+        mysqli_query($conn, $notifSql);
+
+
+        $email_send_notifs = "SELECT * FROM vipub_users WHERE id = '$user_id'";
+        $send_user_email_notifications = mysqli_query($conn, $email_send_notifs);
+        $receiver_user = mysqli_fetch_assoc($send_user_email_notifications);
+
+        $email_send_notifs2 = "SELECT * FROM vipub_users WHERE id = '$loggedInUserId'";
+        $send_user_email_notifications2 = mysqli_query($conn, $email_send_notifs2);
+        $my_user_detail = mysqli_fetch_assoc($send_user_email_notifications2);
+
+        if($settings["email_notifications"]=="Active"){
+            if($receiver_user["follow_notification"]=="Active"){
+                ob_start();
+                require_once("../../../themes/default/apps/content_email/follow.notifications.phtml");
+                $body = ob_get_clean();
+                $body = str_replace(array('<?', '?>'), array('&lt;?', '?&gt;'), $body);
+                
+                $mail = new PHPMailer(true);
+                try {
+                $mail->isSMTP();                                            
+                $mail->Host       = $smtp_settings["smtp_host"];                     
+                $mail->SMTPAuth   = true;                                   
+                $mail->Username   = $smtp_settings["smtp_username"];                 
+                $mail->Password   = $smtp_settings["smtp_password"];                        
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;        
+                $mail->Port       = $smtp_settings["smtp_port"];                                    
+                $mail->setFrom($smtp_settings["smtp_username"], $settings["site_name"]);
+                $mail->addAddress($receiver_user["email"], $receiver_user["fullname"]);
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8'; 
+                $mail->isHTML(true);
+                $mail->Subject = vipub_translate("email_notification_user_follow_1");
+                $mail->Body = $body;
+                $mail->send();
+                } 
+                catch (Exception $e) {
+                echo "error";
+                }
+            }
+        }
+
+    }
+    else {
+        $sql = "DELETE FROM vipub_follow WHERE user_id = '$user_id' AND follower_id = '$loggedInUserId'";
+    
+        $updateFollowingSql = "UPDATE vipub_users SET following = following - 1 WHERE id = '$loggedInUserId'";
+        mysqli_query($conn, $updateFollowingSql);
+    
+        $updateFollowersSql = "UPDATE vipub_users SET followers = followers - 1 WHERE id = '$user_id'";
+        mysqli_query($conn, $updateFollowersSql);
+    
+        // Delete notification
+        $deleteNotifSql = "DELETE FROM vipub_notifs WHERE user_id = '$user_id' AND sender_id = '$loggedInUserId' AND type = 'follow'";
+        mysqli_query($conn, $deleteNotifSql);
+    }
+
+    if (mysqli_query($conn, $sql)) {
+        echo "İşlem başarılı";
+    } else {
+        echo "Hata oluştu: " . mysqli_error($conn);
+    }
+
+    mysqli_close($conn);
+} else {
+    echo "Hata oluştu: Form gönderilmedi";
+}

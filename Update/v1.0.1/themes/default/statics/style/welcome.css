@@ -1,0 +1,352 @@
+@font-face { font-family: vipubFont; src: url('https://abs.twimg.com/fonts/chirp-regular-web.woff2') format('woff2'); font-weight: 400; font-style: 'normal'; font-display: 'swap' } 
+@font-face { font-family: vipubFont; src: url('https://abs.twimg.com/fonts/chirp-heavy-web.woff2') format('woff2'); font-weight: 800; font-style: 'normal'; font-display: 'swap' }
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+}
+body{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #0f1419;
+    font-family: vipubFont, Arial, Helvetica, sans-serif !important;
+}
+.form-submit-content button[disabled]{
+    opacity: .5;
+}
+@media (min-width: 600px){
+    .welcome-page-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .left-section {
+        flex: 1;
+        height: 100%;
+        background-color: #0f1419;
+    }
+
+    .right-section {
+        flex: 1;
+        height: 100%;
+        background-color: #f1f1f1;
+    }
+
+    .left-section > .site-welcome-logo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    .left-section > .site-welcome-logo img{
+        background: #1da0f21e;
+        width: 150px;
+        padding: 25px;
+        border-radius: 50%;
+    }
+    .right-section > .user-form-value-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        padding: 100px;
+    }
+    .right-section > .user-form-value-content > .title a img{
+        display: none;
+    }
+    .right-section > .user-form-value-content > .title{
+        position: relative;
+        margin-bottom: 30px;
+    }
+    .right-section > .user-form-value-content > .title h5{
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 26px;
+        color: #0f1419;
+    }
+    .right-section > .user-form-value-content > .title span{
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #536471;
+    }
+    .forget-your-password{
+        position: relative;
+        margin-bottom: 20px;
+        margin-top: -10px;
+    }
+    .forget-your-password a{
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 16px;
+        color: #1da1f2;
+        margin-top: 55px;
+        position: relative;
+    }
+    .forget-your-password span{
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 13px;
+        color: #536471;
+    }
+    .form-submit-content{
+        position: relative;
+        margin-bottom: 20px;
+    }
+    .form-submit-content button{
+        position: relative;
+        width: 100%;
+        padding: 10px 15px;
+        border: none;
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 20px;
+        color: #fff;
+        border: none;
+        outline:none;
+        border-radius: 30px;
+        background: #0f1419;
+    }
+    .form-submit-content button:hover{
+        transition-duration: 0.2s;
+        background: #0d1216c7;
+    }
+
+
+    .user-form-footer{
+        position: fixed;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        bottom: 20px;
+        margin-left: -5px;
+    }
+    .user-form-footer a{
+        color: #536471;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 16px;
+        padding: 0px 5px;
+    }
+    .welcome-dropdown-menu {
+        position: absolute;
+        top: -100px;
+        display: none;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 0px;
+    }
+    .welcome-dropdown-menu li{
+        font-size: 15px !important;
+        font-weight: 400;
+        line-height: 20px;
+        padding: 10px 7px;
+    }
+    .welcome-dropdown-menu li:hover{
+        transition-duration: 0.2s;
+        background: #f1f1f1;
+    }
+    .user-form-tho-select{
+        position: fixed;
+        bottom: 50px;
+    }
+    .user-form-tho-select span{
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #0f1419;
+    }
+    .welcome-alert-message{
+        background: #1da1f2;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #fff;
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 600px){
+    .welcome-page-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .left-section {
+        display: none;
+    }
+
+    .right-section {
+        flex: 1;
+        height: 100%;
+        background-color: #fff;
+    }
+    .right-section > .user-form-value-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 95vh;
+        padding: 33px;
+    }
+    .right-section > .user-form-value-content > .title{
+        position: relative;
+        margin-bottom: 30px;
+    }
+    .right-section > .user-form-value-content > .title a img{
+        width: 50px;
+        height: 50px;
+        margin-bottom: 25px;
+    }
+    .right-section > .user-form-value-content > .title h5{
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 20px;
+        color: #0f1419;
+    }
+    #nonedp{
+        display: none;
+    }
+    #title-mb{
+        margin-bottom: 8px;
+    }
+    .right-section > .user-form-value-content > .title span{
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #536471;
+    }
+    .forget-your-password{
+        position: relative;
+        margin-bottom: 15px;
+        margin-top: -10px;
+    }
+    .forget-your-password a{
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 16px;
+        color: #1da1f2;
+        margin-top: 55px;
+        position: relative;
+    }
+    .forget-your-password span{
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 13px;
+        color: #536471;
+    }
+    .forget-your-password span a{
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 13px;
+    }
+    .form-submit-content{
+        position: relative;
+        margin-bottom: 20px;
+    }
+    .form-submit-content button{
+        position: relative;
+        width: 100%;
+        padding: 8px 15px;
+        border: none;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 17px;
+        color: #fff;
+        border: none;
+        outline:none;
+        border-radius: 30px;
+        background: #0f1419;
+    }
+    .form-submit-content button:hover{
+        transition-duration: 0.2s;
+        background: #0d1216c7;
+    }
+
+
+    .user-form-footer{
+        position: fixed;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        bottom: 20px;
+        margin-left: -5px;
+    }
+    .user-form-footer a{
+        color: #536471;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 16px;
+        padding: 0px 5px;
+    }
+    .welcome-dropdown-menu {
+        position: absolute;
+        top: -100px;
+        display: none;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 0px;
+    }
+    .welcome-dropdown-menu li{
+        font-size: 15px !important;
+        font-weight: 400;
+        line-height: 20px;
+        padding: 10px 7px;
+    }
+    .welcome-dropdown-menu li:hover{
+        transition-duration: 0.2s;
+        background: #f1f1f1;
+    }
+    .user-form-tho-select{
+        position: fixed;
+        bottom: 60px;
+    }
+    .user-form-tho-select span{
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+        color: #0f1419;
+    }
+    .user-form-tho-select span a{
+        font-weight: 700;
+    }
+    .welcome-alert-message{
+        background: #1da1f2;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+        color: #fff;
+        width: 100%;
+    }
+}

@@ -1,0 +1,52 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+if(vipub_userLogin()){
+    header("Location: /home");
+    exit;
+}
+
+if (isset($_POST['fullname']) && isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) {
+  $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
+  $username = mysqli_real_escape_string($conn, $_POST['username']);
+  $email = mysqli_real_escape_string($conn, $_POST['email']);
+  $password = mysqli_real_escape_string($conn, sha1($_POST["password"]));
+
+  if (strlen($username) < 3 || strlen($username) > 15 || !preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
+      echo "Kullanıcı adınız en az 3 en fazla 15 karakterden oluşmalıdır.";
+      exit();
+  }
+
+  $check_query = "SELECT * FROM vipub_users WHERE username='$username'";
+  $result = mysqli_query($conn, $check_query);
+  if (mysqli_num_rows($result) > 0) {
+      echo "Bu kullanıcı adı zaten kullanılıyor.";
+      exit();
+  }
+
+  $check_email_query = "SELECT * FROM vipub_users WHERE email='$email'";
+  $result = mysqli_query($conn, $check_email_query);
+  if (mysqli_num_rows($result) > 0) {
+      echo "Bu e-posta adresi zaten kullanılıyor";
+      exit();
+  }
+
+  $insert_query = "INSERT INTO vipub_users (fullname, username, email, password) VALUES ('$fullname', '$username', '$email', '$password')";
+  if (mysqli_query($conn, $insert_query)) {
+      $user_id = mysqli_insert_id($conn);
+
+      $_SESSION["user_id"] = $user_id;
+      $_SESSION["fullname"] = $fullname;
+      $_SESSION["email"] = $email;
+      $_SESSION["joined"] = date('Y-m-d H:i:s');
+      $_SESSION["username"] = $username;
+
+      echo "success";
+  } else {
+      echo "Kayıt işlemi başarısız oldu. Lütfen daha sonra tekrar deneyin.";
+  }
+} else {
+  header("Location: /404");
+  echo "Lütfen tüm alanları doldurun!";
+}
+
+mysqli_close($conn);

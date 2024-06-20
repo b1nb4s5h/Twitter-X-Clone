@@ -1,0 +1,21 @@
+<?php foreach ($chats as $chat) : ?>
+<div class="getmessage-user-list">
+    <?php if($chat["notifs_status"]=="0"): ?>
+        <?php if($chat["sender_id"]==$_SESSION["user_id"]): ?>
+        <?php else: ?>
+    <span id="new-message">New message</span>
+        <?php endif; ?>
+    <?php endif; ?>
+    <a href="<?php echo vipub_link("/messages/".$chat["id"]); ?>">
+        <img src="<?php echo vipub_link($chat["avatar"]); ?>">
+        <h5><?php echo vipub_croptxt($chat["fullname"], 0, 25); ?>
+        · 
+            <small style="font-weight: 400">
+            <?php echo date("d", strtotime($chat["created_at"])); ?>
+            <?php echo vipub_translate('month_'.strtolower(date('M', strtotime($chat["created_at"])))) . " " . date("Y h:i", strtotime($chat["created_at"])); ?>
+            </small>
+        </h5>
+        <p><?php echo vipub_croptxt($chat["message"], 0, 180); ?></p>
+    </a>
+</div>
+<?php endforeach; ?>

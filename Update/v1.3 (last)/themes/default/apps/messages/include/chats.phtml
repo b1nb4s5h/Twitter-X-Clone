@@ -1,0 +1,115 @@
+<?php
+$conn = vipubConnectDatabase();
+$user_id = htmlspecialchars(trim($_GET["row"]));
+$row = vipub_get_message_user($conn, $user_id);
+$settings = vipub_site_settings();
+?>
+
+    <div class="message-chat-user-top-info-profile">
+        <span data-vipub-url="<?php echo vipub_link("messages"); ?>">
+            <i class="bi bi-arrow-left-square-fill"></i>
+        </span>
+        <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+            <img src="<?php echo vipub_link($row["avatar"]); ?>">
+            <h5><?php echo $row["fullname"]; ?>
+                <?php if($row["verified"]=="1"): ?>
+                    <?php echo vipub_userBlue(); ?>
+                <?php endif; ?>
+            </h5>
+        </a>
+    </div>
+
+<div class="message-chat-user-info-title">
+    <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <img src="<?php echo vipub_link($row["avatar"]); ?>">
+    </a>
+    <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <h5><?php echo $row["fullname"]; ?>
+        <?php if($row["verified"]=="1"): ?>
+            <?php echo vipub_userBlue(); ?>
+        <?php endif; ?>
+    </h5>
+    </a>
+    <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <span>@<?php echo $row["username"]; ?> · <?php echo $settings["site_name"]; ?></span>
+    </a>
+
+    <a class="message-screen-user-view-profile-btn" href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <?php echo vipub_translate("view_message_page_on_user_profile"); ?>
+    </a>
+</div>
+
+<?php while ($row = mysqli_fetch_assoc($result)): ?>
+    
+    <span class="message-send-date-funct">
+        <?php echo vipub_post_new_date($row["created_at"]); ?>
+        •
+        <?php echo vipub_post_date($row["created_at"]); ?>
+        
+        <?php if($row["sender_id"]!==$_SESSION["user_id"]): ?>
+            <form id="reported-for-message">
+                <input type="hidden" name="m_id" value="<?php echo $row["m_id"]; ?>">
+                <button type="submit" name="submit">
+                • <i class="bi bi-flag"></i>
+                </button>
+            </form>
+        <?php endif; ?>
+    </span>
+    
+    <div class="vipub-message-container">
+        <div class="message-user-info">
+            
+
+            <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+                <img src="<?php echo vipub_link($row["avatar"]); ?>">
+            </a>
+            <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+                <?php if($row["sender_id"]==$_SESSION["user_id"]): ?>
+                <?php else: ?>
+                <h5><?php echo $row["fullname"]; ?>
+                <?php if($row["verified"]=="1"): ?>
+                    <?php echo vipub_userBlue(); ?>
+                <?php endif; ?>
+                <?php endif; ?>
+                </h5>
+            </a>
+
+
+            
+            <div class="chat-info-vipub">
+                <div class="send-account-info">
+                <?php if($row["sender_id"]==$_SESSION["user_id"]): ?>
+
+                    <?php if(vipubMessageOnlyEmoji($row["message"])): ?>
+                        <p id="mysend-message-only-emoji">
+                            <?php echo vipubMessageText($row["message"]); ?>
+                    <?php else: ?>
+                        <p id="mysend-messages">
+                            <?php echo vipubMessageText($row["message"]); ?>
+                    <?php endif; ?>
+                        <?php if($row["content_image"] !=NULL): ?>
+                            <a href="<?php echo vipub_link($row["content_image"]); ?>" data-lightbox="<?php echo $row["m_id"]; ?>">
+                                <img id="my-view-message-picture" src="<?php echo vipub_link($row["content_image"]); ?>">
+                            </a>
+                        <?php endif; ?>
+                    </p>
+                <?php else: ?>
+                    <?php if(vipubMessageOnlyEmoji($row["message"])): ?>
+                        <p id="mysend-message-only-emoji-you">
+                            <?php echo vipubMessageText($row["message"]); ?>
+                    <?php else: ?>
+                        <p id="row-and-message-value">
+                            <?php echo vipubMessageText($row["message"]); ?>
+                    <?php endif; ?>
+                        <?php if($row["content_image"] !=NULL): ?>
+                            <a href="<?php echo vipub_link($row["content_image"]); ?>" data-lightbox="<?php echo $row["m_id"]; ?>">
+                                <img class="view-message-picture" src="<?php echo vipub_link($row["content_image"]); ?>">
+                            </a>
+                        <?php endif; ?>
+                    </p>
+                <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endwhile; ?>

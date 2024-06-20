@@ -1,0 +1,22 @@
+<?php $settings = vipub_site_settings(); ?>
+<div class="col-md-3">
+    <div class="main-left-sidebar">
+        <div class="main-site-logo">
+            <a href="<?php echo vipub_link("welcome/login"); ?>">
+                <img src="<?php echo vipub_link($settings["site_white_logo"]); ?>">
+            </a>
+        </div>
+            
+        <div class="main-sidebar-menu">
+            <a href="<?php echo vipub_link("welcome/login"); ?>">
+                <i class="bi bi-house-door"></i>
+                <?php echo vipub_translate("login"); ?>
+            </a>
+
+            <a class="<?php echo ($app == 'search') ? 'page-active' : ''; ?>" href="<?php echo vipub_link("search"); ?>">
+                <i class="bi bi-search"></i>
+                <?php echo vipub_translate("search"); ?>
+            </a>
+        </div>
+    </div>
+</div>

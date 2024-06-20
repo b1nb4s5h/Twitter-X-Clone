@@ -1,0 +1,57 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['usermedia'])) {
+    $username = $_GET['usermedia'];
+    $posts = array();
+
+    $userMediaAPI = vipub_get_profile($conn, $username);
+    $userMediaTimeline = $userMediaAPI["username"];
+
+    $sql = "SELECT p.p_id, p.user_id, u.username, u.fullname, u.avatar, p.content_post, p.content_image, p.content_video, p.content_gif FROM vipub_posts p LEFT JOIN vipub_users u ON p.user_id = u.id WHERE (p.user_id = ? OR u.username = ?) AND (p.post_type = 'post_image' OR p.post_type = 'post_video' OR content_gif IS NOT NULL) ORDER BY p.post_joined DESC";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ss", $username, $userMediaTimeline);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $result = mysqli_stmt_get_result($stmt);
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $postId = $row["p_id"];
+                $userId = $row["user_id"];
+                $username = $row["username"];
+                $fullname = $row["fullname"];
+                $avatar = $row["avatar"];
+                $content = $row["content_post"];
+                $content_image = $row["content_image"];
+                $content_video = $row["content_video"];
+                $content_gif = $row["content_gif"];
+                $posts[] = array(
+                    "postId" => $postId,
+                    "userId" => $userId,
+                    "username" => $username,
+                    "fullname" => $fullname,
+                    "avatar" => $avatar,
+                    "content" => $content,
+                    "content_image" => $content_image,
+                    "content_video" => $content_video,
+                    "content_gif" => $content_gif
+                );
+            }
+            
+            http_response_code(200); // Başarılı cevap
+            echo json_encode(array("status" => "success", "data" => $posts));
+        } else {
+            http_response_code(404);
+            echo json_encode(array("status" => "error", "message" => "The user does not have any media uploads."));
+        }
+    } else {
+        http_response_code(500);
+        echo json_encode(array("status" => "error", "message" => "An error has occurred on the server side. Please try again later."));
+    }
+
+    mysqli_stmt_close($stmt);
+} else {
+    http_response_code(400);
+    echo json_encode(array("status" => "error", "message" => "The username parameter is missing or incorrect."));
+}
+
+mysqli_close($conn);

@@ -1,0 +1,111 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+$user_id = $_SESSION["user_id"];
+$content_post = $_POST['content_post'];
+$content_post = htmlspecialchars_decode(strip_tags(trim($_POST['content_post'])), ENT_QUOTES);
+
+$file_name = $_FILES['add_image']['name'];
+$file_tmp = $_FILES['add_image']['tmp_name'];
+$file_size = $_FILES['add_image']['size'];
+$file_type = $_FILES['add_image']['type'];
+$file_parts = explode('.', $file_name);
+$file_ext = strtolower(end($file_parts));
+
+$allowed = array('jpg', 'jpeg', 'png', 'gif');
+
+if(!in_array($file_ext, $allowed)) {
+    $media_path = "NULL";
+} else {
+    if($file_size > 15728640) {
+        $media_path = "NULL";
+    } else {
+        $upload_dir = '../../../upload/media/';
+
+        if(!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
+
+        $new_file_name = time() . '_' . uniqid() . '.' . $file_ext;
+
+        if(move_uploaded_file($file_tmp, $upload_dir . $new_file_name)) {
+            $media_path = $upload_dir . $new_file_name;
+        } else {
+            $media_path = "NULL";
+        }
+    }
+}
+
+$video_file_name = $_FILES['add_video']['name'];
+$video_tmp = $_FILES['add_video']['tmp_name'];
+$video_file_size = $_FILES['add_video']['size'];
+$video_file_type = $_FILES['add_video']['type'];
+$video_file_parts = explode('.', $video_file_name);
+$video_file_ext = strtolower(end($video_file_parts));
+
+$video_allowed = array('mp3','mp4', 'avi', 'mov');
+
+if(!in_array($video_file_ext, $video_allowed)) {
+    $video_path = "NULL";
+} else {
+    if($video_file_size > 52428800) { // 50MB
+        $video_path = "NULL";
+    } else {
+        $video_upload_dir = '../../../upload/media/';
+
+        if(!is_dir($video_upload_dir)) {
+            mkdir($video_upload_dir, 0777, true);
+        }
+
+        $new_file_name = time() . '_' . uniqid() . '.' . $video_file_ext;
+
+        if(move_uploaded_file($video_tmp, $video_upload_dir . $new_file_name)) {
+            $video_path = $video_upload_dir . $new_file_name;
+        } else {
+            $video_path = "NULL";
+        }
+    }
+}
+
+$stmt = $conn->prepare("INSERT INTO vipub_posts (user_id, content_post, content_image, content_video) VALUES (?, ?, ?, ?)");
+$stmt->bind_param("isss", $user_id, $content_post, $media_path, $video_path);
+
+if ($stmt->execute()) {
+    $last_id = $stmt->insert_id;
+
+    // @mention
+    $pattern = '/@([a-zA-Z0-9_]+)/';
+    preg_match_all($pattern, $content_post, $matches);
+
+    if (!empty($matches[1])) {
+        foreach ($matches[1] as $mention) {
+            $user_stmt = $conn->prepare("SELECT id FROM vipub_users WHERE username = ?");
+            $user_stmt->bind_param("s", $mention);
+            $user_stmt->execute();
+            $user_result = $user_stmt->get_result();
+
+            if ($user_result->num_rows > 0) {
+                $user_row = $user_result->fetch_assoc();
+                $mentioned_user_id = $user_row['id'];
+
+                if ($mentioned_user_id != $user_id) {
+                    $notif_stmt = $conn->prepare("INSERT INTO vipub_notifs (user_id, sender_id, post_id, type) VALUES (?, ?, ?, 'mention')");
+                    $notif_stmt->bind_param("iii", $mentioned_user_id, $user_id, $last_id);
+                    $notif_stmt->execute();
+                }
+            }
+        }
+    }
+    
+    $result = array('status' => true, 'message' => 'Post başarıyla eklendi', 'post_id' => $last_id);
+    
+    saveHashtags($conn, $content_post);
+} else {
+    $result = array('status' => false, 'message' => 'Post eklenirken hata oluştu');
+    }
+    $stmt->close();
+    
+    header('Content-Type: application/json');
+    echo json_encode($result);
+    
+    $conn->close();    

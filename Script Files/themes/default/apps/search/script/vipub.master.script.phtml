@@ -1,0 +1,31 @@
+<?php $q = !empty($_GET["q"]) ? $_GET["q"] : ""; ?> 
+<script>
+    function fetchPosts() {
+        $.ajax({
+            url: '/apps/ajax/search/search-timeline.phtml',
+            type: 'GET',
+            success: function(data) {
+                $('#search-page-timeline').html(data);
+            }
+        });
+    }
+
+    //setInterval(fetchPosts, 2000);
+
+    fetchPosts();
+</script>
+
+<script>
+    function fetchPosts() {
+        $.ajax({
+            url: '/apps/ajax/search/explore-timeline.phtml?q=<?php echo $q; ?>',
+            type: 'GET',
+            success: function(data) {
+                $('#get-explore-page-timeline').html(data);
+            }
+        });
+    }
+
+    //setInterval(fetchPosts, 2000);
+    fetchPosts();
+</script>

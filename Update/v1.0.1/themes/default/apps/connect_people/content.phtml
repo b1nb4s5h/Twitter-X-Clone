@@ -1,0 +1,28 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        
+        <div class="site-header-box">
+            <h5>
+                <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                <?php echo vipub_translate("who_to_follow_title"); ?>
+            </h5>
+        </div>
+        <div id="suggestion-connect-people"></div>
+    </div>
+</div>
+
+<script>
+    function fetchPosts() {
+        $.ajax({
+            url: '/apps/ajax/connect_people/content.phtml',
+            type: 'GET',
+            success: function(data) {
+                $('#suggestion-connect-people').html(data);
+            }
+        });
+    }
+    setInterval(fetchPosts, 7000);
+    fetchPosts();
+</script>
+<?php vipub_template("main/sidebar/right-sidebar"); ?>

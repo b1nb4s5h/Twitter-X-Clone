@@ -1,0 +1,632 @@
+<?php $post_id = $row["p_id"]; $link = vipub_link($row["username"]."/status/".$post_id); ?>
+<?php $vipub["admin"] = vipub_my_user_info(); ?>
+    <div class="post vipup-post-publication" id="post-<?php echo $postId; ?>" data-post-id="<?php echo $postId; ?>">
+        <?php if($vipub["repost_fullname"] = isset($row["repost_user_fullname"]) ? htmlspecialchars($row["repost_user_fullname"], ENT_QUOTES, "UTF-8") : ''): ?>
+            <div class="this-post-user-retweeted" >
+                <span data-vipub-url="<?php echo vipub_link("@".$vipub["repost_username"]); ?>">
+                    <i class="bi bi-repeat-1"></i>
+                    <?php echo vipub_croptxt($vipub["repost_fullname"], 0, 25); ?>
+                    <?php if(isset($row["reply_post_id"])): ?>
+                        <?php echo vipub_translate("retweeted_the_comment_user"); ?>
+                    <?php else: ?>
+                        <?php echo vipub_translate("this_is_a_post_retweet_1"); ?>
+                    <?php endif; ?>
+                </span>
+            </div>
+        <?php endif; ?>
+        <div class="post-original-user-title-info">
+            <a href="<?php echo vipub_link("@".$username); ?>" class="post-user-avatar">
+                <img src="<?php echo vipub_link($avatar); ?>">
+                <h5>
+                <?php echo vipub_croptxt($username, 0, 15); ?>
+                    <?php if($row["verified"]=="1"): ?>
+                        <?php echo vipub_userBlue(); ?>
+                    <?php endif; ?>
+                </h5>
+            </a>
+            <?php if($row["post_type"]=="postAds"): ?>
+                    <span class="sponsored-title-post">
+                        Sponsored
+                    </span>
+            <?php else: ?>
+                <span>
+                    <?php echo vipub_post_new_date($row["post_joined"]); ?>
+                </span>
+            <?php endif; ?>
+
+            <?php if(isset($_SESSION["user_id"])): ?>
+            <strong type="button" type="button" class="bookmarks-btn<?php echo $row["p_id"]; ?>" data-post-id="<?php echo $row["p_id"]; ?>">
+                <?php $bookmarksStatus = vipub_check_bookmarks($_SESSION["user_id"], $postId); if ($bookmarksStatus) { ?>
+                        <i class="bi bi-bookmark-fill post-unbookmarks"></i>
+                    <?php } else { ?>
+                        <i class="bi bi-bookmark"></i>
+                <?php } ?>
+            </strong>
+            <?php else: ?>
+                <strong data-post-id="<?php echo $row["p_id"]; ?>">
+                    <i class="bi bi-bookmark"></i>
+                </strong>
+            <?php endif; ?>
+        </div>
+
+        <?php if($row["content_image"] != NULL): ?>
+            <div class="post-paragraphe-image">
+                <img src="<?php echo vipub_link($row["content_image"]); ?>" 
+                    data-vipubimage="<?php echo vipub_link($row["content_image"]); ?>" 
+                    class="vipubbox-img<?php echo $row["p_id"]; ?>" 
+                    data-pid="<?php echo $row["p_id"]; ?>" 
+                    loading="lazy"
+                />
+            </div>
+        <?php endif; ?>
+
+        <?php if($row["content_gif"] != NULL): ?>
+            <div class="post-paragraphe-gif">
+                <img src="<?php echo $row["content_gif"]; ?>"/>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($row["content_video"] != NULL): ?>
+            <div class="post-paragraphe-video">
+                <video id="custom-video<?php echo $row["p_id"]; ?>" playsinline muted poster="<?php echo vipub_template_master("images/video-thumbnail.png"); ?>">
+                    <source src="<?php echo vipub_link($row["content_video"]); ?>">
+                    Your browser does not support the video tag.
+                </video>
+
+                <div class="video-feed-control-btn">
+                    <div class="play-overlay" id="play-overlay<?php echo $row["p_id"]; ?>">
+                        <i class="bi bi-play-fill play-icon" id="play-icon<?php echo $row["p_id"]; ?>"></i>
+                    </div>
+                    
+                    <div class="volume-control">
+                        <i class="bi bi-volume-mute" id="mute-icon<?php echo $row["p_id"]; ?>"></i>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <div class="original-post-details">
+            <?php if($row["content_post"]!=NULL): ?>
+                <div class="post-paragraphe">
+                    <p><strong style="cursor:pointer;" data-vipub-url="<?php echo vipub_link("@".$row["username"]); ?>"><?php echo vipub_croptxt($username, 0, 15); ?></strong> <?php echo convertVipubText($row["content_post"]); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <div class="original-post-selection-check">
+                <!--Like / Unlike-->
+                <?php if(isset($_SESSION["user_id"])): ?>
+                    <span type="button" class="like-btn<?php echo $row["p_id"]; ?>" data-post-id="<?php echo $row["p_id"]; ?>">
+                        <?php 
+                        $likeStatus = vipub_check_like($_SESSION["user_id"], $postId); 
+                        if ($likeStatus) { ?>
+                            <i class="bi bi-heart-fill post-unlike-icon"></i>
+                        <?php } else { ?>
+                            <i class="bi bi-heart"></i>
+                        <?php } ?>
+                    </span>
+                <?php else: ?>
+                    <span data-post-id="<?php echo $row["p_id"]; ?>">
+                        <i class="bi bi-heart"></i>
+                    </span>
+                <?php endif; ?>
+                <!--Retweet / Unretweet-->
+                <?php if(isset($_SESSION["user_id"])): ?>
+                    <span type="button" class="retweet-btn<?php echo $row["p_id"]; ?>" data-post-id="<?php echo $row["p_id"]; ?>">
+                        <?php $repostStatus = vipub_check_repost($_SESSION["user_id"], $postId); ?>
+                        <i class="bi bi-arrow-left-right<?php if ($repostStatus) { echo ' unretweet-class'; } ?>"></i>
+                    </span>
+                <?php else: ?>
+                    <span data-post-id="<?php echo $row["p_id"]; ?>">
+                        <i class="bi bi-arrow-left-right"></i>
+                    </span>
+                <?php endif; ?>
+
+                
+                <!--Reply-->
+                <span class="reply-count-hover" data-vipub-url="<?php echo vipub_link($row["username"]."/status/".$row["p_id"]); ?>">
+                    <i class="bi bi-chat-quote"></i>
+                </span>
+
+                
+
+                <div class="dropdown">
+                    <strong id="shareModal">
+                       <i class="bi bi-three-dots"></i>
+                    </strong>
+                    <ul>
+                        <?php if(isset($_SESSION["user_id"])): ?>
+                            <?php if($row["user_id"]==$_SESSION["user_id"]): ?>
+                            <button type="button" class="delete-post" data-post-id="<?php echo $row["p_id"]; ?>">
+                            <i class="bi bi-trash-fill"></i>
+                            <?php echo vipub_translate("post_select_dropdown_1"); ?></button>
+                            
+                            <?php elseif($vipub["admin"]["admin_status"]=="1"): ?>
+                            <button type="button" class="delete-post" data-post-id="<?php echo $row["p_id"]; ?>">
+                            <i class="bi bi-trash-fill"></i>
+                            <?php echo vipub_translate("post_select_dropdown_1"); ?></button>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <li>
+                            <a href="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>">
+                            <i class="bi bi-send"></i>
+                            <?php echo vipub_translate("post_select_dropdown_2"); ?></a>
+                        </li>
+
+                        <li>
+                            <a href="/<?php echo $row["username"]; ?>/status/<?php echo $row["p_id"]; ?>/likes">
+                            <i class="bi bi-heart"></i>
+                            <?php echo vipub_translate("post_in_view_like_page"); ?></a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                            <i class="bi bi-code-slash"></i>
+                            <?php echo vipub_translate("post_select_dropdown_3"); ?></a>
+                        </li>
+
+                        <li>
+                            <a class="copy_post" href="#" data-post-id="<?php echo $post_id; ?>">                   
+                            <i class="bi bi-link-45deg"></i>
+                            <?php echo vipub_translate("post_select_dropdown_4"); ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="post-action-details-text">
+                <?php if($row["likes"] != "0"): ?>
+                    <span class="this-post-liked-count">
+                        <?php echo $row["likes"]; ?> 
+                        <?php echo vipub_translate("post_details_bottom_timeline_1"); ?>
+                    </span>
+                <?php endif; ?>
+
+                <?php if($row["likes"] != "0" && $row["repost"] != "0"): ?>
+                    <span>·</span>
+                <?php endif; ?>
+
+                <?php if($row["repost"] != "0"): ?>
+                    <span class="this-post-repost-count"><?php echo $row["repost"]; ?> 
+                    <?php echo vipub_translate("post_details_bottom_timeline_2"); ?>
+                </span>
+                <?php endif; ?>
+
+                <?php if($row["repost"] != "0" && $row["bookmarks"] != "0"): ?>
+                    <span>·</span>
+                <?php endif; ?>
+
+                <?php if($row["bookmarks"] != "0"): ?>
+                    <span class="this-post-repost-count"><?php echo $row["bookmarks"]; ?> 
+                    <?php echo vipub_translate("post_details_bottom_timeline_3"); ?>
+                </span>
+                <?php endif; ?>
+            </div>
+
+            <?php if($row["reply"] != "0"): ?>
+                <div class="post-action-reply-details-info">
+                    <span class="this-post-reply-count" data-vipub-url="<?php echo vipub_link($row["username"]."/status/".$row["p_id"]); ?>">
+                        <?php echo $row["reply"]; ?> 
+                        <?php echo vipub_translate("post_details_bottom_timeline_4"); ?>
+                    </span>
+                </div>
+            <?php endif; ?>
+
+            
+                <div class="in-posting-for-me-reply vipubbox-reply<?php echo $row["p_id"]; ?>" data-pid="<?php echo $row["p_id"]; ?>">
+                    <?php if($row["reply_status"]=="1"): ?>     
+                    <span>
+                        <i class="bi bi-emoji-smile"></i>
+                    </span>
+                    <textarea placeholder="<?php echo vipub_translate("timeline_new_reply_popup_3"); ?>"></textarea>
+                    <?php else: ?>
+                        <textarea style="font-size: 14px; text-align:center;" disabled placeholder="<?php echo vipub_translate("set_new_post_privacy_3"); ?>"></textarea>
+                    <?php endif; ?>
+                </div>
+            
+        </div>
+    </div>
+
+<script>
+$(document).ready(function() {
+  $('.copy_post[data-post-id="<?php echo $post_id; ?>"]').click(function(event) {
+    event.preventDefault();
+    var copyText = "<?php echo $link; ?>";
+    var textarea = document.createElement("textarea");
+    textarea.value = copyText;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+
+    var vipubSM_msgIcon = '<i class="bi bi-clipboard2-check-fill"></i>';
+    var vipubSM_msgText = "<?php echo vipub_translate("post_select_dropdown_5"); ?>";
+    var vipubSM_alertTimeout = 3000;
+    vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+  });
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.dropdown').on("click", function(event) {
+            event.stopPropagation();
+            var $ul = $(this).find('ul');
+            if ($ul.is(':hidden')) {
+                $('.dropdown ul').hide();
+                $ul.show();
+            } else {
+                $ul.hide();
+            }
+        });
+
+        $(document).on("click", function(event) {
+            if (!$(event.target).closest('.dropdown').length) {
+                $('.dropdown ul').hide();
+            }
+        });
+    });
+</script>
+
+
+<script>
+    $(".delete-post").on("click", function() {
+    var postId = $(this).data("post-id");
+
+    Swal.fire({
+        title: '<?php echo vipub_translate("delete_your_post"); ?>',
+        text: "<?php echo vipub_translate("delete_your_post_2"); ?>",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#F4212D',
+        cancelButtonColor: '#0f1419',
+        confirmButtonText: '<?php echo vipub_translate("delete"); ?>',
+        cancelButtonText: '<?php echo vipub_translate("cancel"); ?>'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/apps/api/delete-post/post-delete.phtml",
+                type: "POST",
+                data: { post_id: postId },
+                success: function(response) {
+                    if (response.trim() === "success") {
+                        setTimeout(function() {
+                            $("#post-" + postId).slideUp(2000, function() {
+                                $(this).remove();
+                            });
+                        }, 2000);
+                        var vipubSM_msgIcon = '<i class="bi bi-check-circle-fill"></i>';
+                        var vipubSM_msgText = '<?php echo vipub_translate("post_success_delete"); ?>';
+                        var vipubSM_alertTimeout = 5000;
+                        vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+                    }
+                },
+                error: function() {
+                    setTimeout(function() {
+                        $("#post-" + postId).slideUp(500, function() {
+                            $(this).remove();
+                        });
+                    }, 2000);
+                }
+            });
+        }
+    })
+});
+</script>
+
+<script>
+$(document).ready(function() {
+    $(".like-btn<?php echo $row["p_id"]; ?>").click(function() {
+        var itsLikeButton = $(this);
+        var postId = itsLikeButton.data("post-id"); 
+        var post_user_id = <?php echo $row["id"]; ?>;        
+        $.ajax({
+            type: "POST",
+            url: "/apps/ajax/timeline/userfeed-like.phtml",
+            data: { post_id: postId, post_user_id: post_user_id },
+            success: function(response) {
+                if (response === "liked") {
+                    itsLikeButton.find('i').removeClass('bi-heart').addClass('bi-heart-fill post-unlike-icon');
+                } else if (response === "unliked") {
+                    itsLikeButton.find('i').removeClass('bi-heart-fill post-unlike-icon').addClass('bi-heart');
+                }
+            },
+            error: function() {
+                console.log("Error.");
+            }
+        });
+    });
+});
+</script>
+
+<script>
+$(document).ready(function() {
+    $(".like-btn<?php echo $row["p_id"]; ?>").click(function() {
+        var icon = $(this).find("i");
+        
+        if (icon.hasClass("bi-heart")) {
+            icon.removeClass("bi-heart").addClass("bi-heart-fill post-unlike-icon");
+        } else if (icon.hasClass("bi-heart-fill") && icon.hasClass("post-unlike-icon")) {
+            icon.removeClass("bi-heart-fill post-unlike-icon").addClass("bi-heart");
+        }
+    });
+});
+</script>
+
+<script>
+    $(document).on("click", ".retweet-btn<?php echo $row["p_id"]; ?>, .unretweet-btn<?php echo $row["p_id"]; ?>", function(){
+        var post_id = $(this).data("post-id");
+        var post_user_id = <?php echo $row["id"]; ?>;
+        var repost_btn = $(this).hasClass("retweet-btn<?php echo $row["p_id"]; ?>") ? $(this) : $(this).siblings(".retweet-btn<?php echo $row["p_id"]; ?>");
+        var unrepost_btn = $(this).hasClass("unretweet-btn<?php echo $row["p_id"]; ?>") ? $(this) : $(this).siblings(".unretweet-btn<?php echo $row["p_id"]; ?>");
+        
+        if (repost_btn.is(":visible")) {
+            $.ajax({
+                url: "/apps/ajax/timeline/get-retweet.phtml",
+                type: "POST",
+                data: {
+                    action: "repost",
+                    p_id: post_id,
+                    post_user_id: post_user_id
+                },
+                success: function(response) {
+                    if (response.status == "success") {
+                        repost_btn.removeClass("retweet-btn<?php echo $row["p_id"]; ?>").addClass("unretweet-btn<?php echo $row["p_id"]; ?>");
+                        unrepost_btn.show();
+                        var likes = parseInt(repost_btn.find("span").text());
+                        repost_btn.find("span").text(likes + 1);
+                        repost_btn.find("span").attr("id", "unretweet-btn<?php echo $row["p_id"]; ?>");
+
+                        $(".repost-count[data-post-id='"+post_id+"']").text(response.repost_count);
+                    }
+                }
+            }).one("click", function() {
+                console.log("The tweet has already been retweet.");
+            });
+        } else if (unrepost_btn.is(":visible")) {
+            $.ajax({
+                url: "/apps/ajax/timeline/get-retweet.phtml",
+                type: "POST",
+                data: {
+                    action: "unrepost",
+                    p_id: post_id,
+                    post_user_id: post_user_id
+                },
+                success: function(response) {
+                    if (response.status == "success") {
+                        repost_btn.removeClass("unretweet-btn<?php echo $row["p_id"]; ?>").addClass("retweet-btn<?php echo $row["p_id"]; ?>");
+                        unrepost_btn.hide();
+                        var likes = parseInt(repost_btn.find("span").text());
+                        repost_btn.find("span").text(likes - 1);
+                        repost_btn.find("span").removeAttr("id");
+                        
+                        $(".repost-count[data-post-id='"+post_id+"']").text(response.repost_count);
+                    }
+                }
+            }).one("click", function() {
+                console.log("Repost cancellation has already been done.");
+            });
+        }
+    });
+</script>
+
+<script>
+    $(document).on("click", ".bookmarks-btn<?php echo $row["p_id"]; ?>, .unbookmarks-btn<?php echo $row["p_id"]; ?>", function(){
+        var post_id = $(this).data("post-id");
+        var post_user_id = <?php echo $row["id"]; ?>;
+        var bookmarks_btn = $(this).hasClass("bookmarks-btn<?php echo $row["p_id"]; ?>") ? $(this) : $(this).siblings(".bookmarks-btn<?php echo $row["p_id"]; ?>");
+        var unbookmarks_btn = $(this).hasClass("unbookmarks-btn<?php echo $row["p_id"]; ?>") ? $(this) : $(this).siblings(".unbookmarks-btn<?php echo $row["p_id"]; ?>");
+        
+        if (bookmarks_btn.is(":visible")) {
+            $.ajax({
+                url: "/apps/ajax/timeline/get-bookmarks.phtml",
+                type: "POST",
+                data: {
+                    action: "like",
+                    p_id: post_id,
+                    post_user_id: post_user_id
+                },
+                success: function(response) {
+                    if (response.status == "success") {
+                        bookmarks_btn.removeClass("bookmarks-btn<?php echo $row["p_id"]; ?>").addClass("unbookmarks-btn<?php echo $row["p_id"]; ?>");
+                        unbookmarks_btn.show();
+                        var likes = parseInt(bookmarks_btn.find("strong").text());
+                        bookmarks_btn.find("strong").text(likes + 1);
+                        bookmarks_btn.find("strong").attr("id", "unbookmarks-btn<?php echo $row["p_id"]; ?>");
+
+                        $(".like-count[data-post-id='"+post_id+"']").text(response.bookmarks_count);
+                    }
+                }
+            }).one("click", function() {
+                console.log("The tweet has already been liked.");
+            });
+        } else if (unbookmarks_btn.is(":visible")) {
+            $.ajax({
+                url: "/apps/ajax/timeline/get-bookmarks.phtml",
+                type: "POST",
+                data: {
+                    action: "unlike",
+                    p_id: post_id,
+                    post_user_id: post_user_id
+                },
+                success: function(response) {
+                    if (response.status == "success") {
+                        bookmarks_btn.removeClass("unbookmarks-btn<?php echo $row["p_id"]; ?>").addClass("bookmarks-btn<?php echo $row["p_id"]; ?>");
+                        unbookmarks_btn.hide();
+                        var likes = parseInt(bookmarks_btn.find("strong").text());
+                        bookmarks_btn.find("strong").text(likes - 1);
+                        bookmarks_btn.find("strong").removeAttr("id");
+                        
+                        $(".like-count[data-post-id='"+post_id+"']").text(response.bookmarks_count);
+                    }
+                }
+            }).one("click", function() {
+                console.log("Like cancellation has already been done.");
+            });
+        }
+    });
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        $(".vipubbox-img<?php echo $row["p_id"]; ?>").click(function(e) {
+            e.stopPropagation();
+            $(".vipubbox-overlay").remove();
+
+            var largeImageSrc = $(this).data("vipubimage");
+
+            var vipublightboxHTML = '<div class="vipubbox-overlay">';
+            vipublightboxHTML += ' <span class="close-vipublight-box"><i class="bi bi-x-lg"></i></span>';
+
+            vipublightboxHTML += '<div class="vipubbox-content">';
+            vipublightboxHTML += '<img src="' + largeImageSrc + '">';
+            vipublightboxHTML += '<div class="vipubbox-image-content-post-info-buttons">';
+            vipublightboxHTML += '</div>'; // .vipubbox-image-content-post-info-buttons
+            vipublightboxHTML += '</div>'; // .vipubbox-content
+            vipublightboxHTML += '</div>'; // .vipubbox-overlay
+
+            $("body").append(vipublightboxHTML);
+
+        $(".close-vipublight-box").click(function(e) {
+            e.stopPropagation();
+            $(this).closest(".vipubbox-overlay").remove();
+        });
+    });
+    $(document).click(function(e) {
+        var vipubbox = $(".vipubbox-overlay");
+        if (!vipubbox.is(e.target) && vipubbox.has(e.target).length === 0) {
+            vipubbox.remove();
+        }
+    });
+});
+</script>
+
+<?php if(!isset($_SESSION["user_id"])): ?>
+    <script>
+            $('.vipubbox-reply<?php echo $row["p_id"]; ?>').on('click', function(event) {
+            event.preventDefault();
+            var vipubSM_msgIcon = '<i class="bi bi-exclamation-triangle"></i>';
+            var vipubSM_msgText = '<?php echo vipub_translate("timeline_new_reply_popup_no_user_session"); ?>';
+            var vipubSM_alertTimeout = 3000;
+            vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+        });
+    </script>
+<?php endif; ?>
+
+<script>
+    const lazyImages = document.querySelectorAll('.vipubbox-img');
+
+    const lazyLoad = target => {
+        const io = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const src = img.getAttribute('data-vipubimage');
+
+                    if (!img.src) {
+                        img.setAttribute('src', src);
+                        img.classList.add('fade-in');
+                    }
+
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        io.observe(target);
+    };
+
+    lazyImages.forEach(lazyLoad);
+</script>
+
+<script>
+    $(document).ready(function() {
+        $(".retweet-btn<?php echo $row["p_id"]; ?>").click(function() {
+            var icon = $(this).find("i");
+            
+            if (icon.hasClass("unretweet-class")) {
+                icon.removeClass("unretweet-class");
+                icon.removeClass("bi-arrow-left-right");
+                icon.addClass("bi bi-arrow-left-right");
+                var vipubSM_msgIcon = '<i class="bi bi-arrow-left-right"></i>';
+                var vipubSM_msgText = "The retweet has been withdrawn.";
+                var vipubSM_alertTimeout = 700;
+                vipubSM.showAlert(vipubSM_msgIcon, vipubSM_msgText, vipubSM_alertTimeout);
+            } else {
+                icon.addClass("unretweet-class");
+                icon.removeClass("bi-arrow-left-right");
+                icon.addClass("bi bi-arrow-left-right unretweet-class");
+            }
+        });
+    });
+</script>
+
+<script>
+    const video<?php echo $row["p_id"]; ?> = document.getElementById('custom-video<?php echo $row["p_id"]; ?>');
+    const playIcon<?php echo $row["p_id"]; ?> = document.getElementById('play-icon<?php echo $row["p_id"]; ?>');
+    const playOverlay<?php echo $row["p_id"]; ?> = document.getElementById('play-overlay<?php echo $row["p_id"]; ?>');
+    const muteIcon<?php echo $row["p_id"]; ?> = document.getElementById('mute-icon<?php echo $row["p_id"]; ?>');
+
+    playOverlay<?php echo $row["p_id"]; ?>.addEventListener('click', togglePlay<?php echo $row["p_id"]; ?>);
+    muteIcon<?php echo $row["p_id"]; ?>.addEventListener('click', toggleMute<?php echo $row["p_id"]; ?>);
+
+    function togglePlay<?php echo $row["p_id"]; ?>() {
+        if (video<?php echo $row["p_id"]; ?>.paused || video<?php echo $row["p_id"]; ?>.ended) {
+            video<?php echo $row["p_id"]; ?>.play();
+        } else {
+            video<?php echo $row["p_id"]; ?>.pause();
+        }
+    }
+
+    function toggleMute<?php echo $row["p_id"]; ?>() {
+        video<?php echo $row["p_id"]; ?>.muted = !video<?php echo $row["p_id"]; ?>.muted;
+        updateMuteIcon<?php echo $row["p_id"]; ?>();
+    }
+
+    function updatePlayIcon<?php echo $row["p_id"]; ?>() {
+        if (video<?php echo $row["p_id"]; ?>.paused) {
+            playIcon<?php echo $row["p_id"]; ?>.style.display = 'block';
+        } else {
+            playIcon<?php echo $row["p_id"]; ?>.style.display = 'none';
+        }
+    }
+
+    function updateMuteIcon<?php echo $row["p_id"]; ?>() {
+        if (video<?php echo $row["p_id"]; ?>.muted) {
+            muteIcon<?php echo $row["p_id"]; ?>.classList.remove('bi-volume-up');
+            muteIcon<?php echo $row["p_id"]; ?>.classList.add('bi-volume-mute');
+        } else {
+            muteIcon<?php echo $row["p_id"]; ?>.classList.remove('bi-volume-mute');
+            muteIcon<?php echo $row["p_id"]; ?>.classList.add('bi-volume-up');
+        }
+    }
+
+    video<?php echo $row["p_id"]; ?>.addEventListener('click', togglePlay<?php echo $row["p_id"]; ?>);
+    video<?php echo $row["p_id"]; ?>.addEventListener('play', updatePlayIcon<?php echo $row["p_id"]; ?>);
+    video<?php echo $row["p_id"]; ?>.addEventListener('pause', updatePlayIcon<?php echo $row["p_id"]; ?>);
+    video<?php echo $row["p_id"]; ?>.addEventListener('volumechange', updateMuteIcon<?php echo $row["p_id"]; ?>);
+
+    video<?php echo $row["p_id"]; ?>.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+    });
+
+    video<?php echo $row["p_id"]; ?>.addEventListener('volumechange', () => {
+        updateMuteIcon<?php echo $row["p_id"]; ?>();
+    });
+</script>
+
+<script>
+$(document).ready(function() {
+    $(".bookmarks-btn<?php echo $row["p_id"]; ?>").click(function() {
+        var icon = $(this).find("i");
+
+        if (icon.hasClass("bi-bookmark")) {
+            icon.removeClass("bi-bookmark").addClass("bi-bookmark-fill post-unbookmarks");
+        } else if (icon.hasClass("bi-bookmark-fill") && icon.hasClass("post-unbookmarks")) {
+            icon.removeClass("bi-bookmark-fill post-unbookmarks").addClass("bi-bookmark");
+        }
+    });
+});
+</script>

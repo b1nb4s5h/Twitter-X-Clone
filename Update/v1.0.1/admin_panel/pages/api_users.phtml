@@ -1,0 +1,98 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>API requests used</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">API functions</li>
+          <li class="breadcrumb-item active">API users</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Users with <strong>API access active or pending access permission</strong></h5>
+              <p>
+              The table below lists which users have access to which API services for you.
+              <br>
+              <br>
+              <strong><small>
+              Please note that "API Secret Key and API Private Key" in this table are available on your website and the user can access your access API service and can use it directly on their own website or on the mobile application they are developing. In order for your API service to be healthier, create a page called "API Terms of Use" and "absolutely" share with your users for what purpose and for what permissions your API services can be used.<br><br>
+
+              If the "API Usage status" control in the table is "Active", the user can use this API service, if "Disabled" cannot use the API service, if "Waiting for access", the user is waiting for permission from the administrator.
+
+              <br>
+              <br>
+              <small style="font-size:13px;">If an API service status is not "Active", under no circumstances will anyone be able to use your API service.</small><br><br>
+
+              <?php echo $secret_key = bin2hex(random_bytes(10)); ?>
+              </small></strong>
+              </p>
+
+              <table class="table datatable" style="font-size: 14px !important;">
+                <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>User IP</th>
+                    <th>Type</th>
+                    <th>Secret key</th>
+                    <th>Private key</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+
+                    $sql = "SELECT au_id, api_user_id, api_user_ip, api_usage_type, api_secret_key, api_private_key, api_status FROM vipub_api_users";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) { ?>
+
+                    <tr>
+                        <td scope="row">
+                            <a href="<?php echo vipub_link("admin_panel/edit_user?edit=".$row["api_user_id"]); ?>">
+                                <span class="badge bg-dark">
+                                    <?php echo $row["api_user_id"]; ?>
+                                </span>
+                            </a>
+                        </td>
+                        <td><?php echo $row["api_user_ip"]; ?></td>
+                        <td><?php echo $row["api_usage_type"]; ?></td>
+                        <td><?php echo $row["api_secret_key"]; ?></td>
+                        <td><?php echo $row["api_private_key"]; ?></td>
+                        <td>
+                            <?php if($row["api_status"]=="1"): ?>
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+                            <?php elseif($row["api_status"]=="2"): ?>
+                                <span class="badge bg-danger">
+                                    Disabled
+                                </span>
+                            <?php elseif($row["api_status"]=="3"): ?>
+                                <span class="badge bg-info">
+                                    Access wait
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    
+                    <?php } } ?>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>

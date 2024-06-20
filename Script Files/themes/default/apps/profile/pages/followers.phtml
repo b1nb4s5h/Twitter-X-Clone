@@ -1,0 +1,21 @@
+<?php 
+vipub_template("main/sidebar/left-sidebar");
+$conn = vipubConnectDatabase(); 
+$uname = htmlspecialchars(trim($_GET["username"]));
+$fid = htmlspecialchars(trim($_GET["profuname"]));
+?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        <div class="margin-bottom-connection-people"></div>
+        <div class="connection-people-conn">
+            <h6>
+                <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                <?php echo $fid; ?><?php echo vipub_translate("user_profile_following_followers_title_2"); ?></h6>
+            <div id="followers-page-timeline"></div>
+            <div class="suggested-page-bottom-footer">
+                <?php echo vipub_rightsidebar_footer(); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php vipub_template("profile/script/vipub.master.script"); ?>

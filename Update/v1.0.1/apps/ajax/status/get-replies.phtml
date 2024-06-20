@@ -1,0 +1,34 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+if (isset($_POST['post_id'])) {
+    $post_id = $_POST['post_id'];
+    $sql = "SELECT r.*, u.* FROM vipub_posts r JOIN vipub_users u ON r.user_id = u.id WHERE r.reply_post_id = ? ORDER BY r.post_joined DESC";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $post_id); // 'i' int türü için kullanılır
+  
+    if (mysqli_stmt_execute($stmt)) {
+      $result = mysqli_stmt_get_result($stmt);
+  
+      if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+          $postId = $row["p_id"];
+          $userId = $row["user_id"];
+          $username = $row["username"];
+          $fullname = $row["fullname"];
+          $avatar = $row["avatar"];
+          $content = $row["content_post"];
+          require("../../../themes/default/apps/timeline/content.phtml");
+        }
+      } else {
+        vipub_template("status/include/no-reply");
+      }
+    } else {
+      die("Hata: " . mysqli_error($conn));
+    }
+  
+    mysqli_stmt_close($stmt);
+  } else {
+    die("Post ID belirtilmedi.");
+  }
+  
+  mysqli_close($conn);

@@ -1,0 +1,108 @@
+<?php $settings = vipub_site_settings(); $smtp_settings = vipub_smtp(); ?>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Packages and prices🫰</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Premium</li>
+          <li class="breadcrumb-item active">Packages and prices</li>
+        </ol>
+      </nav>
+    </div>
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12 d-flex">
+
+            <div class="card" style="margin-right: 10px;">
+                <div class="card-body" style="color: #535353; font-size: 14px">
+                <h5 class="card-title" style="color:#0f1419; font-size: 15px;">What does <strong>it do?</strong></h5>
+                The "<strong>Vipub Blue</strong>" feature offers an exclusive premium upgrade for your users. This upgrade offers some miscellaneous features such as accounts having a <strong>blue checkmark</strong>.
+                <br>
+                <h5 class="card-title" style="color:#0f1419; font-size: 15px;">What does this feature <strong>currently include?</strong></h5>
+                <strong>-</strong> Possibility to edit your post (<strong style="color:#1da1f1">one time per post</strong>)<br>
+                <strong>-</strong> Longer posts (<strong style="color:#1da1f1">Set a much higher value than the current post character limit for premium users to allow them to create longer posts.</strong>)<br>
+                <strong>-</strong> Blue check mark for accounts (<strong style="color:#1da1f1">Accounts earn a verified icon.</strong>)
+                </div>
+
+                
+                    <div class="card-body" style="font-size: 14px;">
+                    
+                        <h5 class="card-title" style="color:#0f1419; font-size: 15px;">Paid subscription <strong>system</strong></h5>
+                        <?php if($settings["premium_verified"]=="1"): ?>
+                        The paid subscription system is currently active. "<a href="<?php echo vipub_link("admin_panel/general_settings"); ?>">Click</a>" to change this status.
+                        <?php else: ?>
+                            The paid subscription system is currently disabled. "<a href="<?php echo vipub_link("admin_panel/general_settings"); ?>">Click</a>" to change this status.
+                        <?php endif; ?>
+                    </div>
+                
+            </div>
+
+            <div class="card">
+                <div class="card-body" style="font-size: 14px;">
+                    <h5 class="card-title" style="color:#0f1419; font-size: 15px;">How do <strong>plans work?</strong></h5>
+                    Packages currently in effect are listed at the bottom. These packages offer <strong>"Monthly and Annual"</strong> renewable subscriptions to users on your site.
+                    <br>
+                    <br>
+                    When your users want to subscribe to any of these packages, they will be able to access various features. For example, as with <strong>Twitter Blue</strong>, one of the most important features is a <strong>blue tick icon</strong> for existing accounts.
+                    <br>
+                    <br>
+                    When your users make a subscription decision among the available packages, the fee you have set for the packages will be deducted from the user's <strong>current wallet balance</strong>. <br>
+                    If a user wishes to have <strong>Premium features </strong> and does not have sufficient funds in their <strong>current wallet</strong>, they will not be able to continue the subscription and will need to add funds to <strong>their wallet</strong>.
+                    <br>
+                    <br>
+                    When the subscription period ends <strong>"Monthly or annually"</strong>, the automatic renewal fee is deducted from <strong>"the balance in the user's current wallet"</strong> and the subscription process is repeated. 
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><strong>All packages</strong></h5>
+              <p>The information below lists your current subscription plans and the table shows <strong>"Package name and package price"</strong>. By clicking the <strong>"Edit"</strong> button, you can update the name and price of the relevant package.</p>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Package name</th>
+                    <th scope="col">Package Price</th>
+                    <th scope="col">Edit package</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $sql = "SELECT pack_id, package_name, package_price FROM  vipub_premium_package";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) { ?>
+
+                    <tr>
+                        <th scope="row"><a href="<?php echo vipub_link("admin_panel/premium_package_edit?edit=".$row["pack_id"]); ?>"><?php echo $row["pack_id"]; ?></a></th>
+                        <td><?php echo vipub_croptxt($row["package_name"], 0, 15); ?></td>
+                        <td><?php echo $row["package_price"]; ?> <?php echo $settings["site_currency"]; ?></td>
+                        <td><a href="<?php echo vipub_link("admin_panel/premium_package_edit?edit=".$row["pack_id"]); ?>">
+                        Edit the package</a></td>
+                    </tr>
+                    
+                    <?php } } ?>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+</main>

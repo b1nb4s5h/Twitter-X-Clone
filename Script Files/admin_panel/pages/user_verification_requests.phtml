@@ -1,0 +1,207 @@
+<?php
+if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
+    $user_id = $_GET["edit"];
+    $sql = "SELECT * FROM vipub_users WHERE verified='2' AND id=$user_id";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc(); ?>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>User account</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item active">User verification request decision</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+              <img src="<?php echo vipub_link($row["avatar"]); ?>" alt="Profile" class="rounded-circle">
+              <h2><?php echo vipub_croptxt($row["fullname"], 0, 25); ?></h2>
+              <h3>@<?php echo $row["username"]; ?></h3>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title" style="font-weight: 700;">User verification request decision</h5>
+
+                  
+
+                  <form action="" method="POST" id="updateForProfile">
+                  <div class="row">
+                    <div class="row mb-3">
+                        <label for="verified" class="col-md-4 col-lg-3 col-form-label">Verification decision</label>
+                        <div class="col-md-8 col-lg-9">
+                            <select class="form-select" name="verified" id="verified" required>
+                                <option value="0" <?php if($row["verified"]=="0"): ?>selected<?php endif; ?>>
+                                    <?php if($row["verified"]=="0"): ?>Valid: <?php endif; ?>
+                                        Reject verification request
+                                    </option>
+                                <option value="1" <?php if($row["verified"]=="1"): ?>selected<?php endif; ?>>
+                                    <?php if($row["verified"]=="1"): ?>Valid: <?php endif; ?>
+                                        Confirm verification request
+                                </option>
+                                <option <?php if($row["verified"]=="2"): ?>disabled value="" selected<?php endif; ?>>
+                                    <?php if($row["verified"]=="2"): ?>Valid: <?php endif; ?>
+                                        Submitted a verification request.
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="verified" class="col-md-4 col-lg-3 col-form-label">Verification category</label>
+                        <div class="col-md-8 col-lg-9">
+                            <select class="form-select" name="verified_category" id="verified_category">
+                                <?php if($_GET["category"]=="1"): ?>
+                                    <option selected value="1"><?php echo vipub_translate("new_verified_account_reguested_category_1"); ?></option>
+                                <?php endif; ?>
+                                <?php if($_GET["category"]=="2"): ?>
+                                    <option selected value="2"><?php echo vipub_translate("new_verified_account_reguested_category_2"); ?></option>
+                                <?php endif; ?>
+                                <?php if($_GET["category"]=="3"): ?>
+                                    <option selected value="3"><?php echo vipub_translate("new_verified_account_reguested_category_3"); ?></option>
+                                <?php endif; ?>
+                        
+                                <?php if($_GET["category"]=="4"): ?>
+                                    <option selected value="4"><?php echo vipub_translate("new_verified_account_reguested_category_4"); ?></option>
+                                <?php endif; ?>
+                                <?php if($_GET["category"]=="5"): ?>
+                                    <option selected value="5"><?php echo vipub_translate("new_verified_account_reguested_category_5"); ?></option>
+                                <?php endif; ?>
+                                <?php if($_GET["category"]=="6"): ?>
+                                    <option selected value="6"><?php echo vipub_translate("new_verified_account_reguested_category_6"); ?></option>
+                                <?php endif; ?>
+                                <?php if($_GET["category"]=="7"): ?>
+                                    <option selected value="7"><?php echo vipub_translate("new_verified_account_reguested_category_7"); ?></option>
+                                <?php endif; ?>
+                                
+                            </select>
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="text-center" style="margin-top:40px; position: relative;">
+                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                      <button type="submit" style="width: 100%;" class="btn btn-primary" name="saveVerified">Save Changes</button>
+                      <?php else: ?>
+                            <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                        <?php endif; ?>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <?php
+  } else {
+    error_reporting(0);
+        echo '
+        <div class="row mb-3">
+            <section class="section">
+                    <div class="row" style="padding: 50px; position: relative; margin-top: 300px;">
+                    <div style="margin-left: 300px; top: -150px; position:relative;" class="text-center;">
+                    <h5>The decision has already been made for this user. <br>(Verified account) ⚡️</h5>
+                    <span>
+                    <a href="/admin_panel/verification_requests" style="padding: 9px 25px; font-size: 14px; font-weight: 700; color: #fff; background: #1da1f1; cursor: pointer; border:none; outline:none; text-decoration: none; border-radius: 30px; top: 10px; position:relative;">
+                    Click to go back
+                    </a>
+                    </span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    ';
+}
+} else {
+    error_reporting(0);
+    echo '
+    <div class="row mb-3">
+        <section class="section">
+                <div class="row" style="padding: 50px; position: relative; margin-top: 300px;">
+                <div style="margin-left: 300px; top: -150px; position:relative;" class="text-center;">
+                <h5>The unique ID of the user to be decided is not valid. ✍️</h5>
+                <span>
+                <a href="/admin_panel/verification_requests" style="padding: 9px 25px; font-size: 14px; font-weight: 700; color: #fff; background: #1da1f1; cursor: pointer; border:none; outline:none; text-decoration: none; border-radius: 30px; top: 10px; position:relative;">
+                Click to go back
+                </a>
+                </span>
+                </div>
+            </div>
+        </section>
+    </div>
+';
+}
+?>
+
+<?php
+if(isset($_POST["saveVerified"])) {
+    $id = $_GET["edit"];
+    $verified = $_POST["verified"];
+    $verified_category = $_POST["verified_category"];
+    
+    $stmt = $conn->prepare("UPDATE vipub_users SET verified=?, verified_category=? WHERE id=?");
+    $stmt->bind_param("sii", $verified, $verified_category, $id);
+    $stmt->execute();
+
+    $stmt = $conn->prepare("DELETE FROM vipub_verified WHERE verified_uid=?");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    
+    if ($stmt->affected_rows > 0) {
+
+        if($verified==1){
+            $sender_id = $_SESSION["user_id"];
+            $type = "verified";
+
+            $notifsverfy = "INSERT INTO vipub_notifs (user_id, sender_id, type) VALUES ('$id','$sender_id','$type')";
+            $result = mysqli_query($conn, $notifsverfy);
+        }
+        
+        // başarılı mesajını gösterme
+        ?>
+        <script>
+        new Noty({
+            type: 'success',
+            text: 'Your verification decision has been updated.',
+            timeout: 200,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/verification_requests";
+                }
+            }
+        }).show();
+        </script>
+        <?php
+    } else {
+        echo "Bir hata oluştu: " . $conn->error;
+    }
+}
+?>

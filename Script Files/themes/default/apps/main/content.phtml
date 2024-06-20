@@ -1,0 +1,165 @@
+<?php $conn = vipubConnectDatabase(); $settings = vipub_site_settings2($conn); ?>
+<!doctype html>
+<html lang="<?php echo vipub_user_acceptLanguage(); ?>" prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="title" content="<?php echo $settings["site_title"]; ?>"/>
+    <meta name="description" content="<?php echo $settings["site_description"]; ?>"/>
+    <meta name="keywords" content="<?php echo $settings["site_keywords"]; ?>"/>
+    <meta name="image" content="<?php echo vipub_link($settings["site_favicon"]); ?>"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1DA1F1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="layoutmode" content="fitscreen/standard">
+    <meta name="imagemode" content="force">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="content-language" content="<?php echo vipub_user_acceptLanguage(); ?>">
+
+    <!--Share Vipub with previews on other social media sites-->
+    <meta name="og:title" content="<?php echo $settings["site_title"]; ?>">
+    <meta name="og:description" content="<?php echo $settings["site_description"]; ?>">
+    <meta name="og:image" content="<?php echo vipub_link($settings["site_favicon"]); ?>">
+
+    <!--Show preview card when sharing Vipub on Twitter-->
+    <meta name="twitter:card" content="summary"></meta>
+    <meta name="twitter:title" content="<?php echo $settings["site_title"]; ?>">
+    <meta name="twitter:description" content="<?php echo $settings["site_description"]; ?>">
+    <meta name="twitter:image" content="<?php echo vipub_link($settings["site_favicon"]); ?>">
+
+    <!--Vipub Favicon-->
+    <link rel="icon" href="<?php echo vipub_link($settings["site_favicon"]); ?>" type="image/png">
+    <link rel="icon" sizes="192x192" href="<?php echo vipub_link($settings["site_favicon"]); ?>"> 
+    <link rel="icon" sizes="128x128" href="<?php echo vipub_link($settings["site_favicon"]); ?>"> 
+    
+    <!--Website style css and CDNs used in Vipub-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
+    <link href="<?php echo vipub_template_master("bootstrap/bootstrap.min.css"); ?>" rel="stylesheet">
+    <link id="style" rel="stylesheet" type="text/css" href="<?php if(isset($_SESSION["user_id"])): ?><?php $theme = vipub_my_user_info(); ?><?php echo vipub_template_master("style/" . $theme["theme_color"] . ".css?temp="); ?><?php echo rand(41232,982138123); ?><?php else: ?><?php echo vipub_template_master("style/".$settings["default_theme"].".css?temp="); ?><?php echo rand(41232,982138123); ?><?php endif; ?>">
+    
+    <!--Javascript file paths and cdns used in Vipub-->
+    <script src="<?php echo vipub_template_master("js/jquery-3.6.0.js"); ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <?php echo vipub_dynamicTitle(); ?>
+  </head>
+  <body data-vipub-side="body-regth" data-vipub-page="get-contenting-now">
+    <div class="container">
+      <div class="row">
+        <?php vipub_dynamic_spaAjax(); ?>
+      </div>
+    </div>
+      <script>
+        lightbox.option({
+            'resizeDuration': 500,
+            'wrapAround': true
+        })
+    </script>
+    <script>
+    $(document).on('click', function(e) {
+        if ($(e.target).hasClass('site-language-select') || $(e.target).hasClass('welcome-dropdown-menu')) {
+            return;
+        }
+        $('.welcome-dropdown-menu').hide();
+    });
+    $('.site-language-select').click(function(e) {
+        e.preventDefault();
+        $('.welcome-dropdown-menu').toggle();
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('.welcome-dropdown-menu').on('change', function() {
+            var lang = $(this).val();
+            var url = window.location.href.split('?')[0];
+            window.location.href = url + '?lang=' + lang;
+        });
+    });
+</script>
+
+    <script>
+      window.onload = function() {
+        var svgElement = document.getElementById('back-page');
+
+        if (svgElement) {
+          svgElement.addEventListener('click', function() {
+            var backPageUrl = '<?php echo vipub_back_page(); ?>';
+            
+            if (backPageUrl) {
+              window.location.href = backPageUrl;
+            }
+          });
+        }
+      };
+    </script>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>This is the Tweet Intent Modal</p>
+    </div>
+  </div>
+
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+      const modal = document.getElementById("myModal");
+      const closeModal = document.getElementsByClassName("close")[0];
+
+      // URL kontrolü ve modal açma
+      const url = window.location.href;
+      if (url.includes("/compose/post")) {
+        modal.style.display = "block";
+      }
+
+      closeModal.addEventListener("click", function() {
+        modal.style.display = "none";
+        history.pushState({}, "", "/home");
+      });
+
+      window.addEventListener("click", function(event) {
+        if (event.target === modal) {
+          modal.style.display = "none";
+          history.pushState({}, "", "/home");
+        }
+      });
+    });
+    </script>
+
+      <div id="vipubSM_alert" class="vipubSM_alert">
+        <div class="vipubSM_content">
+          <div class="vipubSM_icon"></div>
+          <div class="vipubSM_text"></div>
+        </div>
+      </div>
+
+      <script>
+        var vipubSM = {
+            config: {
+                alertBox: $("#vipubSM_alert"),
+                iconClass: "bi",
+                fadeInDuration: 300,
+                fadeOutDuration: 300,
+            },
+            showAlert: function (icon, text, closeTimeout) {
+                var alertBox = this.config.alertBox;
+                alertBox.find(".vipubSM_icon").html(icon);
+                alertBox.find(".vipubSM_text").text(text);
+                alertBox.fadeIn(this.config.fadeInDuration).delay(closeTimeout).fadeOut(this.config.fadeOutDuration);
+            },
+        };
+      </script>
+    <?php vipub_template("main/script/vipub.master.script"); ?>
+    <script src="<?php echo vipub_template_master("bootstrap/bootstrap.bundle.min.js"); ?>"></script>
+    <script src="<?php echo vipub_template_master("js/nsfwjs.min.js"); ?>"></script>
+  </body>
+</html>

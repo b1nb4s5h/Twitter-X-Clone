@@ -1,0 +1,23 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: /welcome");
+  exit;
+}
+
+$count = 0;
+
+if(isset($_SESSION["user_id"])) {
+  $user_id = $_SESSION["user_id"];
+  
+  $query = "SELECT COUNT(DISTINCT CONCAT(sender_id, '_', receiver_id)) as count FROM vipub_messages WHERE receiver_id = '$user_id' AND sender_id != '$user_id' AND notifs_status = 0";
+  $result = mysqli_query($conn, $query);
+
+  if(mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $count = $row["count"];
+  }
+}
+
+echo json_encode(array("count" => $count));

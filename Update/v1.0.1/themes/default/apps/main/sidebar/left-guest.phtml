@@ -1,0 +1,27 @@
+<?php $settings = vipub_site_settings(); ?>
+<div class="col-md-3">
+    <div class="left-sidebar">
+        <div class="site-logo">
+            <a href="<?php echo vipub_site_url("welcome/login"); ?>">
+                <?php if($settings["default_theme"]=="master.white.theme"): ?>
+                    <img src="<?php echo vipub_link($settings["site_white_logo"]); ?>">
+                <?php endif; ?>
+                <?php if($settings["default_theme"]=="master.dark.theme"): ?>
+                    <img src="<?php echo vipub_link($settings["site_dark_logo"]); ?>">
+                <?php endif; ?>
+            </a>
+        </div>
+        
+        <div class="sidebar-menu">
+            <span class="VPSM-social" data-vipub-url="<?php echo vipub_site_url("welcome/login"); ?>">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M12 9c-2.209 0-4 1.791-4 4s1.791 4 4 4 4-1.791 4-4-1.791-4-4-4zm0 6c-1.105 0-2-.895-2-2s.895-2 2-2 2 .895 2 2-.895 2-2 2zm0-13.304L.622 8.807l1.06 1.696L3 9.679V19.5C3 20.881 4.119 22 5.5 22h13c1.381 0 2.5-1.119 2.5-2.5V9.679l1.318.824 1.06-1.696L12 1.696zM19 19.5c0 .276-.224.5-.5.5h-13c-.276 0-.5-.224-.5-.5V8.429l7-4.375 7 4.375V19.5z"></path></g></svg>
+                <?php echo vipub_translate("welcome_page_text_6"); ?>
+            </span>
+
+            <span class="VPSM-social" data-vipub-url="<?php echo vipub_site_url("search"); ?>">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.09 3.098L9.72 7h5.99l.39-4.089 1.99.187L17.72 7h3.78v2h-3.97l-.56 6h3.53v2h-3.72l-.38 4.089-1.99-.187.36-3.902H8.78l-.38 4.089-1.99-.187L6.77 17H2.5v-2h4.46l.56-6H3.5V7h4.21l.39-4.089 1.99.187zM14.96 15l.56-6H9.53l-.56 6h5.99z"></path></g></svg>
+                <?php echo vipub_translate("search"); ?>
+            </span>
+        </div>
+    </div>
+</div>

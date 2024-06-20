@@ -1,0 +1,13 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^6.8",
+        "swiftmailer/swiftmailer": "^6.3",
+        "google/auth": "^1.25",
+        "stichoza/google-translate-php": "^5.1",
+        "slim/slim": "4.*",
+        "nikic/php-parser": "^4.15",
+        "sunra/php-simple-html-dom-parser": "^1.5",
+        "voku/simple_html_dom": "^4.8",
+        "onesignal/onesignal-php-sdk": "^2.10"
+    }
+}

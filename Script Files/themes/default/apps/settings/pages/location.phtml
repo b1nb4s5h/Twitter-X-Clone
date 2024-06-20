@@ -1,0 +1,65 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        
+        <div class="site-header-box">
+            <h5>
+            <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+            <?php echo vipub_translate("account_settings"); ?></h5>
+        </div>
+
+        <div class="account-settings-page">
+            
+            <div class="settings-page-container">
+                <div class="settings-page-title">
+                    <h5><?php echo vipub_translate("account_information"); ?></h5>
+                </div>
+
+                <div class="setpage-save-info">
+                    <?php echo vipub_translate("account_settings_menu_40"); ?>
+                </div>
+
+                <div class="form-save-element-value">
+                    <form id="change-location">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="location" id="location" value="<?php if($row["user_location"]==NULL): ?><?php else: ?> <?php echo $row["user_location"]; ?> <?php endif; ?>" placeholder="<?php echo vipub_translate("account_settings_menu_41"); ?>">
+                            <label for="location"><?php echo vipub_translate("account_settings_menu_41"); ?></label>
+                        </div>
+                        <button type="submit" class="location-save"><?php echo vipub_translate("account_settings_menu_27"); ?></button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+    $('#change-location').submit(function(event) {
+        event.preventDefault(); 
+        $.ajax({
+            type: 'POST',
+            url: '/apps/ajax/settings/location.phtml',
+            data: {
+                location: $('#location').val()
+            },
+            success: function(response) {
+                $('#location').val(response);
+                new Noty({
+                    type: 'success',
+                    text: '<?php echo vipub_translate("settings_page_save_value_desc_14"); ?>',
+                    timeout: 1500
+                }).show();
+            },
+            error: function(response) {
+                alert('Hata oluştu: ' + response.responseText);
+            }
+        });
+    });
+});
+</script>
+
+
+<?php vipub_template("main/sidebar/right-sidebar"); ?>

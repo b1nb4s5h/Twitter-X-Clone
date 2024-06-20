@@ -1,0 +1,311 @@
+<?php if(isset($_SESSION["user_id"])): ?>
+<?php $vipub["account"] = vipub_my_user_info(); $settings = vipub_site_settings(); ?>
+<div id="createFormContainer">
+  <form id="vipub-new-post" enctype="multipart/form-data">
+      <div class="homepage-new-post">
+          <a href="<?php echo vipub_link("@".$vipub["account"]["username"]); ?>">
+              <img src="<?php echo vipub_link($vipub["account"]["avatar"]); ?>">
+          </a>
+          <textarea name="content_post" id="content_post" placeholder="<?php echo vipub_translate("whats_going_on"); ?>" class="vipubEmojiContent"></textarea>
+          <span id="vipub-counter"></span>
+      </div>
+
+      <?php if($settings["upload_image"]=="Active"): ?>
+      <div class="displayImage">
+          <span class="removeImage">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg>
+          </span>
+      </div>
+      <?php endif; ?>
+
+      <?php if($settings["upload_video"]=="Active"): ?>
+          <div class="displayVideo" id="displayVideoClose">
+              <span class="removeVideo" style="display:none">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg>
+              </span>
+              <video id="video_preview" controls playsinline style="display:none;"></video>
+          </div>
+      
+          <div id="loading-screen" style="display: none;">
+              <div id="loading-bar" style="background-color: #1da1f2; height: 20px; width: 0; border-radius: 10px;">
+                  <span id="loading-percent" style="color: white; font-size: 15px; font-weight: 700; user-select: none;"></span>
+              </div>
+          </div>
+      <?php endif; ?>
+
+      <label for="post_globale_check" >
+        <span class="post_globale_check" id="post_globale_check">
+          <i class="bi bi-globe-americas"></i>
+            <select name="post_globale_check" class="form-select" id="post_globale_check">
+              <option value="1">
+                <?php echo vipub_translate("set_new_post_privacy_1"); ?>
+              </option>
+
+              <option value="2">
+                <?php echo vipub_translate("set_new_post_privacy_2"); ?>
+              </option>
+            </select>
+        </span>
+      </label>
+
+
+      <div class="share-post-selection">
+          <?php if($settings["upload_image"]=="Active"): ?>
+              <label for="media">
+                <span id="add_image">
+                  <i class="bi bi-image-fill"></i>
+                </span>
+              </label>
+              <input type="file" name="add_image" id="media" style="display: none;">
+          <?php endif; ?>
+          
+          <?php if($settings["upload_video"]=="Active"): ?>
+              <label for="add_video_input">
+                <span id="add_video" onclick="document.getElementById('add_video_input').click();">
+                    <i class="bi bi-camera-reels"></i>
+                </span>
+                <input type="file" name="add_video" id="add_video_input" style="display:none;">
+              </label>
+          <?php endif; ?>
+
+          <label for="vipubSelect-emoji">
+            <span class="vipubSelect-emoji" id="vipubSelect-emoji">
+                <i class="bi bi-emoji-sunglasses vipubSelect-emoji" id="vipubSelect-emoji"></i>
+            </span>
+          </label>
+
+          <label for="vipubGetGif">
+            <span id="vipubGetGif">
+                <i class="bi bi-filetype-gif"></i>
+            </span>
+          </label>
+
+            <div id="gifDropdown" style="display: none;">
+              <div class="gifTitleDrop">
+                  <h5> 
+                  <img src="<?php echo vipub_link($settings["site_white_logo"]); ?>">
+                  <small>/trending</small> <strong>GIFs</strong></h5>
+              </div>
+              <input type="text" name="gif_image" id="gif_image" style="display: none;">
+            </div>
+
+          <button type="submit" class="share-ew-post" id="share-ew-post"><?php echo vipub_translate("post_share"); ?></button>
+      </div>
+  </form>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var apiKey = "mj0VYQEAvOfaQ299zUXdZDvk1StBokWA";
+    var limit = 75;
+    var offset = 0;
+    var isLoading = false;
+
+    function getGifs() {
+      if (isLoading) return;
+      isLoading = true;
+
+      $.ajax({
+        url: "https://api.giphy.com/v1/gifs/trending",
+        data: {
+          api_key: apiKey,
+          limit: limit,
+          offset: offset
+        },
+        success: function(response) {
+          var gifs = response.data;
+
+          for (var i = 0; i < gifs.length; i++) {
+            var gif = gifs[i];
+            var imgSrc = gif.images.fixed_width.url;
+
+            var img = document.createElement("img");
+            img.src = imgSrc;
+
+            var listItem = document.createElement("div");
+            listItem.classList.add("gif-item");
+            listItem.appendChild(img);
+
+            $(listItem).click(function(e) {
+              e.stopPropagation();
+              var selectedGifSrc = $(this).find("img").attr("src");
+              console.log("Selected GIF: " + selectedGifSrc);
+              showSelectedGif(selectedGifSrc);
+              $("#gifDropdown").hide();
+              $("#gif_image").val(selectedGifSrc);
+            });
+
+            $("#gifDropdown").append(listItem);
+          }
+
+          offset += limit;
+          isLoading = false;
+        },
+        error: function() {
+          console.log("An error occurred while retrieving GIFs from the Giphy API.");
+          isLoading = false;
+        }
+      });
+    }
+
+    function showSelectedGif(gifSrc) {
+      $(".displayImage").empty();
+      var img = document.createElement("img");
+      img.src = gifSrc;
+      $(".displayImage").append(img);
+    }
+
+    function checkScroll() {
+      var scrollPosition = $(window).scrollTop();
+      var windowHeight = $(window).height();
+      var documentHeight = $(document).height();
+      var dropdownHeight = $("#gifDropdown").outerHeight();
+      var dropdownOffset = $("#gifDropdown").offset().top;
+
+      if (scrollPosition + windowHeight >= dropdownHeight + dropdownOffset) {
+        getGifs();
+      }
+    }
+
+    $("#vipubGetGif").click(function(e) {
+      e.stopPropagation();
+      $("#gifDropdown").toggle();
+    });
+
+    $(document).click(function() {
+      $("#gifDropdown").hide();
+    });
+
+    getGifs();
+
+    $(window).scroll(function() {
+      if ($("#gifDropdown").is(":visible")) {
+        checkScroll();
+      }
+    });
+  });
+</script>
+
+<script>
+    const svgElement = document.getElementById('add_image');
+    const inputElement = document.getElementById('media');
+
+    svgElement.addEventListener('click', () => {
+      inputElement.click();
+    });
+
+    const form = document.querySelector('#vipub-new-post');
+    const input = document.querySelector('#media');
+
+    input.addEventListener('change', () => {
+        const file = input.files[0];
+
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const display = document.querySelector('.displayImage');
+
+                display.querySelectorAll('img').forEach(img => img.remove());
+
+                const image = new Image();
+
+                image.src = reader.result;
+                display.appendChild(image);
+
+                document.querySelector('.removeImage').style.display = 'block';
+            }
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.querySelector('.removeImage').addEventListener('click', () => {
+        const display = document.querySelector('.displayImage');
+        display.querySelectorAll('img').forEach(img => img.remove());
+        document.querySelector('.removeImage').style.display = 'none';
+        input.value = null;
+    });
+
+    form.addEventListener('submit', (event) => {
+        const display = document.querySelector('.displayImage');
+        if (display.querySelector('img')) {
+            setTimeout(() => {
+                display.querySelector('img').remove();
+                document.querySelector('.removeImage').style.display = 'none';
+            }, 2000);
+        }
+        return true;
+    });
+</script>
+
+<script>
+  const fileInput = document.getElementById('add_video_input');
+  const videoPreview = document.getElementById('video_preview');
+  const removeButton = document.querySelector('.removeVideo');
+  let loadingScreen, loadingBar, loadingPercent;
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      videoPreview.style.display = 'none';
+      removeButton.style.display = 'none';
+      return;
+    }
+
+    const allowedExtensions = ['mp3', 'mp4', 'avi', 'mov'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+        new Noty({
+            text: "The selected video's format is not supported.",
+            timeout: 2000,
+            type: 'error'
+        }).show();
+        fileInput.value = '';
+        return;
+    }
+
+    const videoUrl = URL.createObjectURL(file);
+    videoPreview.src = videoUrl;
+    videoPreview.style.display = 'block';
+    removeButton.style.display = 'block';
+
+    loadingScreen = document.getElementById('loading-screen');
+    loadingBar = document.getElementById('loading-bar');
+    loadingPercent = document.getElementById('loading-percent');
+
+    loadingScreen.style.display = 'flex';
+
+    const video = document.createElement('video');
+    video.src = videoUrl;
+    video.addEventListener('loadedmetadata', () => {
+      const duration = video.duration;
+      const interval = 10;
+      let percent = 0;
+
+      const progress = setInterval(() => {
+        percent += interval / duration;
+        loadingBar.style.width = percent.toFixed(2) + '%';
+
+        if (percent >= 100) {
+          clearInterval(progress);
+          loadingScreen.style.display = 'none';
+        }
+
+        loadingPercent.textContent = Math.round(percent) + '%';
+      }, interval);
+    });
+  });
+
+  removeButton.addEventListener('click', () => {
+    videoPreview.src = '';
+    videoPreview.style.display = 'none';
+    removeButton.style.display = 'none';
+    fileInput.value = '';
+  });
+</script>
+
+<style> #loading-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 9999; } #loading-bar { background-color: red; height: 20px; font-size: 25px; font-weight: 700; position: relative; } #loading-percent { position: absolute; top: 0; left: 50%; transform: translateX(-50%); line-height: 20px; color: white; } </style>
+<script src="<?php echo vipub_link("themes/default/apps/timeline/script/vipubEmojies.js"); ?>"></script>
+<?php vipub_template("timeline/script/vipub.master.script"); ?>
+<?php endif; ?>
+

@@ -1,0 +1,131 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Gerekli veritabanı bağlantısını yapın veya bağlantıyı zaten yapıyorsanız bu adımı atlatabilirsiniz.
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: /welcome/login");
+    exit;
+}
+
+if (!isset($_POST["post_id"])) {
+    echo "error";
+    exit();
+}
+
+$post_id = $_POST["post_id"];
+$user_id = $_SESSION["user_id"];
+$post_user_id = $_POST["post_user_id"];
+
+$query = "SELECT * FROM vipub_likes WHERE user_id = ? AND post_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("ii", $user_id, $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+    $query = "INSERT INTO vipub_likes (user_id, post_id) VALUES (?, ?)";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $user_id, $post_id);
+    $stmt->execute();
+
+    $owner_tweet_account = "SELECT * FROM vipub_posts WHERE p_id = ?";
+    $stmt_owner_tweet_account = $conn->prepare($owner_tweet_account);
+    $stmt_owner_tweet_account->bind_param("i", $post_id);
+    $stmt_owner_tweet_account->execute();
+    $tweet_owner_result = $stmt_owner_tweet_account->get_result();
+    $tweet_owner = $tweet_owner_result->fetch_assoc();
+
+    $email_like_notification = "SELECT * FROM vipub_users WHERE id = ?";
+    $stmt_send_user_email_like_notifications = $conn->prepare($email_like_notification);
+    $stmt_send_user_email_like_notifications->bind_param("i", $tweet_owner["user_id"]);
+    $stmt_send_user_email_like_notifications->execute();
+    $send_user_email_like_notifications_result = $stmt_send_user_email_like_notifications->get_result();
+    $receiver_user = $send_user_email_like_notifications_result->fetch_assoc();
+
+    $email_like_notification2 = "SELECT * FROM vipub_users WHERE id = ?";
+    $stmt_send_user_email_like_notifications2 = $conn->prepare($email_like_notification2);
+    $stmt_send_user_email_like_notifications2->bind_param("i", $user_id);
+    $stmt_send_user_email_like_notifications2->execute();
+    $send_user_email_like_notifications2_result = $stmt_send_user_email_like_notifications2->get_result();
+    $my_user_owner = $send_user_email_like_notifications2_result->fetch_assoc();
+
+    $like_post_detail_sql = "SELECT * FROM vipub_posts WHERE p_id = ?";
+    $stmt_like_post_detail_sql = $conn->prepare($like_post_detail_sql);
+    $stmt_like_post_detail_sql->bind_param("i", $post_id);
+    $stmt_like_post_detail_sql->execute();
+    $like_post_detail_result = $stmt_like_post_detail_sql->get_result();
+    $like_row = $like_post_detail_result->fetch_assoc();
+
+    $query = "UPDATE vipub_posts SET likes = likes + 1 WHERE p_id = ?";
+    $stmt_update_likes = $conn->prepare($query);
+    $stmt_update_likes->bind_param("i", $post_id);
+    $stmt_update_likes->execute();
+
+    if ($post_user_id !== $user_id) {
+        $notifSql = "INSERT INTO vipub_notifs (user_id, sender_id, post_id, type) VALUES ('$post_user_id', '$user_id', '$post_id', 'like')";
+        mysqli_query($conn, $notifSql);
+
+        if ($settings["email_notifications"] == "Active" && $receiver_user["like_notification"] == "Active") {
+            ob_start();
+            require_once("../../../themes/default/apps/content_email/email.like.notifications.phtml");
+            $body = ob_get_clean();
+            $body = str_replace(array('<?', '?>'), array('&lt;?', '?&gt;'), $body);
+
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host       = $smtp_settings["smtp_host"];
+                $mail->SMTPAuth   = true;
+                $mail->Username   = $smtp_settings["smtp_username"];
+                $mail->Password   = $smtp_settings["smtp_password"];
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = $smtp_settings["smtp_port"];
+                $mail->setFrom($smtp_settings["smtp_username"], $settings["site_name"]);
+                $mail->addAddress($receiver_user["email"], $receiver_user["fullname"]);
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Subject = vipub_translate("email_notification_user_post_owner_like_1");
+                $mail->Body = $body;
+                $mail->send();
+            } catch (Exception $e) {
+                echo "error";
+            }
+        }
+    }
+
+    $query = "SELECT likes FROM vipub_posts WHERE p_id = ?";
+    $stmt_select_likes = $conn->prepare($query);
+    $stmt_select_likes->bind_param("i", $post_id);
+    $stmt_select_likes->execute();
+    $select_likes_result = $stmt_select_likes->get_result();
+    $row = $select_likes_result->fetch_assoc();
+    $likes = $row["likes"];
+
+    echo json_encode(["status" => "success", "like_count" => $likes]);
+} else {
+    $query = "DELETE FROM vipub_likes WHERE user_id = ? AND post_id = ?";
+    $stmt_delete_like = $conn->prepare($query);
+    $stmt_delete_like->bind_param("ii", $user_id, $post_id);
+    $stmt_delete_like->execute();
+
+    $query = "UPDATE vipub_posts SET likes = likes - 1 WHERE p_id = ?";
+    $stmt_update_likes = $conn->prepare($query);
+    $stmt_update_likes->bind_param("i", $post_id);
+    $stmt_update_likes->execute();
+
+    $query = "SELECT likes FROM vipub_posts WHERE p_id = ?";
+    $stmt_select_likes = $conn->prepare($query);
+    $stmt_select_likes->bind_param("i", $post_id);
+    $stmt_select_likes->execute();
+    $select_likes_result = $stmt_select_likes->get_result();
+    $row = $select_likes_result->fetch_assoc();
+    $likes = $row["likes"];
+
+    echo json_encode(["status" => "success", "like_count" => $likes]);
+}
+
+$stmt->close();
+$conn->close();

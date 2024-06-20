@@ -1,0 +1,156 @@
+<?php
+function vipub_user_ip_address() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip_address = $_SERVER['REMOTE_ADDR'];
+    }
+    return filter_var($ip_address, FILTER_VALIDATE_IP) ?: '';
+}
+function vipub_userLogin(){
+    return isset($_SESSION["user_id"]);
+}
+function vipub_my_user_info() {
+    if (!isset($_SESSION["user_id"]) || empty($_SESSION["user_id"])) {
+        return null;
+    }
+    global $conn;
+    $user_id = mysqli_real_escape_string($conn, $_SESSION["user_id"]);
+    $stmt = mysqli_prepare($conn, "SELECT * FROM vipub_users WHERE id = ? AND account_status = 0");
+    mysqli_stmt_bind_param($stmt, "i", $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if (mysqli_num_rows($result) == 0) {
+        return null;
+    }
+    $user_info = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+    return $user_info;
+}
+function vipub_get_user_info() {
+    if (!isset($_GET["user_id"]) || empty($_GET["user_id"])) {
+        return null;
+    }
+    global $conn;
+    $user_id = mysqli_real_escape_string($conn, $_GET["user_id"]);
+    $username = mysqli_real_escape_string($conn, $_GET["user_id"]);
+    $stmt = mysqli_prepare($conn, "SELECT * FROM vipub_users WHERE id = ? OR username = ?");
+    mysqli_stmt_bind_param($stmt, "is", $user_id, $username);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if (mysqli_num_rows($result) == 0) {
+        return null;
+    }
+    $user_info = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+    return $user_info;
+}
+function saveHashtags($conn, $content_post) {
+    preg_match_all('~([#])([^\s#!\"\$\%&\'\(\)\*\+\,\-./\:\;\<\=\>?\[/\/\/\\]\^\`\{\|\}\~]+)~', $content_post, $matches);
+    $unique_hashtags = array_unique($matches[2]);
+    $numHashTag = count($unique_hashtags);
+
+    for ($i = 0; $i < $numHashTag; ++$i) {
+        $hashtag_tag = mysqli_real_escape_string($conn, $unique_hashtags[$i]);
+
+        $hashtag_only_check = "SELECT * FROM vipub_hashtag WHERE htag=?";
+        $stmt = mysqli_prepare($conn, $hashtag_only_check);
+        mysqli_stmt_bind_param($stmt, "s", $hashtag_tag);
+        mysqli_stmt_execute($stmt);
+        $htag_only_checkx = mysqli_stmt_get_result($stmt);
+
+        if (mysqli_num_rows($htag_only_checkx) > 0) {
+            $ap_etiket = "UPDATE vipub_hashtag SET total_post = total_post + 1 WHERE htag=?";
+            $stmt = mysqli_prepare($conn, $ap_etiket);
+            mysqli_stmt_bind_param($stmt, "s", $hashtag_tag);
+            mysqli_stmt_execute($stmt);
+        } else {
+            $add_sql_hash = "INSERT INTO vipub_hashtag (htag, total_post) VALUES (?, '1')";
+            $stmt = mysqli_prepare($conn, $add_sql_hash);
+            mysqli_stmt_bind_param($stmt, "s", $hashtag_tag);
+            mysqli_stmt_execute($stmt);
+        }
+        $stmt->close();
+    }
+}
+function vipub_get_profile($conn, $username) {
+    $username = mysqli_real_escape_string($conn, $username);
+    $stmt = $conn->prepare("SELECT * FROM vipub_users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row;
+}
+function vipub_get_my_profile($conn, $username) {
+    $username = mysqli_real_escape_string($conn, $username);
+    $stmt = $conn->prepare("SELECT * FROM vipub_users WHERE id = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row;
+}
+
+function vipub_get_message_user($conn, $user_id) {
+    if (empty($user_id)) {
+        return null;
+    }
+    $user_id = mysqli_real_escape_string($conn, $user_id);
+    $stmt = mysqli_prepare($conn, "SELECT * FROM vipub_users WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if (mysqli_num_rows($result) == 0) {
+        return null;
+    }
+    $user_info = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+    return $user_info;
+}
+function vipub_status_page_title($conn, $uname, $status_id) {
+    $user_query = "SELECT id, fullname FROM vipub_users WHERE username = '$uname'";
+    $user_result = mysqli_query($conn, $user_query);
+    if (mysqli_num_rows($user_result) > 0) {
+      $user_row = mysqli_fetch_assoc($user_result);
+      $user_id = $user_row["id"];
+      $full_name = $user_row["fullname"];
+    } else {
+      return "404 Page";
+    }
+    $status_query = "SELECT content_post FROM vipub_posts WHERE p_id = '$status_id' AND user_id = '$user_id'";
+    $status_result = mysqli_query($conn, $status_query);
+    if (mysqli_num_rows($status_result) > 0) {
+      $status_row = mysqli_fetch_assoc($status_result);
+      $content_post = $status_row["content_post"];
+    } else {
+      return "404 Page";
+    }
+    $title = $full_name . " ".vipub_translate("on_vipub_status_title")." " . '"'.$content_post.'"';
+    return $title;
+}
+function vipub_get_pages($conn, $page_title_seo) {
+    $page_title_seo = mysqli_real_escape_string($conn, $page_title_seo);
+    $stmt = $conn->prepare("SELECT * FROM vipub_pages WHERE page_title_seo = ?");
+    $stmt->bind_param("s", $page_title_seo);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row;
+    } else {
+        return "404";
+    }
+}
+
+function vipub_userBlue() {
+    echo '<svg class="uname-top-profile" viewBox="0 0 22 22" role="img"><g><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"></path></g></svg>';
+}
+
+function vipub_adminUserVerifiedBlueIcon() {
+    echo '<svg style="width:15px;height:15px;color:#1da1f2;fill:#1da1f2; cursor:pointer;" viewBox="0 0 22 22" role="img"><g><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"></path></g></svg>';
+}
+

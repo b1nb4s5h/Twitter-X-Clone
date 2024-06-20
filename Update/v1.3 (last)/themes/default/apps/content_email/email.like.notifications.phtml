@@ -1,0 +1,32 @@
+<?php $settings = vipub_site_settings(); ?>
+<div class="vipub-content-email">
+    <div class="container" style="position: relative; padding: 40px; background: #F5F8FD !important;">
+        <div class="email-top-logo">
+            <a style="text-decoration: none !important; position: relative !important; margin-top: -25px !important; font-size: 25px; font-weight: 700; color: #1da1f2;" href="<?php echo vipub_link("welcome/login"); ?>"><?php echo $settings["site_name"]; ?></a>
+            <p style="font-size: 15px;"><?php echo vipub_translate("email_message_notifications_1"); ?>, <strong><?php echo $receiver_user["fullname"]; ?></strong>,</p>
+            <p style="font-size: 15px;"><strong><?php echo $my_user_owner["fullname"]; ?></strong> <?php echo vipub_translate("email_notification_user_post_owner_like_2"); ?></p>
+
+            <p style="font-size: 15px;"><?php echo vipub_translate("email_notification_user_post_owner_like_3"); ?></p>
+            <span><?php echo vipub_translate("email_notification_user_post_owner_like_4"); ?></span><br><br>
+            <a 
+                target="_blank" 
+                href="<?php echo vipub_link($receiver_user["username"]."/status/".$like_row["p_id"]); ?>"
+                style="
+                text-decoration: none !important; 
+                padding: 5px 15px; 
+                position: relative; 
+                font-size: 13px; 
+                font-weight: 700; 
+                line-height: 15px; 
+                color: #fff; 
+                background: 
+                #1da1f2; 
+                border: none; 
+                otuline:none; 
+                border-radius: 5px;"
+                >
+                <?php echo vipub_translate("email_notification_user_post_owner_like_5"); ?>
+            </a>
+        </div>
+    </div>
+</div>

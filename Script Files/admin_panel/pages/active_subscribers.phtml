@@ -1,0 +1,113 @@
+<?php $settings = vipub_site_settings(); $smtp_settings = vipub_smtp(); ?>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Subscribed users ✍️</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Premium</li>
+          <li class="breadcrumb-item active">Users with an active subscription</li>
+        </ol>
+      </nav>
+    </div>
+    
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><strong>All subscribers</strong></h5>
+              <p>
+                The list below lists all <strong>Blue</strong> users who have <strong>subscribed to premium</strong>.<br>
+                The list displays basic information such as which user is subscribed and the <strong>subscription start time</strong> and <strong>end time</strong>. <br>
+                But remember, this field is an automatic field and does not allow editing in any way.
+                </p>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Screen name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Package</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Subscription start</th>
+                    <th scope="col">Remainder</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $sql = "SELECT vipub_users.*, vipub_premium_package.*, vipub_premium_active_users.* FROM vipub_premium_active_users
+                    JOIN vipub_users ON vipub_premium_active_users.user_id = vipub_users.id
+                    JOIN vipub_premium_package ON vipub_premium_active_users.package_id = vipub_premium_package.pack_id";
+                    $result = $conn->query($sql);
+                    
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) { ?>
+
+                    <tr>
+                        <th scope="row"><?php echo $row["au_id"]; ?></th>
+                        <td>
+                            <?php echo vipub_croptxt($row["fullname"], 0, 10); ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo vipub_link("@".$row["username"]); ?>" target="_blank">
+                               @<?php echo vipub_croptxt($row["username"], 0, 10); ?>
+                            </a>
+                        </td>
+                        <td>
+                            <?php echo vipub_croptxt($row["package_name"], 0, 15); ?>
+                        </td>
+                        <td>
+                            <strong><?php echo $row["package_price"]; ?> <?php echo $settings["site_currency"]; ?></strong> /<small>month</small>
+                        </td>
+                        
+                        <td>
+                            <?php echo date("d.m.Y", strtotime($row["starting_date"])); ?>
+                        </td>
+                        <td>
+                            <?php
+                            $start_date = $row["starting_date"];
+                            $end_date = $row["end_date"];
+                            $start_date_obj = new DateTime($start_date);
+                            $end_date_obj = new DateTime($end_date);
+                            
+                            $current_date = new DateTime(); // Geçerli tarihi al
+                            $interval = $current_date->diff($end_date_obj); // Geçerli tarih ile bitiş tarihi arasındaki farkı hesapla
+                            $remaining_days = $interval->days;
+                            
+                            if ($remaining_days <= 0) {
+                                $user_id = $row['user_id'];
+                                $update_query = "UPDATE vipub_premium_active_users SET subs_status = 2 WHERE user_id = $user_id";
+                                $conn->query($update_query);
+                            } else {
+                                $remaining_days++; // Eğer geçerli tarih henüz bitiş tarihine ulaşmadıysa, 1 gün ekleyerek hesapla
+                            }
+                            ?>
+                            <?php if($remaining_days === 0): ?>
+                            <span class="badge bg-danger">Subscription expired</span>
+                            <?php else: ?>
+                                <span class="badge bg-success"><?php echo $remaining_days; ?> /<small>day</small></span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if($row["subs_status"]=="1"): ?>
+                                <span class="badge bg-success">Active</span>
+                            <?php elseif($row["subs_status"]=="2"): ?>
+                            <span class="badge bg-danger">Pending</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php } } ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</main>

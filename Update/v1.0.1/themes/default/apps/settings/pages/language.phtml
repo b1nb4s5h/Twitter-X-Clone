@@ -1,0 +1,50 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        
+        <div class="site-header-box">
+            <h5>
+            <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+            <?php echo vipub_translate("account_settings"); ?></h5>
+        </div>
+
+        <div class="account-settings-page">
+            
+            <div class="settings-page-container">
+                <div class="settings-page-title">
+                    <h5><?php echo vipub_translate("account_information"); ?></h5>
+                </div>
+
+                <div class="setpage-save-info">
+                    Change your site display language
+                </div>
+
+                <div class="form-save-element-value">
+                    <select class="form-select" id="language-select">
+                        <option select><?php echo vipub_translate("language_name"); ?></option>
+                        <option value="turkish"><?php echo vipub_translate("language_name_1"); ?></option>
+                        <option value="english"><?php echo vipub_translate("language_name_2"); ?></option>
+                        <option value="espanol"><?php echo vipub_translate("language_name_3"); ?></option>
+                        <option value="german"><?php echo vipub_translate("language_name_4"); ?></option>
+                        <option value="russian"><?php echo vipub_translate("language_name_5"); ?></option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $('#language-select').on('change', function() {
+            var lang = $(this).val();
+            var url = window.location.href.split('?')[0];
+            window.location.href = url + '?lang=' + lang;
+        });
+    });
+</script>
+<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php vipub_template("main/footer.content"); ?>

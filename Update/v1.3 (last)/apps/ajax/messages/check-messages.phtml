@@ -1,0 +1,35 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"]) || !is_numeric($_SESSION["user_id"])) {
+  header("Location: /welcome/login");
+  exit;
+}
+
+$receiver_id = $_GET['row'];
+$sender_id = $_SESSION["user_id"];
+
+if (!is_numeric($receiver_id) || $receiver_id == $sender_id) {
+  header("Location: /messages");
+  exit;
+}
+
+// Prepared statement kullanarak sorguyu hazırla
+$updateSql = "UPDATE vipub_messages SET notifs_status = 1 WHERE receiver_id = ? AND sender_id = ?";
+$stmt = mysqli_prepare($conn, $updateSql);
+mysqli_stmt_bind_param($stmt, "ii", $sender_id, $receiver_id,);
+mysqli_stmt_execute($stmt);
+
+// Verileri alırken prepared statement kullan
+$selectSql = "SELECT vipub_messages.*, vipub_users.* FROM vipub_messages JOIN vipub_users ON vipub_messages.sender_id = vipub_users.id WHERE (vipub_messages.receiver_id IN (?, ?) AND vipub_messages.sender_id IN (?, ?)) ORDER BY vipub_messages.created_at ASC";
+$stmt = mysqli_prepare($conn, $selectSql);
+mysqli_stmt_bind_param($stmt, "iiii", $receiver_id, $sender_id, $receiver_id, $sender_id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+// Mesajları gösteren HTML dosyasını çağırın
+if (mysqli_num_rows($result) > 0) {
+  require_once('../../../themes/default/apps/messages/include/chats.phtml');
+} else {
+  require_once('../../../themes/default/apps/messages/pages/no-message.phtml');
+}

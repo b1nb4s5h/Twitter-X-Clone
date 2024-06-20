@@ -1,0 +1,21 @@
+<div class="post vipup-post-publication" data-vipub-url="<?php echo vipub_link("@".$rows["username"]); ?>">
+    <div class="vipup-post-userinfo">
+        <a href="<?php echo vipub_link("@".$rows["username"]); ?>">
+        <img src="/<?php echo $rows["avatar"]; ?>">
+        </a>
+        <a href="<?php echo vipub_link("@".$rows["username"]); ?>">
+        <h5><?php echo vipub_croptxt($rows["fullname"], 0, 25); ?>
+        <?php if($rows["verified"]=="1"): ?>
+            <?php echo vipub_userBlue(); ?>
+        <?php endif; ?></h5>
+        </a>
+        <a href="<?php echo vipub_link("@".$rows["username"]); ?>">
+        <span>@<?php echo $rows["username"]; ?></span>
+        </a>
+    </div>
+    <?php if(isset($rows["user_bio"])): ?>
+        <div class="post-content-line"><?php echo convertVipubText($rows["user_bio"]); ?></div>
+    <?php else: ?>
+        <div class="post-content-line">The user has not added a biography.</div>
+    <?php endif; ?>
+</div>

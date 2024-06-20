@@ -1,0 +1,121 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+$smtp_settings = vipub_smtp();
+
+if (!isset($_SESSION["user_id"])) {
+  header("Location: /welcome/login");
+  exit;
+}
+
+if (!isset($_POST["p_id"])) {
+  echo "error";
+  exit();
+}
+
+$post_id = $_POST["p_id"];
+$user_id = $_SESSION["user_id"];
+$post_user_id = $_POST["post_user_id"];
+
+$query = "SELECT * FROM vipub_likes WHERE user_id = ? AND post_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("ii", $user_id, $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+  $query = "INSERT INTO vipub_likes (user_id, post_id) VALUES (?, ?)";
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("ii", $user_id, $post_id);
+  $stmt->execute();
+
+  $owner_tweet_account = "SELECT * FROM vipub_posts WHERE p_id = '$post_id'";
+  $owner_tweet_account2 = mysqli_query($conn, $owner_tweet_account);
+  $tweet_owner = mysqli_fetch_assoc($owner_tweet_account2);
+
+  $email_like_notification = "SELECT * FROM vipub_users WHERE id = '".$tweet_owner["user_id"]."'";
+  $send_user_email_like_notifications = mysqli_query($conn, $email_like_notification);
+  $receiver_user = mysqli_fetch_assoc($send_user_email_like_notifications);
+
+  $email_like_notification2 = "SELECT * FROM vipub_users WHERE id = '$user_id'";
+  $send_user_email_like_notifications2 = mysqli_query($conn, $email_like_notification2);
+  $my_user_owner = mysqli_fetch_assoc($send_user_email_like_notifications2);
+
+  $like_post_detail_sql = "SELECT * FROM vipub_posts WHERE p_id = '$post_id'";
+  $sql_conn_details = mysqli_query($conn, $like_post_detail_sql);
+  $like_row = mysqli_fetch_assoc($sql_conn_details);
+
+  $query = "UPDATE vipub_posts SET likes = likes + 1 WHERE p_id = ?";
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("i", $post_id);
+  $stmt->execute();
+
+  if($post_user_id !== $user_id){
+    $notifSql = "INSERT INTO vipub_notifs (user_id, sender_id, post_id, type) VALUES ('$post_user_id', '$user_id', '$post_id', 'like')";
+    mysqli_query($conn, $notifSql);
+
+      if($settings["email_notifications"]=="Active"){
+        if($receiver_user["like_notification"]=="Active"){
+          ob_start();
+          require_once("../../../themes/default/apps/content_email/email.like.notifications.phtml");
+          $body = ob_get_clean();
+          $body = str_replace(array('<?', '?>'), array('&lt;?', '?&gt;'), $body);
+          
+          $mail = new PHPMailer(true);
+          try {
+            $mail->isSMTP();                                            
+            $mail->Host       = $smtp_settings["smtp_host"];                     
+            $mail->SMTPAuth   = true;                                   
+            $mail->Username   = $smtp_settings["smtp_username"];                 
+            $mail->Password   = $smtp_settings["smtp_password"];                        
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;        
+            $mail->Port       = $smtp_settings["smtp_port"];                                    
+            $mail->setFrom($smtp_settings["smtp_username"], $settings["site_name"]);
+            $mail->addAddress($receiver_user["email"], $receiver_user["fullname"]);
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8'; 
+            $mail->Subject = vipub_translate("email_notification_user_post_owner_like_1");
+            $mail->Body = $body;
+            $mail->send();
+          } 
+          catch (Exception $e) {
+            echo "error";
+          }
+        }
+      }
+  }
+
+  $query = "SELECT likes FROM vipub_posts WHERE p_id = ?";
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("i", $post_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $row = $result->fetch_assoc();
+  $likes = $row["likes"];
+
+  echo json_encode(["status" => "success", "like_count" => $likes]);
+} else {
+  $query = "DELETE FROM vipub_likes WHERE user_id = ? AND post_id = ?";
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("ii", $user_id, $post_id);
+  $stmt->execute();
+
+  $query = "UPDATE vipub_posts SET likes = likes - 1 WHERE p_id = ?";
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("i", $post_id);
+  $stmt->execute();
+
+  $query = "SELECT likes FROM vipub_posts WHERE p_id = ?";
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("i", $post_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $row = $result->fetch_assoc();
+  $likes = $row["likes"];
+
+  echo json_encode(["status" => "success", "like_count" => $likes]);
+}
+
+$stmt->close();
+$conn->close();

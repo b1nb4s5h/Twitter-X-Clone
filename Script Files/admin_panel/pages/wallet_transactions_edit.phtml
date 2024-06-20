@@ -1,0 +1,152 @@
+<?php
+if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
+    $ids = $_GET["edit"];
+    $sql = "SELECT p.*, u.* 
+    FROM vipub_add_balance p 
+    JOIN vipub_users u ON p.user_id = u.id
+    WHERE b_id ='$ids' AND status='2'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc(); ?>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>You are checking the user's new wallet balance transaction</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">User wallet transaction</li>
+          <li class="breadcrumb-item active">Current wallet</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+            <h2><img src="<?php echo vipub_link($row["avatar"]); ?>" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"></h2>
+              <h2><?php echo vipub_croptxt($row["fullname"], 0, 30); ?></h2>
+              <h3><?php echo vipub_wallet_balance($row["user_wallet"]); ?> $</h3>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tweet-edit">Wallet transaction decision</button>
+                </li>
+              </ul>
+              <div class="tab-content pt-2">
+
+                
+
+                <div class="tab-pane profile-edit pt-3 active" id="tweet-edit">
+
+                  <form action="" method="POST" onsubmit="disableButton()">
+                    <div class="row mb-3">
+                        <label for="inputText" style="font-size: 14px; font-weight: 700; line-height: 21px; color: #000;" class="col-sm-5 col-form-label">User's current wallet balance</label>
+                        <div class="col-sm-15">
+                            <input readonly type="text" class="form-control" style="width: 100% !important;" value="<?php echo $row["user_wallet"]; ?>" name="current_wallet">
+                        </div>
+                        <small style="font-size: 12px;">The balance amount contained herein is the balance currently defined in the user's account. This field cannot be edited.</small>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputText" style="font-size: 14px; font-weight: 700; line-height: 21px; color: #000;" class="col-sm-5 col-form-label">Requested balance amount</small></label>
+                        <div class="col-sm-15">
+                            <input type="number" class="form-control" style="width: 100% !important;" name="user_wallet" placeholder="Requested balance amount" value="<?php echo $row["added_balance"]; ?>" readonly>
+                        </div>
+                        <small style="font-size: 12px;">The balance amount included here is the new balance amount that the user has sent. Please be sure to check the payment receipt before making any decisions!</small>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputText" style="font-size: 14px; font-weight: 400; line-height: 21px; color: #000;" class="col-sm-12 col-form-label">
+                        <strong>Please note:</strong> <br> 
+                        This user started a new wallet transaction and continued the transaction. If you are viewing this field, they must have submitted a payment receipt to update the current user balance on your site.
+                        </label>
+                    </div>
+
+                    <div class="text-center" style="margin-top:10px; position: relative;">
+                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                      <button type="submit" style="width: 100%;" class="btn btn-success" name="updateUserWallet" onclick="this.innerText='Balance update successful';">Update new balance</button>
+                      <script>
+                          function disableButton() {
+                              window.location.href = "/admin_panel/wallet_transactions";
+                          }
+                      </script>
+                      <?php else: ?>
+                            <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                        <?php endif; ?>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <?php
+  } else {
+    echo "package not found";
+}
+} else {
+echo "Invalid package ID";
+}
+?>
+
+<?php
+if (!empty($row["id"])) {
+  if (isset($_POST["updateUserWallet"])) {
+    $id = $_GET["edit"];
+    $current_wallet = $_POST["current_wallet"];
+    $added_balance = $_POST["user_wallet"];
+    $total_balance = $current_wallet + $added_balance;
+    $status_type = "1";
+    $user_idss = $row["id"];
+
+    $stmt = $conn->prepare("UPDATE vipub_users SET user_wallet = ? WHERE id = ?");
+    $stmt->bind_param("si", $total_balance, $user_idss);
+    $stmt->execute();
+    $stmt = $conn->prepare("UPDATE vipub_add_balance SET status = ? WHERE b_id = ?");
+    $stmt->bind_param("si", $status_type, $id);
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        // Sayfayı yönlendirin
+        header("Location: /home");
+        exit; // Kodun devam etmemesi için exit kullanın
+    } else {
+        echo "Error: " . $conn->error;
+    }
+  } 
+} else {
+  error_reporting(0);
+  echo '
+  <section class="section">
+        <div class="row" style="padding: 50px; position: relative; margin-top: 300px;">
+          <div style="margin-left: 300px; top: -150px; position:relative;" class="text-center;">
+          <h5>Balance update completed successfully. 😎</h5>
+          <span>
+          <a href="/admin_panel/wallet_transactions" style="padding: 9px 25px; font-size: 14px; font-weight: 700; color: #fff; background: #1da1f1; cursor: pointer; border:none; outline:none; text-decoration: none; border-radius: 30px; top: 10px; position:relative;">
+          Click to go back
+          </a>
+          </span>
+          </div>
+      </div>
+  </section>
+  ';
+}
+?>

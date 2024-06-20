@@ -1,0 +1,19 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  vipub_redirect("/welcome/login");
+  exit;
+}
+$user_id = mysqli_real_escape_string($conn, htmlspecialchars($_SESSION["user_id"]));
+$dm_notification = mysqli_real_escape_string($conn, htmlspecialchars($_POST['dm_notification']));
+$follow_notification = mysqli_real_escape_string($conn, htmlspecialchars($_POST['follow_notification']));
+$like_notification = mysqli_real_escape_string($conn, htmlspecialchars($_POST['like_notification']));
+$reply_notification = mysqli_real_escape_string($conn, htmlspecialchars($_POST['reply_notification']));
+$sql = "UPDATE vipub_users SET dm_notification='$dm_notification', follow_notification='$follow_notification', like_notification='$like_notification', reply_notification='$reply_notification'  WHERE id=$user_id";
+if (mysqli_query($conn, $sql)) {
+    echo $fullname;
+} else {
+    echo "Error: " . mysqli_error($conn);
+}
+mysqli_close($conn);

@@ -1,0 +1,77 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>API requests used</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">API functions</li>
+          <li class="breadcrumb-item active">API requests</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Currently used <strong>API requests</strong></h5>
+              
+              <p>The table below shows you on which website your <strong>API services</strong> that you have provided through your website are actively used. 
+              
+              <br><br><small><strong>This table</strong> will also show the <strong>"user_id"</strong> tag associated with the relevant user, when users registered on your website initiate any query process through the <strong>API service</strong> you have provided.</small>
+              </p>
+
+              <table class="table datatable" style="font-size: 14px !important;">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">User IP</th>
+                    <th scope="col">Request URL</th>
+                    <th scope="col">Usage URL</th>
+                    <th scope="col">Usage type</th>
+                    <th scope="col">API key</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+
+                    $sql = "SELECT usage_id, user_ip, request_url, url_using, usage_type, api_user_key, usage_date FROM vipub_api_usage";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) { ?>
+
+                    <tr>
+                        <th scope="row"><?php echo $row["usage_id"]; ?></th>
+                        <td><?php echo $row["user_ip"]; ?></td>
+                        <td><a target="_blank" href="<?php echo $row["request_url"]; ?>" class="text-primary"><?php echo vipub_croptxt($row["request_url"], 0,33); ?></a></td>
+                        <td><a target="_blank" href="<?php echo $row["url_using"]; ?>" class="text-primary"><?php echo vipub_croptxt($row["url_using"], 0,33); ?></a></td>
+                        <td><span class="badge bg-success"><?php echo $row["usage_type"]; ?></span></td>
+
+                        <?php if($row["api_user_key"]=="NULL"): ?>
+                            <td><span class="badge bg-danger">Empty</span></td>
+                        <?php else: ?>
+                            <td><a target="_blank" href="<?php echo vipub_link("admin_panel/edit_user?edit=".$row["api_user_key"]); ?>" class="text-primary">
+                            <span class="badge bg-info"><?php echo $row["api_user_key"]; ?></span>
+                            </a></td>
+                        <?php endif; ?>
+                        
+                        <td><?php echo $row["usage_date"]; ?></td>
+                    </tr>
+                    
+                    <?php } } ?>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>

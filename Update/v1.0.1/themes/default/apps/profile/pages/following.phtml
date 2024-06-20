@@ -1,0 +1,40 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php 
+$conn = vipubConnectDatabase(); 
+$uname = htmlspecialchars(trim($_GET["username"]));
+$fid = htmlspecialchars(trim($_GET["profuname"]));
+?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        
+        <div class="site-header-box">
+            <h5>
+                <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+                @<?php echo $fid; ?> <?php echo vipub_translate("user_profile_following_followers_title"); ?></h5>
+            <div class="search-header-menu">
+                <a href="<?php echo vipub_link($fid."/following/".$uname); ?>" class="search-active">
+                    <h6><?php echo vipub_translate("user_profile_following_followers_menu_1"); ?></h6>
+                </a>
+                <a href="<?php echo vipub_link($fid."/followers/".$uname); ?>">
+                    <h6><?php echo vipub_translate("user_profile_following_followers_menu_2"); ?></h6>
+                </a>
+            </div>
+        </div>
+        <div id="following-page-timeline"></div>
+    </div>
+</div>
+
+<script>
+    function fetchPosts() {
+        $.ajax({
+            url: '/apps/ajax/profile/user-following-list.phtml?username=<?php echo $_GET["username"]; ?>',
+            type: 'GET',
+            success: function(data) {
+                $('#following-page-timeline').html(data);
+            }
+        });
+    }
+    setInterval(fetchPosts, 5000);
+    fetchPosts();
+</script>
+<?php vipub_template("main/sidebar/right-sidebar"); ?>

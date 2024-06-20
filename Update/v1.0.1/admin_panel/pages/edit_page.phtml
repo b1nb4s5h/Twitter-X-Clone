@@ -1,0 +1,160 @@
+<?php
+if (isset($_GET["edit"]) && is_numeric($_GET["edit"])) {
+    $ids = $_GET["edit"];
+
+    $sql = "SELECT * FROM vipub_pages WHERE page_id ='$ids'
+    ORDER BY page_date DESC";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc(); ?>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Edit page</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Pages</li>
+          <li class="breadcrumb-item active">Edit page</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section profile">
+      <div class="row">
+        
+        <div class="col-xl-12">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tweet-edit">You are editing this page: <strong>(<?php echo $row["page_name"]; ?>)</strong> </button>
+                </li>
+              </ul>
+              <div class="tab-content pt-2">
+
+                
+
+                <div class="tab-pane profile-edit pt-3 active" id="tweet-edit">
+
+                  <form action="" method="POST">
+                    <div class="row mb-3">
+                        <a class="text-center mb-4" style="font-weight: 700; color: #0f1419;" href="<?php echo vipub_link("pages/".$row["page_title_seo"]); ?>" target="_blank">
+                            Click to view this page.
+                          </a>
+                        <label for="page_content" class="col-md-4 col-lg-3 col-form-label">Page title</label>
+                        <div class="col-md-8 col-lg-9 mb-3">
+                          <input class="form-control" type="text" name="page_title" value="<?php echo $row["page_title"]; ?>" required>
+                        </div>
+
+                        <label for="page_content" class="col-md-4 col-lg-3 col-form-label">Page SEO URL</label>
+                        <div class="col-md-8 col-lg-9 mb-3">
+                          <input style="background: #0f1419; color: #fff;" class="form-control" type="text" name="page_title_seo" value="<?php echo $row["page_title_seo"]; ?>" required>
+                        </div>
+
+                        <label for="page_content" class="col-md-4 col-lg-3 col-form-label">Page name</label>
+                        <div class="col-md-8 col-lg-9 mb-3">
+                          <input class="form-control" type="text" name="page_name" value="<?php echo $row["page_name"]; ?>" required>
+                        </div>
+
+                        <label for="page_content" class="col-md-4 col-lg-3 col-form-label">Page content</label>
+                        <div class="col-md-8 col-lg-9">
+                          <textarea class="tinymce-editor" id="page_content" name="page_content"><?php echo convertVipubText($row["page_content"]); ?></textarea>
+                        </div>
+                    </div>
+
+                  
+                    <div class="text-center" style="margin-top:40px; position: relative;">
+                    <?php if($vipub["admin"]["admin_status"]=="1"): ?>
+                      <button type="submit" style="width: 100%;" class="btn btn-primary mb-3" name="savePageContent">Save Changes</button>
+                      <button type="submit" style="width: 100%;" class="btn btn-danger" name="deletePage" onclick="return confirm('Are you sure you really want to delete the page?')">Delete page</button>
+                      <?php else: ?>
+                      <button disabled style="width: 100% !important;" class="btn btn-primary">Cannot trade because your account is demo</button>
+                      <?php endif; ?>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <?php
+  } else {
+    echo "Page not found";
+}
+} else {
+echo "Invalid page ID";
+}
+?>
+
+<?php
+if(isset($_POST["savePageContent"])) {
+    $id = $_GET["edit"];
+    $page_title = htmlspecialchars($_POST["page_title"]);
+    $page_title_seo = htmlspecialchars(vipub_seolink($_POST["page_title_seo"]));
+    $page_name = htmlspecialchars($_POST["page_name"]);
+    $page_content = $_POST["page_content"];
+    
+    $stmt = $conn->prepare("UPDATE vipub_pages SET page_title=?, page_title_seo=?, page_name=?, page_content=? WHERE page_id=?");
+    $stmt->bind_param("ssssi", $page_title, $page_title_seo, $page_name, $page_content, $id);
+    $stmt->execute();
+    
+    if ($stmt->affected_rows > 0) {
+        ?>
+        <script>
+        new Noty({
+            type: 'success',
+            text: 'The page was successfully updated',
+            timeout: 200,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/edit_page?edit=<?php echo $id; ?>";
+                }
+            }
+        }).show();
+        </script>
+        <?php
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+?>
+<?php
+if(isset($_POST["deletePage"])) {
+    $id = $_GET["edit"];
+    
+    $stmt = $conn->prepare("DELETE FROM vipub_pages WHERE page_id=?");
+    $stmt->bind_param("i",  $id);
+    $stmt->execute();
+    
+    if ($stmt->affected_rows > 0) {
+        ?>
+        <script>
+        new Noty({
+            type: 'success',
+            text: 'The page was successfully delete',
+            timeout: 200,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/all_pages";
+                }
+            }
+        }).show();
+        </script>
+        <?php
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+?>

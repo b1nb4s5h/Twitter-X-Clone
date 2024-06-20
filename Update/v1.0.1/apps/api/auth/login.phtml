@@ -1,0 +1,39 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once("../../../core/vipub_web_core.phtml");
+header('Content-type: application/json');
+
+$username = isset($_POST["username"]) ? $_POST["username"] : null;
+$password = isset($_POST["password"]) ? $_POST["password"] : null;
+
+if ($username && $password) {
+
+    $username = mysqli_real_escape_string($conn, $username);
+    $password_hashed = password_hash($password, PASSWORD_DEFAULT);
+
+    $sql = "SELECT * FROM vipub_users WHERE (username='$username' OR email='$username') AND password='$password_hashed'";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($password, $row["password"])) {
+            if ($row['account_status'] == '1') {
+                echo json_encode(array("status" => "error", "message" => "Hesabınız banlandı."));
+            } else {
+                session_start();
+                $_SESSION["user_id"] = $row["id"];
+                $_SESSION["fullname"] = $row["fullname"];
+                $_SESSION["email"] = $row["email"];
+                $_SESSION["joined"] = $row["joined"];
+                $_SESSION["username"] = $row["username"];
+                echo json_encode(array("status" => "success", "message" => "Giriş başarılı."));
+            }
+        }
+    } else {
+        echo json_encode(array("status" => "error", "message" => "Kullanıcı adı veya şifre hatalı."));
+    }
+} else {
+    echo json_encode(array("status" => "error", "message" => "Lütfen kullanıcı adı ve şifre girin."));
+}
+mysqli_close($conn);

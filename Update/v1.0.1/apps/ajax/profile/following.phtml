@@ -1,0 +1,22 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  echo "Oturum açmamış kullanıcı!";
+  exit;
+}
+
+$following = mysqli_real_escape_string($conn, $_POST['following']);
+
+$sql = "SELECT following FROM vipub_users WHERE id = '$following'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    echo htmlspecialchars($row["following"]);
+
+} else {
+    echo "0";
+}
+
+$conn->close();

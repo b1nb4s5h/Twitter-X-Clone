@@ -1,0 +1,67 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_GET["q"]) || empty($_GET["q"])) {
+  echo '<meta http-equiv="refresh" content="0; url=/404" />';
+   exit();
+}
+
+if (isset($_GET["q"])) {
+  $search = trim($_GET["q"]);
+
+  if (!empty($search)) {
+    $sql = "SELECT p.*, u.* 
+            FROM vipub_posts p 
+            JOIN vipub_users u ON p.user_id = u.id 
+            WHERE (p.content_post LIKE '%$search%' OR u.fullname LIKE '%$search%' OR u.username LIKE '%$search%') 
+            AND u.account_status = '0'
+            ORDER BY p.post_joined DESC";
+
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Gönderileri göster
+    if (mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+        $postId = $row["p_id"];
+        $userId = $row["user_id"];
+        $username = $row["username"];
+        $fullname = $row["fullname"];
+        $avatar = $row["avatar"];
+        $content = $row["content_post"];
+        require("../../../themes/default/apps/timeline/content.phtml");
+      }
+    } else {
+      vipub_template("timeline/include/no-post");
+    }
+  }
+} else {
+  $sql = "SELECT p.*, u.* 
+          FROM vipub_posts p 
+          JOIN vipub_users u ON p.user_id = u.id 
+          WHERE p.post_type = 'post'
+          AND u.account_status = '0'
+          ORDER BY p.post_joined DESC";
+
+  $stmt = mysqli_prepare($conn, $sql);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+
+  // Gönderileri göster
+  if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $postId = $row["p_id"];
+      $userId = $row["user_id"];
+      $username = $row["username"];
+      $fullname = $row["fullname"];
+      $avatar = $row["avatar"];
+      $content = $row["content_post"];
+      require("../../../themes/default/apps/timeline/content.phtml");
+    }
+  } else {
+    vipub_template("timeline/include/no-post");
+  }
+}
+
+mysqli_close($conn);

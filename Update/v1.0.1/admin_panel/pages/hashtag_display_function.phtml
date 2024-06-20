@@ -1,0 +1,123 @@
+<?php $settings = vipub_site_settings(); ?>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Configure your hashtag listing settings</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Hashtags</li>
+          <li class="breadcrumb-item active">Hashtag display settings</li>
+        </ol>
+      </nav>
+    </div>
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" style="color:#0f1419; font-size: 15px;">Hashtag <strong>Display Settings</strong></h5>
+              On this page, you can set the rules by which users can display the <strong>"Hashtag"</strong> listing in the "<strong>Agendas that may interest you</strong>" on the right sidebar of your website.
+              <br>
+              <br>
+              You can set your hashtag display settings within "<strong>4</strong>" different rules. 
+              <br><br>
+              <strong>Here are your options:</strong>
+              <li style="margin-top: 10px; font-size: 15px;">The most tweeted hashtags in the last <strong>24 hours</strong>.</li>
+              <li style="margin-top: 10px; font-size: 15px;">The most tweeted hashtags in the last <strong>1 week</strong>.</li>
+              <li style="margin-top: 10px; font-size: 15px;">The most tweeted hashtags in the last <strong>1 month</strong>.</li>
+              <li style="margin-top: 10px; font-size: 15px;">All tweeted <strong>hashtags</strong>.</li>
+              <br>
+              <small style="font-size: 12px;">
+                <strong style="color:#1da1f2; font-size: 14px;">Rules that apply to the entire list:</strong><br>
+                If the "<strong>number of tweets</strong>" updated for the hashtag list is equal to a number above the previous one, the listing area will be updated like Twitter and the most tweeted hashtag will always be displayed at the top. In addition, when a certain number of supported hashtags are reached, random "<strong>Trend</strong>"-related titles are displayed above the hashtag.
+              </small>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" style="color:#0f1419; font-size: 15px;">
+                Determine the structure of <strong>your hashtag list</strong>
+                </h5>
+
+                <form action="" method="POST">
+
+                    <fieldset class="row mb-3" style="background:#F5F8FE; padding: 15px; border-radius: 5px;">
+                        <div class="col-sm-10">
+
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="radio" name="hashtag_display" id="daily" value="daily"
+                                <?php if($settings["hashtag_display"]=="daily"): ?>checked<?php endif; ?>>
+                                <label class="form-check-label" for="daily">
+                                    The most tweeted hashtags in the last <strong>24 hours</strong>.
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="radio" name="hashtag_display" id="weekly" value="weekly" <?php if($settings["hashtag_display"]=="weekly"): ?>checked<?php endif; ?>>
+                                <label class="form-check-label" for="weekly">
+                                    The most tweeted hashtags in the last <strong>1 week</strong>.
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="radio" name="hashtag_display" id="monthly" value="monthly" <?php if($settings["hashtag_display"]=="monthly"): ?>checked<?php endif; ?>>
+                                <label class="form-check-label" for="monthly">
+                                    The most tweeted hashtags in the last <strong>1 month</strong>.
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="hashtag_display" id="all" value="all" <?php if($settings["hashtag_display"]=="all"): ?>checked<?php endif; ?>>
+                                <label class="form-check-label" for="all">
+                                    List all tweeted hashtags.
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="row mt-4">
+                        <div class="col-sm-50">
+                            <button type="submit" style="width: 100% !important;" class="btn btn-primary" name="saveHashtagList">Save</button>
+                        </div>
+                    </div>
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+</main>
+<?php
+if(isset($_POST['saveHashtagList'])) {
+    $hashtag_display = mysqli_real_escape_string($conn, $_POST['hashtag_display']);
+    $sql = "UPDATE vipub_settings SET hashtag_display='$hashtag_display' WHERE id=1";
+    if(mysqli_query($conn, $sql)) {
+        ?>
+        <script>
+        new Noty({
+            type: 'success',
+            text: 'Your hashtag listing settings have been saved',
+            timeout: 1500,
+            progressBar: true,
+            callbacks: {
+                afterClose: function() {
+                    window.location.href = "/admin_panel/hashtag_display_function";
+                }
+            }
+        }).show();
+        </script>
+        <?php
+    } else {
+        echo "Error " . mysqli_error($conn);
+    }
+    mysqli_close($conn);
+}
+?>

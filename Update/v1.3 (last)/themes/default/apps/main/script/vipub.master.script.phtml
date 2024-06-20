@@ -1,0 +1,71 @@
+<script>
+    $('.VPSM-social').click(function() {
+        var vipubUrl = $(this).data('vipub-url');
+        window.location.href = vipubUrl;
+    });
+
+    <?php if(isset($_SESSION["user_id"])): ?>
+        $(document).ready(function() {
+            var searchInput = $(".search-container input");
+            var searchResults = $(".search-results");
+
+            searchInput.keyup(function(event) {
+                if (event.keyCode === 13) {
+                var searchValue = searchInput.val();
+                if (searchValue.length >= 2) {
+                    window.location.href = "<?php echo vipub_link("explore?q="); ?>" + searchValue;
+                }
+                } else {
+                var searchValue = $(this).val();
+                if (searchValue.length >= 2) {
+                    $.ajax({
+                    type: "POST",
+                    url: "<?php echo vipub_ajax_query('vipub/native_api/rsbr-search'); ?>",
+                    data: { search: searchValue },
+                    success: function(response) {
+                        searchResults.html(response);
+                        searchResults.show();
+                    }
+                    });
+                } else {
+                    searchResults.html("");
+                    searchResults.hide();
+                }
+                }
+            });
+        });
+    <?php endif; ?>
+
+    $(document).ready(function() {
+        $.ajax({
+            url: '/apps/ajax/rsbr-htags.php',
+            success: function(response) {
+            $('#rsbr-htag-algoritmic').html(response);
+            }
+        });
+        
+        setInterval(function() {
+            $.ajax({
+            url: '/apps/ajax/rsbr-htags.php',
+            success: function(response) {
+                $('#rsbr-htag-algoritmic').html(response);
+            }
+            });
+        }, 2000);
+    });
+
+
+    function fetchPosts() {
+        $.ajax({
+            url: '<?php echo vipub_ajax_query("/apps/ajax/rsbr-tofollow.php"); ?>',
+            success: function(response) {
+                $('#rsbr-tofollow-algoritmic').html(response);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        fetchPosts();
+        setInterval(fetchPosts, 5000);
+    });
+</script>

@@ -1,0 +1,63 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if (!isset($_SESSION["user_id"])) {
+  header("Location: /welcome");
+  exit;
+}
+
+$my_user_id = $_SESSION['user_id'];
+
+$query = "SELECT IF(m.sender_id = '$my_user_id', m.receiver_id, m.sender_id) as other_user_id,
+MAX(m.created_at) as last_message_date
+FROM vipub_messages m
+WHERE m.sender_id = '$my_user_id' OR m.receiver_id = '$my_user_id'
+GROUP BY other_user_id
+ORDER BY last_message_date DESC";
+
+$result = mysqli_query($conn, $query);
+
+if (!$result) {
+    die('Dont loading message: ' . mysqli_error($conn));
+}
+
+$chats = array();
+while ($row = mysqli_fetch_assoc($result)) {
+    $other_user_id = $row['other_user_id'];
+
+    $user_query = "SELECT * FROM vipub_users WHERE id = '$other_user_id'";
+    $user_result = mysqli_query($conn, $user_query);
+    $user_row = mysqli_fetch_assoc($user_result);
+
+
+    $last_message_query = "SELECT * FROM vipub_messages WHERE (sender_id = '$my_user_id' AND receiver_id = '$other_user_id') OR (sender_id = '$other_user_id' AND receiver_id = '$my_user_id') ORDER BY created_at DESC LIMIT 1";
+    $last_message_result = mysqli_query($conn, $last_message_query);
+    $last_message_row = mysqli_fetch_assoc($last_message_result);
+
+    if (!$last_message_row) {
+        continue;
+    }
+
+    $chats[] = array(
+        'avatar' => $user_row['avatar'],
+        'fullname' => $user_row['fullname'],
+        'username' => $user_row['username'],
+        'message' => $last_message_row['message'],
+        'sender_id' => $last_message_row['sender_id'],
+        'created_at' => $last_message_row['created_at'],
+        'id' => $user_row['id'],
+        'm_id' => $last_message_row['m_id'],
+        'notifs_status' => $last_message_row['notifs_status']
+    );
+}
+
+if (count($chats) === 0) {
+    require_once('../../../themes/default/apps/messages/include/no-message.phtml');
+    exit;
+}
+
+$row = $last_message_row['m_id'];
+$user_id = $_SESSION['user_id'];
+
+mysqli_close($conn);
+require_once('../../../themes/default/apps/messages/include/chat-list.phtml');

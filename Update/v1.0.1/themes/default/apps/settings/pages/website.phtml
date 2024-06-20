@@ -1,0 +1,101 @@
+<?php vipub_template("main/sidebar/left-sidebar"); ?>
+<?php $conn = vipubConnectDatabase(); $uname = htmlspecialchars(trim($_SESSION["user_id"])); $row = vipub_get_my_profile($conn, $uname); ?>
+<div class="col-md-6">
+    <div class="main-vipub-screenline">
+        
+        <div class="site-header-box">
+            <h5>
+            <svg id="back-page" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></g></svg>
+            <?php echo vipub_translate("account_settings"); ?></h5>
+        </div>
+
+        <div class="account-settings-page">
+            
+            <div class="settings-page-container">
+                <div class="settings-page-title">
+                    <h5><?php echo vipub_translate("account_information"); ?></h5>
+                </div>
+
+                <div class="setpage-save-info">
+                    <?php echo vipub_translate("account_settings_menu_44"); ?>
+                </div>
+
+                <div class="form-save-element-value">
+                    <form id="change-website">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="website" id="website" value="<?php if($row["user_website"]==NULL): ?><?php else: ?> <?php echo $row["user_website"]; ?> <?php endif; ?>" placeholder="<?php echo vipub_translate("account_settings_menu_45"); ?>">
+                            <label for="fullname"><?php echo vipub_translate("account_settings_menu_45"); ?></label>
+                        </div>
+                        <button type="submit" class="website-save"><?php echo vipub_translate("account_settings_menu_27"); ?></button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+    $('#change-website').submit(function(event) {
+        event.preventDefault();
+        var website = $.trim($('#website').val());
+        if (website === '') {
+            $.ajax({
+                type: 'POST',
+                url: '/apps/ajax/settings/website.phtml',
+                data: {
+                    website: website
+                },
+                success: function(response) {
+                    $('#website').val(response);
+                    new Noty({
+                        type: 'success',
+                        text: '<?php echo vipub_translate("settings_page_save_value_desc_1"); ?>',
+                        timeout: 1500
+                    }).show();
+                },
+                error: function(response) {
+                    alert('Hata oluştu: ' + response.responseText);
+                }
+            });
+        } else if (!isValidUrl(website)) {
+            new Noty({
+                type: 'error',
+                text: '<?php echo vipub_translate("settings_page_save_value_desc_2"); ?>',
+                timeout: 1500
+            }).show();
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/apps/ajax/settings/website.phtml',
+                data: {
+                    website: website
+                },
+                success: function(response) {
+                    $('#website').val(response);
+                    new Noty({
+                        type: 'success',
+                        text: '<?php echo vipub_translate("settings_page_save_value_desc_1"); ?>',
+                        timeout: 1500
+                    }).show();
+                },
+                error: function(response) {
+                    alert('Hata oluştu: ' + response.responseText);
+                }
+            });
+        }
+    });
+
+    $('#website').attr('maxlength', 255);
+
+    function isValidUrl(url) {
+        var urlRegExp = /^(ftp|http|https):\/\/[^ "]+$/;
+        return urlRegExp.test(url);
+    }
+});
+</script>
+
+
+<?php vipub_template("main/sidebar/right-sidebar"); ?>
+<?php vipub_template("main/footer.content"); ?>

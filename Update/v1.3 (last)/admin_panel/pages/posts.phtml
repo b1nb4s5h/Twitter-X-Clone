@@ -1,0 +1,87 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>List of tweets</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="<?php echo vipub_link("admin_panel/"); ?>">Home</a></li>
+          <li class="breadcrumb-item">Tweet</li>
+          <li class="breadcrumb-item active">List of tweets</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><?php echo $settings["site_name"]; ?> <strong>tweet list</strong></h5>
+              <p>Below is a list of all tweet on your website. When you want to edit any tweet, you can click on the <strong>id</strong> at the top of the table or the <strong>"edit"</strong> button at the end of the table.</p>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Fullname</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Tweet</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Language</th>
+                    <th scope="col">Preview</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $sql = "SELECT p.*, u.* 
+                    FROM vipub_posts p 
+                    JOIN vipub_users u ON p.user_id = u.id 
+                    WHERE u.account_status = '0'
+                    ORDER BY p.post_joined DESC";
+        
+                    $stmt = mysqli_prepare($conn, $sql);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+                    
+                    if ($result) {
+                    // Gönderileri göster
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) { 
+                ?>
+                    <tr>
+                        <th scope="row"><a style="color:#0f1419 !important; font-weight: 700;" href="<?php echo vipub_link("admin_panel/edit_tweet?edit=".$row["p_id"]); ?>"><?php echo $row["p_id"]; ?></a></th>
+                        <td><?php echo vipub_croptxt($row["fullname"], 0, 15); ?></td>
+                        <td><a target="_blank" href="<?php echo vipub_link("@".$row["username"]); ?>" class="text-primary">@<?php echo $row["username"]; ?></a></td>
+                        <td><?php echo vipub_croptxt($row["content_post"], 0, 30); ?></td>
+                        <td>
+                            <?php if($row["post_type"]=="post"): ?>
+                            <span class="badge bg-success">Post</span>
+                            <?php elseif($row["post_type"]=="reply"): ?>
+                            <span class="badge bg-danger">Reply</span>
+                            <?php elseif($row["post_type"]=="postAds"): ?>
+                            <span class="badge bg-danger">Ads</span>
+                            <?php endif; ?>
+                        </td>
+                        <td><span class="badge bg-danger"><?php echo vipub_croptxt($row["post_lang"], 0, 5); ?></span></td>
+                        <td><a style="font-weight: 500; color: #1da1f2 !important;" target="_blank" href="<?php echo vipub_link($row["username"]."/status/".$row["p_id"]); ?>" class="text-primary">Open</a></td>
+                        <td><a style="font-weight: 800; color: red !important;" href="<?php echo vipub_link("admin_panel/edit_tweet?edit=".$row["p_id"]); ?>" class="text-primary">Edit</a></td>
+                        <td><?php echo date("d.m.Y - h:i:s", strtotime($row["post_joined"])); ?></td>
+                    </tr>
+                    
+                    <?php } } } ?>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>

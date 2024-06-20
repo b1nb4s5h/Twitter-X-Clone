@@ -1,0 +1,59 @@
+<?php
+require_once("../../../core/vipub_web_core.phtml");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Diğer POST verilerini alın
+    $user_id = $_POST["user_id"];
+    $added_balance = $_POST["added_balance"];
+    $type = "bank";
+    $status = "2";
+
+    if (isset($_FILES['receipt_image']) && $_FILES['receipt_image']['error'] === UPLOAD_ERR_OK) {
+        $file_name = $_FILES['receipt_image']['name'];
+        $file_tmp = $_FILES['receipt_image']['tmp_name'];
+        $file_size = $_FILES['receipt_image']['size'];
+        $file_type = $_FILES['receipt_image']['type'];
+        $file_parts = explode('.', $file_name);
+        $file_ext = strtolower(end($file_parts));
+
+        $allowed = array('jpg', 'jpeg', 'png');
+
+        if (in_array($file_ext, $allowed)) {
+            if ($file_size <= 157286401) {
+                $upload_dir = '../../../upload/balance/';
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+
+                $new_file_name = time() . '_' . uniqid() . '.' . $file_ext;
+
+                if (move_uploaded_file($file_tmp, $upload_dir . $new_file_name)) {
+                    $media_path = $upload_dir . $new_file_name;
+                    $post_type = "post_image";
+                } else {
+                    $media_path = NULL;
+                    $post_type = "post";
+                }
+            } else {
+                $media_path = NULL;
+                $post_type = "post";
+            }
+        } else {
+            $media_path = NULL;
+            $post_type = "post";
+        }
+    } else {
+        $media_path = NULL;
+        $post_type = "post";
+    }
+
+    // Veritabanı ekleme işlemi
+    $sql = "INSERT INTO vipub_add_balance (user_id, added_balance, type, status, receipt_image) VALUES ('$user_id', '$added_balance', '$type', '$status', '$media_path')";
+    if ($conn->query($sql) === TRUE) {
+        echo "success";
+    } else {
+        echo "error: " . $conn->error;
+    }
+
+    $conn->close();
+}

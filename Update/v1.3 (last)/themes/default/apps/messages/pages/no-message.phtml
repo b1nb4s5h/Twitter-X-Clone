@@ -1,0 +1,15 @@
+<?php
+$conn = vipubConnectDatabase();
+$user_id = htmlspecialchars(trim($_GET["row"]));
+$row = vipub_get_message_user($conn, $user_id);
+?>
+<div class="no-post-yet-timeline">
+    <a href="<?php echo vipub_link("@".$row["username"]); ?>">
+        <img src="<?php echo vipub_link($row["avatar"]); ?>">
+    </a>
+    <div class="no-post-yet">
+        <h5>
+        <?php echo $row["fullname"]; ?> <?php echo vipub_translate("message_page_5"); ?></h5>
+        <span><?php echo vipub_translate("message_page_6"); ?></span>
+    </div>
+</div>
